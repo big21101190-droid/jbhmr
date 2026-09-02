@@ -1,41 +1,41 @@
 {
-  "name": "sites-project",
+  "name": "j-complex-logistics",
   "version": "0.1.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
   },
   "scripts": {
-    "dev": "vinext dev",
-    "build": "vinext build",
-    "start": "wrangler dev --config dist/server/wrangler.json",
-    "lint": "oxlint",
-    "format": "oxfmt"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint app components data lib scripts tests",
+    "format": "oxfmt app components data lib scripts tests",
+    "test": "vitest run",
+    "validate:landings": "node scripts/validate-landings.mjs",
+    "qa:urls": "node scripts/qa-landings.mjs",
+    "qa:links": "node scripts/qa-links.mjs"
   },
   "dependencies": {
+    "@netlify/blobs": "^11.0.2",
+    "@netlify/identity": "^2.0.0",
+    "lucide-react": "1.31.0",
+    "next": "^16.3.4",
     "react": "19.2.6",
-    "react-dom": "19.2.6",
-    "react-server-dom-webpack": "19.2.6",
-    "vinext": "1.0.0-beta.5",
-    "lucide-react": "1.31.0"
+    "react-dom": "19.2.6"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.37.1",
-    "@cloudflare/workers-types": "4.20260515.1",
-    "@openai/sites-vite-plugin": "0.2.0",
     "@tailwindcss/postcss": "4.2.1",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "6.0.2",
-    "@vitejs/plugin-rsc": "0.5.26",
     "oxfmt": "0.61.0",
     "oxlint": "1.76.0",
     "oxlint-tsgolint": "7.0.2001",
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3",
-    "vite": "8.0.13",
-    "wrangler": "4.92.0"
+    "vitest": "^4.1.11"
   },
   "type": "module"
 }
