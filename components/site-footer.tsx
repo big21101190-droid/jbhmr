@@ -15,8 +15,10 @@ export function SiteFooter() {
           <a href={telHref(DAEGU_PHONE)} className="mt-2 block text-xl font-black">대구 {DAEGU_PHONE}</a>
         </div>
         <div>
-          <p className="text-xs font-black tracking-[.14em] text-[#78a0ff]">SERVICE</p>
-          <p className="mt-4 text-sm leading-7 text-white/60">퀵 · 용달화물<br />고속버스 · KTX택배<br />제주 항공 · 선박<br />골프백 · 캐리어</p>
+          <p className="text-xs font-black tracking-[.14em] text-[#78a0ff]">MENU</p>
+          <nav className="mt-4 grid grid-cols-2 gap-x-4 text-sm leading-8 text-white/60" aria-label="하단 메뉴">
+            <a href="/about">회사소개</a><a href="/services">서비스</a><a href="/regions">지역</a><a href="/faq">FAQ</a><a href="/contact">문의</a><a href="/privacy">개인정보처리방침</a>
+          </nav>
         </div>
       </div>
       <div className="mx-auto flex max-w-[1240px] flex-col gap-2 pt-6 text-xs text-white/35 sm:flex-row sm:justify-between">

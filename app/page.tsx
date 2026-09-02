@@ -63,7 +63,7 @@ export default function Home() {
             <h2 className="mt-3 text-3xl font-black tracking-[-.045em] sm:text-5xl">보낼 물품에 맞는 운송을<br className="hidden sm:block" /> 한곳에서 상담하세요</h2>
           </div>
           <div className="mt-10 grid gap-5 md:grid-cols-2">
-            {serviceCards.map((service, index) => (
+            {serviceCards.map((service) => (
               <a id={service.href.slice(1)} href={service.href} key={service.title} className="group grid overflow-hidden rounded-2xl border border-[#dce5f0] bg-[#f7f9fc] shadow-[0_8px_30px_rgba(16,36,62,.05)] transition hover:-translate-y-1 hover:border-[#b6c8ff] hover:shadow-[0_20px_50px_rgba(16,36,62,.12)] sm:grid-cols-[.92fr_1.08fr]">
                 <img src={service.image} alt={service.title} className="aspect-[4/3] h-full w-full object-cover" />
                 <div className="flex flex-col p-6 sm:p-7">

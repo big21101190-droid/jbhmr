@@ -1,15 +1,34 @@
 import type { Metadata } from 'next';
+import { Analytics } from '@/components/analytics';
+import { SITE_URL, company } from '@/lib/company';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: '제이복합물류 | 전국 퀵·용달·택배 운송',
+  metadataBase: new URL(SITE_URL),
+  title: { default: '제이복합물류 | 전국 퀵·용달·택배 운송', template: '%s | 제이복합물류' },
   description: '퀵서비스, 용달화물, 고속버스·KTX택배, 제주 항공·선박, 골프백·캐리어 배송 상담',
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    locale: 'ko_KR',
+    siteName: company.name,
+    title: '제이복합물류 | 전국 퀵·용달·택배 운송',
+    description: '퀵서비스, 용달화물, 도시 간 택배와 제주·여행 짐 배송 상담',
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: '제이복합물류' }],
+  },
+  twitter: { card: 'summary_large_image', images: ['/og.png'] },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION
+      ? { 'naver-site-verification': process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION }
+      : undefined,
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>{children}<Analytics /></body>
     </html>
   );
 }

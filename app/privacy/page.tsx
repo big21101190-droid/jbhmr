@@ -1,0 +1,7 @@
+import type { Metadata } from 'next';
+import { PageHero } from '@/components/page-hero';
+import { SiteFooter } from '@/components/site-footer';
+import { SiteHeader } from '@/components/site-header';
+
+export const metadata:Metadata={title:'개인정보처리방침',description:'제이복합물류 문의 접수 개인정보 처리 안내입니다.',alternates:{canonical:'/privacy'},robots:{index:true,follow:true}};
+export default function PrivacyPage(){return <main className="bg-white"><SiteHeader/><PageHero eyebrow="PRIVACY" title="개인정보처리방침" description="문의 접수 과정에서 필요한 최소한의 정보만 처리합니다."/><article className="mx-auto max-w-[900px] px-5 py-16 leading-8 text-[#475467]"><h2 className="text-xl font-black text-[#101828]">수집 항목과 이용 목적</h2><p className="mt-3">이름 또는 회사명, 연락처, 출발지, 도착지, 선택 서비스와 문의 내용을 수집하며 견적 확인과 문의 답변 목적으로만 이용합니다.</p><h2 className="mt-10 text-xl font-black text-[#101828]">보유 및 이용 기간</h2><p className="mt-3">문의 처리와 관련 법령상 의무 이행에 필요한 기간 동안 보관한 뒤 지체 없이 파기합니다. 구체적인 법정 보존 기간과 개인정보 보호 책임자 정보는 사업자 정보 확인 후 보완됩니다.</p><h2 className="mt-10 text-xl font-black text-[#101828]">동의 거부 권리</h2><p className="mt-3">개인정보 수집에 동의하지 않을 수 있으나, 필수 정보가 없으면 온라인 문의 답변이 어려울 수 있습니다. 이 경우 전화 문의를 이용할 수 있습니다.</p><h2 className="mt-10 text-xl font-black text-[#101828]">처리 위탁</h2><p className="mt-3">온라인 문의 제출 내용은 사이트 운영 플랫폼인 Netlify의 Forms 기능을 통해 안전하게 접수됩니다. 운영자가 인증된 관리 화면에서만 제출 내용을 확인합니다.</p><p className="mt-12 rounded-xl bg-[#fff7e6] p-5 text-sm">사업자 주소·대표자·개인정보 보호 책임자·구체적인 보존 기간은 고객 확인 후 운영 전 최종 반영해야 합니다.</p></article><SiteFooter/></main>}

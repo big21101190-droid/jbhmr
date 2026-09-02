@@ -6,10 +6,11 @@ import { BrandLogo } from '@/components/brand-logo';
 import { areaHref, DAEGU_PHONE, NATIONAL_PHONE, regionGroups, telHref } from '@/lib/site-data';
 
 const primaryLinks = [
-  ['퀵 · 용달화물', '/#quick'],
-  ['고속버스 · KTX택배', '/#intercity'],
-  ['제주 항공 · 선박', '/#jeju'],
-  ['골프백 · 캐리어', '/#golf'],
+  ['회사소개', '/about'],
+  ['서비스', '/services'],
+  ['지역', '/regions'],
+  ['자주 묻는 질문', '/faq'],
+  ['견적 문의', '/contact'],
 ];
 
 export function SiteHeader({ currentPhone = NATIONAL_PHONE }: { currentPhone?: string }) {
