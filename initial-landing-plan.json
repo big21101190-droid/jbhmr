@@ -1,0 +1,452 @@
+[
+  {
+    "id": "initial-001",
+    "regionId": "daegu-jung",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "대구 중구 퀵서비스",
+    "slug": "daegu-jung-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-002",
+    "regionId": "daegu-jung",
+    "serviceId": "damas",
+    "primaryKeyword": "대구 중구 다마스퀵",
+    "slug": "daegu-jung-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-003",
+    "regionId": "daegu-jung",
+    "serviceId": "one-ton",
+    "primaryKeyword": "대구 중구 1톤용달",
+    "slug": "daegu-jung-one-ton",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-004",
+    "regionId": "daegu-dong",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "대구 동구 퀵서비스",
+    "slug": "daegu-dong-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-005",
+    "regionId": "daegu-dong",
+    "serviceId": "damas",
+    "primaryKeyword": "대구 동구 다마스퀵",
+    "slug": "daegu-dong-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-006",
+    "regionId": "daegu-dong",
+    "serviceId": "one-ton",
+    "primaryKeyword": "대구 동구 1톤용달",
+    "slug": "daegu-dong-one-ton",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-007",
+    "regionId": "daegu-seo",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "대구 서구 퀵서비스",
+    "slug": "daegu-seo-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-008",
+    "regionId": "daegu-seo",
+    "serviceId": "damas",
+    "primaryKeyword": "대구 서구 다마스퀵",
+    "slug": "daegu-seo-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-009",
+    "regionId": "daegu-seo",
+    "serviceId": "one-ton",
+    "primaryKeyword": "대구 서구 1톤용달",
+    "slug": "daegu-seo-one-ton",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-010",
+    "regionId": "daegu-nam",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "대구 남구 퀵서비스",
+    "slug": "daegu-nam-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-011",
+    "regionId": "daegu-nam",
+    "serviceId": "damas",
+    "primaryKeyword": "대구 남구 다마스퀵",
+    "slug": "daegu-nam-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-012",
+    "regionId": "daegu-nam",
+    "serviceId": "one-ton",
+    "primaryKeyword": "대구 남구 1톤용달",
+    "slug": "daegu-nam-one-ton",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-013",
+    "regionId": "daegu-buk",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "대구 북구 퀵서비스",
+    "slug": "daegu-buk-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-014",
+    "regionId": "daegu-buk",
+    "serviceId": "damas",
+    "primaryKeyword": "대구 북구 다마스퀵",
+    "slug": "daegu-buk-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-015",
+    "regionId": "daegu-buk",
+    "serviceId": "one-ton",
+    "primaryKeyword": "대구 북구 1톤용달",
+    "slug": "daegu-buk-one-ton",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-016",
+    "regionId": "daegu-suseong",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "대구 수성구 퀵서비스",
+    "slug": "daegu-suseong-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-017",
+    "regionId": "daegu-suseong",
+    "serviceId": "damas",
+    "primaryKeyword": "대구 수성구 다마스퀵",
+    "slug": "daegu-suseong-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-018",
+    "regionId": "daegu-suseong",
+    "serviceId": "one-ton",
+    "primaryKeyword": "대구 수성구 1톤용달",
+    "slug": "daegu-suseong-one-ton",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-019",
+    "regionId": "daegu-dalseo",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "대구 달서구 퀵서비스",
+    "slug": "daegu-dalseo-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-020",
+    "regionId": "daegu-dalseo",
+    "serviceId": "damas",
+    "primaryKeyword": "대구 달서구 다마스퀵",
+    "slug": "daegu-dalseo-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-021",
+    "regionId": "daegu-dalseo",
+    "serviceId": "one-ton",
+    "primaryKeyword": "대구 달서구 1톤용달",
+    "slug": "daegu-dalseo-one-ton",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-022",
+    "regionId": "daegu-dalseong",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "대구 달성군 퀵서비스",
+    "slug": "daegu-dalseong-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-023",
+    "regionId": "daegu-dalseong",
+    "serviceId": "damas",
+    "primaryKeyword": "대구 달성군 다마스퀵",
+    "slug": "daegu-dalseong-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-024",
+    "regionId": "daegu-dalseong",
+    "serviceId": "one-ton",
+    "primaryKeyword": "대구 달성군 1톤용달",
+    "slug": "daegu-dalseong-one-ton",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-025",
+    "regionId": "daegu-dasa",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "대구 다사 퀵서비스",
+    "slug": "daegu-dasa-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-026",
+    "regionId": "daegu-dasa",
+    "serviceId": "damas",
+    "primaryKeyword": "대구 다사 다마스퀵",
+    "slug": "daegu-dasa-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-027",
+    "regionId": "daegu-dasa",
+    "serviceId": "one-ton",
+    "primaryKeyword": "대구 다사 1톤용달",
+    "slug": "daegu-dasa-one-ton",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-028",
+    "regionId": "daegu-seongseo",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "대구 성서 퀵서비스",
+    "slug": "daegu-seongseo-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-029",
+    "regionId": "daegu-seongseo",
+    "serviceId": "damas",
+    "primaryKeyword": "대구 성서 다마스퀵",
+    "slug": "daegu-seongseo-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-030",
+    "regionId": "daegu-seongseo",
+    "serviceId": "one-ton",
+    "primaryKeyword": "대구 성서 1톤용달",
+    "slug": "daegu-seongseo-one-ton",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-031",
+    "regionId": "gyeongbuk-gyeongsan",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "경북 경산 퀵서비스",
+    "slug": "gyeongbuk-gyeongsan-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-032",
+    "regionId": "gyeongbuk-gyeongsan",
+    "serviceId": "damas",
+    "primaryKeyword": "경북 경산 다마스퀵",
+    "slug": "gyeongbuk-gyeongsan-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-033",
+    "regionId": "gyeongbuk-hayang",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "경북 하양 퀵서비스",
+    "slug": "gyeongbuk-hayang-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-034",
+    "regionId": "gyeongbuk-hayang",
+    "serviceId": "damas",
+    "primaryKeyword": "경북 하양 다마스퀵",
+    "slug": "gyeongbuk-hayang-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-035",
+    "regionId": "gyeongbuk-jillyang",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "경북 진량 퀵서비스",
+    "slug": "gyeongbuk-jillyang-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-036",
+    "regionId": "gyeongbuk-jillyang",
+    "serviceId": "damas",
+    "primaryKeyword": "경북 진량 다마스퀵",
+    "slug": "gyeongbuk-jillyang-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-037",
+    "regionId": "gyeongbuk-pohang",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "경북 포항 퀵서비스",
+    "slug": "gyeongbuk-pohang-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-038",
+    "regionId": "gyeongbuk-pohang",
+    "serviceId": "damas",
+    "primaryKeyword": "경북 포항 다마스퀵",
+    "slug": "gyeongbuk-pohang-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-039",
+    "regionId": "gyeongbuk-gyeongju",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "경북 경주 퀵서비스",
+    "slug": "gyeongbuk-gyeongju-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-040",
+    "regionId": "gyeongbuk-gyeongju",
+    "serviceId": "damas",
+    "primaryKeyword": "경북 경주 다마스퀵",
+    "slug": "gyeongbuk-gyeongju-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-041",
+    "regionId": "gyeongbuk-gumi",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "경북 구미 퀵서비스",
+    "slug": "gyeongbuk-gumi-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-042",
+    "regionId": "gyeongbuk-gumi",
+    "serviceId": "damas",
+    "primaryKeyword": "경북 구미 다마스퀵",
+    "slug": "gyeongbuk-gumi-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-043",
+    "regionId": "gyeongbuk-andong",
+    "serviceId": "quick-motorcycle",
+    "primaryKeyword": "경북 안동 퀵서비스",
+    "slug": "gyeongbuk-andong-quick-motorcycle",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-044",
+    "regionId": "gyeongbuk-andong",
+    "serviceId": "damas",
+    "primaryKeyword": "경북 안동 다마스퀵",
+    "slug": "gyeongbuk-andong-damas",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-045",
+    "regionId": "seoul-gangnam",
+    "serviceId": "express-bus",
+    "primaryKeyword": "서울 강남구 고속버스택배",
+    "slug": "seoul-gangnam-express-bus",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-046",
+    "regionId": "busan-busanjin",
+    "serviceId": "express-bus",
+    "primaryKeyword": "부산 부산진구 고속버스택배",
+    "slug": "busan-busanjin-express-bus",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-047",
+    "regionId": "daejeon-yuseong",
+    "serviceId": "ktx",
+    "primaryKeyword": "대전 유성구 KTX택배",
+    "slug": "daejeon-yuseong-ktx",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-048",
+    "regionId": "jeju-jeju-city",
+    "serviceId": "jeju-air",
+    "primaryKeyword": "제주 제주시 제주항공화물",
+    "slug": "jeju-jeju-city-jeju-air",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-049",
+    "regionId": "jeju-seogwipo",
+    "serviceId": "jeju-sea",
+    "primaryKeyword": "제주 서귀포시 제주선박화물",
+    "slug": "jeju-seogwipo-jeju-sea",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  },
+  {
+    "id": "initial-050",
+    "regionId": "gyeonggi-yongin",
+    "serviceId": "golf-bag",
+    "primaryKeyword": "경기 용인 골프백배송",
+    "slug": "gyeonggi-yongin-golf-bag",
+    "status": "PUBLISHED",
+    "indexPolicy": "INDEX"
+  }
+]

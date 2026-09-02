@@ -1,5 +1,7 @@
-export const NATIONAL_PHONE = '1661-0122';
-export const DAEGU_PHONE = '053-955-2005';
+import { company, telHref } from '@/lib/company';
+
+export const NATIONAL_PHONE = company.nationalPhone;
+export const DAEGU_PHONE = company.daeguPhone;
 
 export type RegionGroup = {
   name: string;
@@ -85,6 +87,4 @@ export function findArea(slug: string) {
   };
 }
 
-export function telHref(phone: string) {
-  return `tel:${phone.replaceAll('-', '')}`;
-}
+export { telHref };
