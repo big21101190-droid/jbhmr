@@ -2,6 +2,7 @@
 
 import { ChevronDown, Menu, Phone, X } from 'lucide-react';
 import { useState } from 'react';
+import { BrandLogo } from '@/components/brand-logo';
 import { areaHref, DAEGU_PHONE, NATIONAL_PHONE, regionGroups, telHref } from '@/lib/site-data';
 
 const primaryLinks = [
@@ -27,11 +28,7 @@ export function SiteHeader({ currentPhone = NATIONAL_PHONE }: { currentPhone?: s
       <header className="sticky top-0 z-50 border-b border-[#dce5f0] bg-white/95 px-4 backdrop-blur-xl sm:px-5">
         <div className="mx-auto flex h-[72px] max-w-[1240px] items-center justify-between">
           <a href="/" className="flex items-center gap-3" aria-label="제이복합물류 홈">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#1b4dff] text-sm font-black text-white shadow-[0_8px_18px_rgba(27,77,255,.22)]">J</span>
-            <span>
-              <strong className="block text-[17px] leading-none tracking-[-0.04em]">제이복합물류</strong>
-              <small className="mt-1.5 block text-[9px] font-black tracking-[0.18em] text-[#1b4dff]">J EXPRESS</small>
-            </span>
+            <BrandLogo />
           </a>
 
           <nav className="hidden h-full items-center gap-7 text-[13px] font-extrabold xl:flex" aria-label="주요 메뉴">
