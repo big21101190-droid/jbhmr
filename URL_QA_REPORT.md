@@ -1,6 +1,6 @@
 # URL QA REPORT
 
-- Target: http://localhost:3000
+- Target: https://lovely-tarsier-c21dea.netlify.app
 - Checked: 50
 - Passed: 50
 - Failed: 0

@@ -8,6 +8,9 @@
 - Build: `npm run build`
 - Publish directory: `.next`
 - Node: 22.13 이상
+- Next.js runtime: `@netlify/plugin-nextjs` 5.15.13
+
+현재 production URL은 `https://lovely-tarsier-c21dea.netlify.app`이며, 2026-09-02 배포 `6a9800d2503ef40008e142a4`에서 Next.js server handler와 Netlify Form이 정상 배포됐습니다.
 
 ## 로컬 확인
 

@@ -26,11 +26,16 @@
 
 ## 배포 후 확인 항목
 
-- [ ] Netlify Next.js production deploy
-- [ ] 공개 대표 URL·sitemap·robots·404 확인
-- [ ] 데스크톱/모바일 시각 QA
+- [x] Netlify Next.js production deploy (`6a9800d2503ef40008e142a4`, commit `0fbf371`)
+- [x] 공개 대표 URL·sitemap·robots·404 확인
+- [x] 초기 랜딩 50개 운영 URL QA PASS
+- [x] sitemap 182개 페이지·내부 경로 204개 dead-link QA PASS
+- [x] 데스크톱/모바일 시각 QA
+- [x] 320/375/390/430px 가로 overflow QA
+- [x] production console error·asset 404 없음
+- [x] Netlify Forms `inquiry` 감지 및 honeypot 활성화
 - [ ] 문의 Form 실 제출 확인
 - [ ] Netlify Identity 활성화와 관리자 초대
 - [ ] 관리자 실제 로그인→작성→업로드→미리보기→공개→수정→비공개 E2E
 
-마지막 두 Identity 항목은 고객 Netlify 계정 설정과 관리자 이메일 초대가 완료되어야 수행할 수 있습니다.
+공개 사이트와 50개 초기 랜딩은 production에서 정상 운영 중입니다. 문의 실 제출은 실제 운영 알림 수신처를 지정한 뒤 확인하며, 마지막 두 Identity 항목은 고객 Netlify 계정 설정과 관리자 이메일 초대가 완료되어야 수행할 수 있습니다. Identity 설정 endpoint는 2026-09-02 운영 점검에서 아직 404로 확인되어 비활성 상태입니다.

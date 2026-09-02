@@ -1,6 +1,6 @@
 # DEAD LINK QA REPORT
 
-- Target: http://localhost:3000
+- Target: https://lovely-tarsier-c21dea.netlify.app
 - Sitemap pages checked: 182
 - Unique internal paths checked: 204
 - Failures: 0
