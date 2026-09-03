@@ -34,8 +34,8 @@
 - [x] 320/375/390/430px 가로 overflow QA
 - [x] production console error·asset 404 없음
 - [x] Netlify Forms `inquiry` 감지 및 honeypot 활성화
-- [ ] 문의 Form 실 제출 확인
+- [x] 문의 Form 실 제출 및 Netlify Forms 저장 확인
 - [x] Netlify Identity 활성화, Invite only 설정, 관리자 초대와 `admin` 역할 지정
 - [x] 관리자 실제 로그인→작성→업로드→미리보기→공개→수정→비공개→보관 E2E
 
-공개 사이트와 50개 초기 랜딩은 production에서 정상 운영 중입니다. 2026-09-03 관리자 E2E에서는 점검용 랜딩 1개를 실제로 생성하고 대표 이미지를 업로드한 뒤, 미리보기·공개·SEO 및 sitemap 반영·본문/이미지 수정·비공개·보관까지 확인했습니다. 점검용 URL은 현재 404와 noindex를 반환하고 sitemap에서도 제외됩니다. 문의 실 제출은 실제 운영 알림 수신처를 지정한 뒤 확인합니다.
+공개 사이트와 50개 초기 랜딩은 production에서 정상 운영 중입니다. 2026-09-03 관리자 E2E에서는 점검용 랜딩 1개를 실제로 생성하고 대표 이미지를 업로드한 뒤, 미리보기·공개·SEO 및 sitemap 반영·본문/이미지 수정·비공개·보관까지 확인했습니다. 점검용 URL은 현재 404와 noindex를 반환하고 sitemap에서도 제외됩니다. 같은 날 `inquiry` 문의 폼에 QA 데이터 1건을 실제 제출해 성공 메시지와 Netlify Forms 저장을 확인했습니다. 운영 알림 수신 여부는 고객 알림 이메일 또는 Webhook 설정 후 마지막으로 확인합니다.
