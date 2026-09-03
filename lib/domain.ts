@@ -56,6 +56,13 @@ export type ServiceProvenance = {
   note: string;
 };
 
+export type ServiceRouteIntent = {
+  origin: string;
+  destination: string;
+  label: string;
+  source: string;
+};
+
 export type Service = {
   id: string;
   name: string;
@@ -65,6 +72,7 @@ export type Service = {
   description: string;
   keywords: string[];
   image: string;
+  imageAlt: string;
   contentStatus: ServiceContentStatus;
   heroTitle: string;
   heroAccent: string;
@@ -76,6 +84,7 @@ export type Service = {
   process: ServiceStep[];
   pricing: ServicePricing | null;
   trustNotes: string[];
+  routeIntents?: ServiceRouteIntent[];
   provenance: ServiceProvenance[];
   faqs: FaqItem[];
   active: boolean;
@@ -94,6 +103,7 @@ export type Region = {
   active: boolean;
   sortOrder: number;
   usesDaeguPhone: boolean;
+  administrativeParentId?: string;
 };
 
 export type LandingSection = {

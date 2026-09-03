@@ -43,7 +43,7 @@ const gyeongbuk = [
 const services = {
   'quick-motorcycle': {
     name: '퀵서비스',
-    image: '/service-freight.png',
+    image: '/service-quick.svg',
     keyword: '퀵서비스',
     summary:
       '서류, 샘플과 소형 물품을 보낼 때 출발지와 도착지를 확인해 오토바이 퀵 접수를 안내합니다.',
@@ -53,7 +53,7 @@ const services = {
   },
   damas: {
     name: '다마스 배송',
-    image: '/service-freight.png',
+    image: '/service-damas.svg',
     keyword: '다마스퀵',
     summary:
       '오토바이에 싣기 어려운 박스와 소형 집기는 수량과 크기를 확인해 다마스 차량을 상담합니다.',
@@ -73,7 +73,7 @@ const services = {
   },
   'express-bus': {
     name: '고속버스택배',
-    image: '/service-ktx.jpg',
+    image: '/service-bus.png',
     keyword: '고속버스택배',
     summary:
       '주요 도시 터미널 노선과 접수 마감 시간을 확인해 당일 도시 간 화물 이동을 상담합니다.',
@@ -124,7 +124,7 @@ const services = {
   },
   'jeju-sea': {
     name: '제주 선박화물',
-    image: '/service-jeju.png',
+    image: '/service-jeju-sea.svg',
     keyword: '제주선박화물',
     summary:
       '부피와 중량, 선박 일정을 기준으로 제주·서귀포 방향 화물 운송을 상담합니다.',
@@ -229,11 +229,37 @@ const variantIntros = [
   '출발지 또는 도착지 한쪽이 다른 지역이어도 전체 이동 구간을 기준으로 상담합니다.',
 ];
 
+function customerKeywordAliases(item) {
+  const sourceRegion = item.regionName
+    .replace(/^경북 /, '')
+    .replaceAll(' ', '');
+  if (item.serviceId === 'quick-motorcycle') {
+    return [
+      `${sourceRegion}퀵서비스`,
+      `${item.regionName} 오토바이 퀵`,
+      `${item.regionName} 다마스 배송`,
+    ];
+  }
+  if (item.serviceId === 'damas' || item.serviceId === 'one-ton') {
+    return [
+      `${sourceRegion}용달화물`,
+      `${item.regionName} 다마스 배송`,
+      `${item.regionName} 1톤 화물`,
+    ];
+  }
+  return [];
+}
+
 const landings = combinations.map((item, index) => {
   const service = services[item.serviceId];
   const slug = `${item.regionId}-${item.serviceId}`;
   const keyword = `${item.regionName} ${service.keyword}`;
   const title = `${item.regionName} ${service.name}`;
+  const heroImage =
+    item.regionId.startsWith('daegu-') &&
+    ['quick-motorcycle', 'damas', 'one-ton'].includes(item.serviceId)
+      ? '/service-local-daegu.svg'
+      : service.image;
   const summary = `${item.note}에서 ${service.summary} ${variantIntros[index % variantIntros.length]}`;
   const serviceDetail = service.detail
     ? [{ heading: `${service.name} 운송 방식`, body: service.detail }]
@@ -253,15 +279,18 @@ const landings = combinations.map((item, index) => {
     serviceId: item.serviceId,
     primaryKeyword: keyword,
     secondaryKeywords: [
-      `${item.regionName} 화물배송`,
-      `${item.regionName} 당일배송`,
+      ...new Set([
+        `${item.regionName} 화물배송`,
+        `${item.regionName} 당일배송`,
+        ...customerKeywordAliases(item),
+      ]),
     ],
     slug,
     title,
     h1: `${title} 접수 안내`,
     metaTitle: `${title} 상담 | 제이복합물류`,
     metaDescription: `${item.regionName} ${service.name} 상담. 출발지·도착지와 화물 정보를 확인해 접수 방법을 안내합니다. 전화 ${item.phone}.`,
-    heroImage: service.image,
+    heroImage,
     summary,
     sections: [
       {
@@ -300,7 +329,7 @@ const landings = combinations.map((item, index) => {
     canonical: null,
     ogTitle: `${title} | 제이복합물류`,
     ogDescription: `${item.regionName} ${service.name} 접수에 필요한 화물 정보와 상담 방법을 확인하세요.`,
-    ogImage: service.image,
+    ogImage: heroImage,
     redirectTo: null,
     createdAt,
     updatedAt: createdAt,

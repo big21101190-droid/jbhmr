@@ -1,0 +1,338 @@
+{
+  "sourceFile": "메뉴구성및 키워드 (1).txt",
+  "sha256": "2D7740425058282443CC1FCF7D308D2AEE2C4D15A26115E102F4B0FFBC2F88CE",
+  "phonePolicy": {
+    "daegu": "053-955-2005",
+    "nationwide": "1661-0122"
+  },
+  "menuExampleLines": [
+    {
+      "sourceLine": 6,
+      "raw": "주메뉴구성(예시)"
+    },
+    {
+      "sourceLine": 7,
+      "raw": "1:퀵서비스&용달화물"
+    },
+    {
+      "sourceLine": 8,
+      "raw": "  1)퀵서비스-서울퀵서비스-강남구퀵서비스-반포동퀵서비스"
+    },
+    {
+      "sourceLine": 9,
+      "raw": "                               서초구퀵서비스"
+    },
+    {
+      "sourceLine": 11,
+      "raw": "              대구퀵서비스"
+    },
+    {
+      "sourceLine": 12,
+      "raw": "              부산퀵서비스  "
+    },
+    {
+      "sourceLine": 14,
+      "raw": "  2)용달화물-서울용달화물-강남구용달화물-반포동용달화물"
+    },
+    {
+      "sourceLine": 17,
+      "raw": "              부산용달화물 "
+    },
+    {
+      "sourceLine": 18,
+      "raw": "              대구용달화물"
+    },
+    {
+      "sourceLine": 20,
+      "raw": "2:고속버스택배&KTX택배"
+    },
+    {
+      "sourceLine": 21,
+      "raw": "   1)고속버스택배-서울부산 고속버스택배"
+    },
+    {
+      "sourceLine": 22,
+      "raw": "                       서울대구 고속버스택배"
+    },
+    {
+      "sourceLine": 23,
+      "raw": "   2)KTX택배-서울부산 KTX택배"
+    },
+    {
+      "sourceLine": 24,
+      "raw": "                서울대구 KTX택배          "
+    },
+    {
+      "sourceLine": 27,
+      "raw": "3:제주(서귀포)항공&선박"
+    },
+    {
+      "sourceLine": 28,
+      "raw": "   1)제주도항공(선박)-"
+    },
+    {
+      "sourceLine": 29,
+      "raw": "   2)제주서귀포항공(선박)-"
+    },
+    {
+      "sourceLine": 31,
+      "raw": "4:골프백&케리어"
+    },
+    {
+      "sourceLine": 32,
+      "raw": "   1)골프백배송-"
+    },
+    {
+      "sourceLine": 33,
+      "raw": "   2)케리어배송-"
+    }
+  ],
+  "rawKeywordCount": 49,
+  "keywordLines": [
+    {
+      "sourceLine": 37,
+      "section": "quick_freight",
+      "raw": "대구퀵 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 38,
+      "section": "quick_freight",
+      "raw": "대구퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 39,
+      "section": "quick_freight",
+      "raw": "대구남구퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 40,
+      "section": "quick_freight",
+      "raw": "대구달서구퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 41,
+      "section": "quick_freight",
+      "raw": "대구달성군퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 42,
+      "section": "quick_freight",
+      "raw": "대구동구퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 43,
+      "section": "quick_freight",
+      "raw": "대구북구퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 44,
+      "section": "quick_freight",
+      "raw": "대구서구퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 45,
+      "section": "quick_freight",
+      "raw": "대구수성구퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 46,
+      "section": "quick_freight",
+      "raw": "대구중구퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 47,
+      "section": "quick_freight",
+      "raw": "대구달성군퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 48,
+      "section": "quick_freight",
+      "raw": "진량퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 49,
+      "section": "quick_freight",
+      "raw": "하양퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 50,
+      "section": "quick_freight",
+      "raw": "경산퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 51,
+      "section": "quick_freight",
+      "raw": "다사퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 52,
+      "section": "quick_freight",
+      "raw": "성서퀵서비스 오토바이 다마스 1톤용달화물"
+    },
+    {
+      "sourceLine": 54,
+      "section": "quick_freight",
+      "raw": "대구용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 55,
+      "section": "quick_freight",
+      "raw": "대구1톤화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 56,
+      "section": "quick_freight",
+      "raw": "대구남구용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 57,
+      "section": "quick_freight",
+      "raw": "대구달서구용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 58,
+      "section": "quick_freight",
+      "raw": "대구달성군용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 59,
+      "section": "quick_freight",
+      "raw": "대구동구용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 60,
+      "section": "quick_freight",
+      "raw": "대구북구용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 61,
+      "section": "quick_freight",
+      "raw": "대구서구용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 62,
+      "section": "quick_freight",
+      "raw": "대구수성구용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 63,
+      "section": "quick_freight",
+      "raw": "대구중구용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 64,
+      "section": "quick_freight",
+      "raw": "대구달성군용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 65,
+      "section": "quick_freight",
+      "raw": "진량용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 66,
+      "section": "quick_freight",
+      "raw": "하양용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 67,
+      "section": "quick_freight",
+      "raw": "경산용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 68,
+      "section": "quick_freight",
+      "raw": "다사용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 69,
+      "section": "quick_freight",
+      "raw": "성서용달화물 다마스 1톤화물"
+    },
+    {
+      "sourceLine": 73,
+      "section": "bus_ktx",
+      "raw": "서울부산 고속버스택배"
+    },
+    {
+      "sourceLine": 74,
+      "section": "bus_ktx",
+      "raw": "서울대전 고속버스택배"
+    },
+    {
+      "sourceLine": 75,
+      "section": "bus_ktx",
+      "raw": "서울천안 고속버스택배"
+    },
+    {
+      "sourceLine": 76,
+      "section": "bus_ktx",
+      "raw": "서울청주 고속버스택배"
+    },
+    {
+      "sourceLine": 77,
+      "section": "bus_ktx",
+      "raw": "서울대구 고속버스택배"
+    },
+    {
+      "sourceLine": 78,
+      "section": "bus_ktx",
+      "raw": "서울울산 고속버스택배"
+    },
+    {
+      "sourceLine": 79,
+      "section": "bus_ktx",
+      "raw": "서울강릉 고속버스택배"
+    },
+    {
+      "sourceLine": 80,
+      "section": "bus_ktx",
+      "raw": "서울속초 고속버스택배"
+    },
+    {
+      "sourceLine": 81,
+      "section": "bus_ktx",
+      "raw": "서울포항 고속버스택배"
+    },
+    {
+      "sourceLine": 82,
+      "section": "bus_ktx",
+      "raw": "서울경주 고속버스택배"
+    },
+    {
+      "sourceLine": 83,
+      "section": "bus_ktx",
+      "raw": "서울광주 고속버스택배"
+    },
+    {
+      "sourceLine": 84,
+      "section": "bus_ktx",
+      "raw": "서울전주 고속버스택배"
+    },
+    {
+      "sourceLine": 85,
+      "section": "bus_ktx",
+      "raw": "서울목포 고속버스택배"
+    },
+    {
+      "sourceLine": 90,
+      "section": "jeju",
+      "raw": "서울제주항공화물"
+    },
+    {
+      "sourceLine": 91,
+      "section": "jeju",
+      "raw": "서울서귀포항공화물"
+    },
+    {
+      "sourceLine": 95,
+      "section": "travel",
+      "raw": "골프백배송"
+    },
+    {
+      "sourceLine": 96,
+      "section": "travel",
+      "raw": "케리어배송"
+    }
+  ]
+}

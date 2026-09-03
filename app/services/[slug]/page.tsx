@@ -36,7 +36,7 @@ export async function generateMetadata({
       title: `${service.name} | 제이복합물류`,
       description: service.description,
       url: `/services/${service.slug}`,
-      images: [{ url: service.image, alt: `${service.name} 안내` }],
+      images: [{ url: service.image, alt: service.imageAlt }],
     },
   };
 }
@@ -109,7 +109,7 @@ export default async function ServicePage({
         <div className="mx-auto grid max-w-[1240px] gap-8 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
           <img
             src={service.image}
-            alt={`${service.name} 안내`}
+            alt={service.imageAlt}
             className="aspect-[4/3] w-full rounded-[28px] object-cover shadow-[0_24px_50px_rgba(16,36,62,.14)]"
           />
           <div>
@@ -172,6 +172,37 @@ export default async function ServicePage({
           })}
         </div>
       </section>
+
+      {service.routeIntents?.length ? (
+        <section className="bg-white px-5 py-14 sm:py-20">
+          <div className="mx-auto max-w-[1100px]">
+            <p className="text-xs font-black tracking-[.16em] text-[#1b4dff]">
+              ROUTE GUIDE
+            </p>
+            <h2 className="mt-3 text-3xl font-black tracking-[-.04em] sm:text-4xl">
+              주요 연계 노선 상담
+            </h2>
+            <p className="mt-4 max-w-3xl leading-7 text-[#667085]">
+              아래 노선은 고객 제공 목록을 기준으로 한 상담 예시입니다. 실제
+              접수는 운행편, 마감 시간, 품목과 출도착 주소를 확인한 뒤
+              안내합니다.
+            </p>
+            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {service.routeIntents.map((route) => (
+                <div
+                  key={`${route.origin}-${route.destination}`}
+                  className="flex items-center gap-3 rounded-2xl border border-[#dce5f0] bg-[#f9fbfd] px-5 py-4"
+                >
+                  <Route size={18} className="shrink-0 text-[#1b4dff]" />
+                  <span className="text-sm font-black text-[#344054]">
+                    {route.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="bg-[#10243e] px-5 py-14 text-white sm:py-20">
         <div className="mx-auto max-w-[1100px]">

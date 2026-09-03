@@ -1,5 +1,6 @@
 import { getRegion } from '@/data/regions';
 import { getService } from '@/data/services';
+import { customerKeywordIntents } from '@/data/customer-keywords';
 import { phoneForRegion, telHref } from '@/lib/company';
 import type { LandingInput } from '@/lib/domain';
 
@@ -20,17 +21,31 @@ export function createLandingDefaults(
   const processSummary = service.process
     .map((step, index) => `${index + 1}. ${step.title} — ${step.body}`)
     .join(' ');
+  const heroImage =
+    region.usesDaeguPhone && service.group === 'LOCAL'
+      ? '/service-local-daegu.svg'
+      : service.image;
+  const customerAliases = customerKeywordIntents
+    .filter(
+      (intent) =>
+        intent.regionId === regionId &&
+        (intent.serviceId === serviceId ||
+          (serviceId === 'damas' && intent.serviceId === 'one-ton')),
+    )
+    .flatMap((intent) => [intent.normalizedKeyword, ...intent.aliases]);
   return {
     regionId,
     serviceId,
     primaryKeyword,
-    secondaryKeywords: [`${region.name} 화물배송`],
+    secondaryKeywords: [
+      ...new Set([`${region.name} 화물배송`, ...customerAliases]),
+    ].slice(0, 8),
     slug: `${region.slug}-${service.slug}`,
     title,
     h1: `${title} 접수 안내`,
     metaTitle: `${title} 상담 | 제이복합물류`,
     metaDescription: `${region.name} ${service.name} 상담. 출발지·도착지와 화물 정보를 확인해 접수 방법을 안내합니다. 전화 ${phone}.`,
-    heroImage: service.image,
+    heroImage,
     summary: `${region.name}에서 출발하거나 도착하는 ${service.name}을 화물 조건과 희망 시간에 맞춰 상담합니다. ${service.shortDescription}`,
     sections: [
       {
@@ -63,7 +78,7 @@ export function createLandingDefaults(
     canonical: null,
     ogTitle: `${title} | 제이복합물류`,
     ogDescription: `${region.name} ${service.name}의 취급 품목, 운송 절차와 접수 방법을 확인하세요.`,
-    ogImage: service.image,
+    ogImage: heroImage,
     redirectTo: null,
   };
 }

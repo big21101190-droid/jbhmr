@@ -14,7 +14,8 @@ export const services: Service[] = [
     description:
       '출발지와 도착지, 물품 크기와 희망 시간을 확인해 오토바이 퀵서비스 접수를 안내합니다.',
     keywords: ['퀵서비스', '오토바이퀵', '당일배송'],
-    image: '/service-freight.png',
+    image: '/service-quick.svg',
+    imageAlt: '도심 도로를 달리는 오토바이 퀵서비스 일러스트',
     contentStatus: 'CONFIRMED_BASIC',
     heroTitle: '작은 화물을 빠르게',
     heroAccent: '오토바이 퀵서비스',
@@ -73,7 +74,8 @@ export const services: Service[] = [
     description:
       '오토바이에 싣기 어려운 박스나 소형 집기를 다마스 차량으로 운송할 수 있도록 상담합니다.',
     keywords: ['다마스퀵', '다마스용달', '소형화물'],
-    image: '/service-freight.png',
+    image: '/service-damas.svg',
+    imageAlt: '소형 화물차를 활용한 다마스 배송 안내 이미지',
     contentStatus: 'CONFIRMED_BASIC',
     heroTitle: '박스와 소형 집기는',
     heroAccent: '다마스 배송',
@@ -129,6 +131,7 @@ export const services: Service[] = [
       '상하차 환경과 화물 크기·무게를 확인해 1톤 차량 운송 가능 여부와 접수 방법을 안내합니다.',
     keywords: ['1톤용달', '용달화물', '화물운송'],
     image: '/service-freight.png',
+    imageAlt: '1톤 화물차 운송 안내 이미지',
     contentStatus: 'CONFIRMED_BASIC',
     heroTitle: '자재와 큰 짐은',
     heroAccent: '1톤 용달화물',
@@ -186,7 +189,8 @@ export const services: Service[] = [
     description:
       '고속·시외버스 수화물 노선과 퀵서비스를 연결해 출발지 픽업부터 도착지 배달까지 상담합니다.',
     keywords: ['고속버스택배', '터미널택배', '도시간배송'],
-    image: '/service-ktx.jpg',
+    image: '/service-bus.png',
+    imageAlt: '터미널 연계 배송에 사용하는 고속버스 차량',
     contentStatus: 'CONFIRMED_DETAIL',
     heroTitle: '터미널 방문 없이',
     heroAccent: '고속버스택배 연계',
@@ -230,6 +234,26 @@ export const services: Service[] = [
       '노선 운행, 터미널 접수 마감과 품목 제한에 따라 당일 이용 가능 여부가 달라집니다.',
       insuranceNote,
     ],
+    routeIntents: [
+      '부산',
+      '대전',
+      '천안',
+      '청주',
+      '대구',
+      '울산',
+      '강릉',
+      '속초',
+      '포항',
+      '경주',
+      '광주',
+      '전주',
+      '목포',
+    ].map((destination) => ({
+      origin: '서울',
+      destination,
+      label: `서울–${destination} 고속버스택배`,
+      source: '메뉴구성및 키워드 (1).txt',
+    })),
     provenance: [
       {
         source: '고속버스택배&KTX택배 (고속버스택배상세).hwpx',
@@ -267,6 +291,7 @@ export const services: Service[] = [
       '이용 가능한 KTX 특송 구간과 열차 시간을 확인하고 출발지 픽업부터 도착지 배송까지 함께 안내합니다.',
     keywords: ['KTX택배', 'KTX특송', '기차택배'],
     image: '/service-ktx.jpg',
+    imageAlt: '철도역 선로에 정차한 KTX 열차',
     contentStatus: 'CONFIRMED_DETAIL',
     heroTitle: '역 앞뒤 구간까지 잇는',
     heroAccent: 'KTX택배 연계',
@@ -306,6 +331,12 @@ export const services: Service[] = [
       '특송 영업소 운영 여부, 열차 시간과 품목 제한에 따라 이용 가능 여부가 달라집니다.',
       insuranceNote,
     ],
+    routeIntents: ['부산', '대구'].map((destination) => ({
+      origin: '서울',
+      destination,
+      label: `서울–${destination} KTX택배`,
+      source: '메뉴구성및 키워드 (1).txt 메뉴 예시',
+    })),
     provenance: [
       {
         source: '고속버스택배&KTX택배 (KTX택배상세).hwpx',
@@ -342,6 +373,7 @@ export const services: Service[] = [
       '품목과 크기, 항공편과 희망 도착 일정을 확인해 공항 화물 접수와 제주 현지 배송을 연결합니다.',
     keywords: ['제주항공화물', '서울제주항공화물', '서귀포항공화물'],
     image: '/service-jeju.png',
+    imageAlt: '제주 항공화물 연계를 나타낸 항공기 안내 이미지',
     contentStatus: 'CONFIRMED_DETAIL',
     heroTitle: '육지와 제주를 빠르게 잇는',
     heroAccent: '제주 항공화물',
@@ -385,6 +417,12 @@ export const services: Service[] = [
       '기상, 항공편 운항과 품목 제한에 따라 접수·도착 일정이 변경될 수 있습니다.',
       insuranceNote,
     ],
+    routeIntents: ['제주', '서귀포'].map((destination) => ({
+      origin: '서울',
+      destination,
+      label: `서울–${destination} 항공화물`,
+      source: '메뉴구성및 키워드 (1).txt',
+    })),
     provenance: [
       {
         source: '제주(항공.선박)화물 (항공상세).hwpx',
@@ -421,7 +459,8 @@ export const services: Service[] = [
     description:
       '부피와 중량, 출항 일정에 따라 선박 운송을 검토하고 출발지 상차부터 제주 최종 하차까지 안내합니다.',
     keywords: ['제주선박화물', '서귀포선박화물', '제주화물'],
-    image: '/service-jeju.png',
+    image: '/service-jeju-sea.svg',
+    imageAlt: '컨테이너 화물선이 제주 방향 바다를 운항하는 일러스트',
     contentStatus: 'CONFIRMED_DETAIL',
     heroTitle: '크고 무거운 짐을 위한',
     heroAccent: '제주 선박화물',
@@ -505,6 +544,7 @@ export const services: Service[] = [
       '출발지, 골프장과 티오프 일정을 확인해 골프백 전담 직배송 또는 제주 항공 연계 운송을 안내합니다.',
     keywords: ['골프백배송', '캐디백배송', '골프장택배'],
     image: '/service-golf.png',
+    imageAlt: '골프백 배송 차량을 표현한 고객 제공 안내 이미지',
     contentStatus: 'CONFIRMED_DETAIL',
     heroTitle: '라운딩 전에 미리 보내는',
     heroAccent: '골프백 배송',
@@ -608,8 +648,9 @@ export const services: Service[] = [
     shortDescription: '공항·숙소 일정에 맞춰 여행 캐리어 운송을 상담합니다.',
     description:
       '출발지와 숙소 또는 공항, 짐 수량과 희망 도착 시간을 확인해 가능한 배송 방식을 안내합니다.',
-    keywords: ['캐리어배송', '여행짐배송', '공항짐배송'],
-    image: '/service-golf.png',
+    keywords: ['캐리어배송', '케리어배송', '여행짐배송', '공항짐배송'],
+    image: '/service-suitcase.svg',
+    imageAlt: '여행 캐리어와 공항 이동 경로를 표현한 일러스트',
     contentStatus: 'CONFIRMED_BASIC',
     heroTitle: '여행 동선을 가볍게',
     heroAccent: '캐리어 배송',

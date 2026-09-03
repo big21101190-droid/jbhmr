@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">여행 캐리어 배송 일러스트</title>
+  <desc id="desc">여행 캐리어와 공항, 숙소 사이의 배송 경로를 나타낸 그림</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff7e8"/>
+      <stop offset="1" stop-color="#ffe6aa"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <circle cx="955" cy="142" r="82" fill="#ffce3a"/>
+  <path d="M85 596c237-188 432-182 615-48 164 120 292 80 417-42" fill="none" stroke="#1b4dff" stroke-width="14" stroke-linecap="round" stroke-dasharray="3 28"/>
+  <g transform="translate(198 172)">
+    <path d="M155 76V32c0-18 14-32 32-32h160c18 0 32 14 32 32v44" fill="none" stroke="#10243e" stroke-width="24"/>
+    <rect x="60" y="70" width="415" height="475" rx="55" fill="#1b4dff"/>
+    <rect x="105" y="118" width="325" height="372" rx="34" fill="#78a0ff"/>
+    <path d="M177 118v372M358 118v372" stroke="#d9e7ff" stroke-width="13" opacity=".75"/>
+    <circle cx="150" cy="566" r="30" fill="#10243e"/>
+    <circle cx="385" cy="566" r="30" fill="#10243e"/>
+  </g>
+  <g transform="translate(720 255)">
+    <path d="M0 245h290v176H0z" fill="#fff"/>
+    <path d="M34 245V98h221v147" fill="#f26b3a"/>
+    <path d="M95 421v-94h100v94" fill="#10243e"/>
+    <path d="M70 154h38v47H70zM127 154h38v47h-38zM184 154h38v47h-38z" fill="#ffe6aa"/>
+    <path d="M-35 98 145 0l180 98z" fill="#10243e"/>
+  </g>
+</svg>
