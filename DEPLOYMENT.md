@@ -10,7 +10,7 @@
 - Node: 22.13 이상
 - Next.js runtime: `@netlify/plugin-nextjs` 5.15.13
 
-현재 production URL은 `https://lovely-tarsier-c21dea.netlify.app`이며, 2026-09-03 배포 `6a9905a6cce2bd0007c3b7ee`(commit `c0de46a`)에서 Next.js server handler, Netlify Form, Identity 초대/복구 콜백이 정상 배포됐습니다. 이 사이트는 제작자 계정에서 검수 중인 임시 운영 프로젝트이며, 완성 후 고객 Netlify로 인계합니다.
+현재 production URL은 `https://lovely-tarsier-c21dea.netlify.app`입니다. 이 사이트는 제작자 계정에서 검수 중인 임시 운영 프로젝트이며, 완성 후 고객 Netlify로 인계합니다. 정확한 production deploy ID와 commit SHA는 인계 직전에 Netlify와 GitHub `main`에서 다시 대조합니다.
 
 ## 로컬 확인
 

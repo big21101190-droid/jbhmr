@@ -4,10 +4,7 @@
     "regionId": "daegu-jung",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "대구 중구 퀵서비스",
-    "secondaryKeywords": [
-      "대구 중구 화물배송",
-      "대구 중구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 중구 화물배송", "대구 중구 당일배송"],
     "slug": "daegu-jung-quick-motorcycle",
     "title": "대구 중구 퀵서비스",
     "h1": "대구 중구 퀵서비스 접수 안내",
@@ -59,10 +56,7 @@
     "regionId": "daegu-jung",
     "serviceId": "damas",
     "primaryKeyword": "대구 중구 다마스퀵",
-    "secondaryKeywords": [
-      "대구 중구 화물배송",
-      "대구 중구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 중구 화물배송", "대구 중구 당일배송"],
     "slug": "daegu-jung-damas",
     "title": "대구 중구 다마스 배송",
     "h1": "대구 중구 다마스 배송 접수 안내",
@@ -114,10 +108,7 @@
     "regionId": "daegu-jung",
     "serviceId": "one-ton",
     "primaryKeyword": "대구 중구 1톤용달",
-    "secondaryKeywords": [
-      "대구 중구 화물배송",
-      "대구 중구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 중구 화물배송", "대구 중구 당일배송"],
     "slug": "daegu-jung-one-ton",
     "title": "대구 중구 1톤 용달",
     "h1": "대구 중구 1톤 용달 접수 안내",
@@ -169,10 +160,7 @@
     "regionId": "daegu-dong",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "대구 동구 퀵서비스",
-    "secondaryKeywords": [
-      "대구 동구 화물배송",
-      "대구 동구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 동구 화물배송", "대구 동구 당일배송"],
     "slug": "daegu-dong-quick-motorcycle",
     "title": "대구 동구 퀵서비스",
     "h1": "대구 동구 퀵서비스 접수 안내",
@@ -224,10 +212,7 @@
     "regionId": "daegu-dong",
     "serviceId": "damas",
     "primaryKeyword": "대구 동구 다마스퀵",
-    "secondaryKeywords": [
-      "대구 동구 화물배송",
-      "대구 동구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 동구 화물배송", "대구 동구 당일배송"],
     "slug": "daegu-dong-damas",
     "title": "대구 동구 다마스 배송",
     "h1": "대구 동구 다마스 배송 접수 안내",
@@ -279,10 +264,7 @@
     "regionId": "daegu-dong",
     "serviceId": "one-ton",
     "primaryKeyword": "대구 동구 1톤용달",
-    "secondaryKeywords": [
-      "대구 동구 화물배송",
-      "대구 동구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 동구 화물배송", "대구 동구 당일배송"],
     "slug": "daegu-dong-one-ton",
     "title": "대구 동구 1톤 용달",
     "h1": "대구 동구 1톤 용달 접수 안내",
@@ -334,10 +316,7 @@
     "regionId": "daegu-seo",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "대구 서구 퀵서비스",
-    "secondaryKeywords": [
-      "대구 서구 화물배송",
-      "대구 서구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 서구 화물배송", "대구 서구 당일배송"],
     "slug": "daegu-seo-quick-motorcycle",
     "title": "대구 서구 퀵서비스",
     "h1": "대구 서구 퀵서비스 접수 안내",
@@ -389,10 +368,7 @@
     "regionId": "daegu-seo",
     "serviceId": "damas",
     "primaryKeyword": "대구 서구 다마스퀵",
-    "secondaryKeywords": [
-      "대구 서구 화물배송",
-      "대구 서구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 서구 화물배송", "대구 서구 당일배송"],
     "slug": "daegu-seo-damas",
     "title": "대구 서구 다마스 배송",
     "h1": "대구 서구 다마스 배송 접수 안내",
@@ -444,10 +420,7 @@
     "regionId": "daegu-seo",
     "serviceId": "one-ton",
     "primaryKeyword": "대구 서구 1톤용달",
-    "secondaryKeywords": [
-      "대구 서구 화물배송",
-      "대구 서구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 서구 화물배송", "대구 서구 당일배송"],
     "slug": "daegu-seo-one-ton",
     "title": "대구 서구 1톤 용달",
     "h1": "대구 서구 1톤 용달 접수 안내",
@@ -499,10 +472,7 @@
     "regionId": "daegu-nam",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "대구 남구 퀵서비스",
-    "secondaryKeywords": [
-      "대구 남구 화물배송",
-      "대구 남구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 남구 화물배송", "대구 남구 당일배송"],
     "slug": "daegu-nam-quick-motorcycle",
     "title": "대구 남구 퀵서비스",
     "h1": "대구 남구 퀵서비스 접수 안내",
@@ -554,10 +524,7 @@
     "regionId": "daegu-nam",
     "serviceId": "damas",
     "primaryKeyword": "대구 남구 다마스퀵",
-    "secondaryKeywords": [
-      "대구 남구 화물배송",
-      "대구 남구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 남구 화물배송", "대구 남구 당일배송"],
     "slug": "daegu-nam-damas",
     "title": "대구 남구 다마스 배송",
     "h1": "대구 남구 다마스 배송 접수 안내",
@@ -609,10 +576,7 @@
     "regionId": "daegu-nam",
     "serviceId": "one-ton",
     "primaryKeyword": "대구 남구 1톤용달",
-    "secondaryKeywords": [
-      "대구 남구 화물배송",
-      "대구 남구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 남구 화물배송", "대구 남구 당일배송"],
     "slug": "daegu-nam-one-ton",
     "title": "대구 남구 1톤 용달",
     "h1": "대구 남구 1톤 용달 접수 안내",
@@ -664,10 +628,7 @@
     "regionId": "daegu-buk",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "대구 북구 퀵서비스",
-    "secondaryKeywords": [
-      "대구 북구 화물배송",
-      "대구 북구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 북구 화물배송", "대구 북구 당일배송"],
     "slug": "daegu-buk-quick-motorcycle",
     "title": "대구 북구 퀵서비스",
     "h1": "대구 북구 퀵서비스 접수 안내",
@@ -719,10 +680,7 @@
     "regionId": "daegu-buk",
     "serviceId": "damas",
     "primaryKeyword": "대구 북구 다마스퀵",
-    "secondaryKeywords": [
-      "대구 북구 화물배송",
-      "대구 북구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 북구 화물배송", "대구 북구 당일배송"],
     "slug": "daegu-buk-damas",
     "title": "대구 북구 다마스 배송",
     "h1": "대구 북구 다마스 배송 접수 안내",
@@ -774,10 +732,7 @@
     "regionId": "daegu-buk",
     "serviceId": "one-ton",
     "primaryKeyword": "대구 북구 1톤용달",
-    "secondaryKeywords": [
-      "대구 북구 화물배송",
-      "대구 북구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 북구 화물배송", "대구 북구 당일배송"],
     "slug": "daegu-buk-one-ton",
     "title": "대구 북구 1톤 용달",
     "h1": "대구 북구 1톤 용달 접수 안내",
@@ -829,10 +784,7 @@
     "regionId": "daegu-suseong",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "대구 수성구 퀵서비스",
-    "secondaryKeywords": [
-      "대구 수성구 화물배송",
-      "대구 수성구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 수성구 화물배송", "대구 수성구 당일배송"],
     "slug": "daegu-suseong-quick-motorcycle",
     "title": "대구 수성구 퀵서비스",
     "h1": "대구 수성구 퀵서비스 접수 안내",
@@ -884,10 +836,7 @@
     "regionId": "daegu-suseong",
     "serviceId": "damas",
     "primaryKeyword": "대구 수성구 다마스퀵",
-    "secondaryKeywords": [
-      "대구 수성구 화물배송",
-      "대구 수성구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 수성구 화물배송", "대구 수성구 당일배송"],
     "slug": "daegu-suseong-damas",
     "title": "대구 수성구 다마스 배송",
     "h1": "대구 수성구 다마스 배송 접수 안내",
@@ -939,10 +888,7 @@
     "regionId": "daegu-suseong",
     "serviceId": "one-ton",
     "primaryKeyword": "대구 수성구 1톤용달",
-    "secondaryKeywords": [
-      "대구 수성구 화물배송",
-      "대구 수성구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 수성구 화물배송", "대구 수성구 당일배송"],
     "slug": "daegu-suseong-one-ton",
     "title": "대구 수성구 1톤 용달",
     "h1": "대구 수성구 1톤 용달 접수 안내",
@@ -994,10 +940,7 @@
     "regionId": "daegu-dalseo",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "대구 달서구 퀵서비스",
-    "secondaryKeywords": [
-      "대구 달서구 화물배송",
-      "대구 달서구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 달서구 화물배송", "대구 달서구 당일배송"],
     "slug": "daegu-dalseo-quick-motorcycle",
     "title": "대구 달서구 퀵서비스",
     "h1": "대구 달서구 퀵서비스 접수 안내",
@@ -1049,10 +992,7 @@
     "regionId": "daegu-dalseo",
     "serviceId": "damas",
     "primaryKeyword": "대구 달서구 다마스퀵",
-    "secondaryKeywords": [
-      "대구 달서구 화물배송",
-      "대구 달서구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 달서구 화물배송", "대구 달서구 당일배송"],
     "slug": "daegu-dalseo-damas",
     "title": "대구 달서구 다마스 배송",
     "h1": "대구 달서구 다마스 배송 접수 안내",
@@ -1104,10 +1044,7 @@
     "regionId": "daegu-dalseo",
     "serviceId": "one-ton",
     "primaryKeyword": "대구 달서구 1톤용달",
-    "secondaryKeywords": [
-      "대구 달서구 화물배송",
-      "대구 달서구 당일배송"
-    ],
+    "secondaryKeywords": ["대구 달서구 화물배송", "대구 달서구 당일배송"],
     "slug": "daegu-dalseo-one-ton",
     "title": "대구 달서구 1톤 용달",
     "h1": "대구 달서구 1톤 용달 접수 안내",
@@ -1159,10 +1096,7 @@
     "regionId": "daegu-dalseong",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "대구 달성군 퀵서비스",
-    "secondaryKeywords": [
-      "대구 달성군 화물배송",
-      "대구 달성군 당일배송"
-    ],
+    "secondaryKeywords": ["대구 달성군 화물배송", "대구 달성군 당일배송"],
     "slug": "daegu-dalseong-quick-motorcycle",
     "title": "대구 달성군 퀵서비스",
     "h1": "대구 달성군 퀵서비스 접수 안내",
@@ -1174,6 +1108,10 @@
       {
         "heading": "대구 달성군에서 퀵서비스가 필요할 때",
         "body": "산업단지와 읍·면 지역 이동 거리가 긴 달성군에서는 이동 거리와 시간대, 상하차 위치에 따라 진행 조건이 달라집니다. 작은 물품을 정해진 시간 안에 전달해야 하는 업무 연락, 부품 전달, 서류 이동에 적합한지 확인합니다."
+      },
+      {
+        "heading": "달성군 논공읍 배차 안내",
+        "body": "논공읍을 포함한 달성군 구간은 정확한 주소와 화물 조건을 확인해 오토바이, 다마스, 라보, 1톤 용달부터 카고·윙바디·리프트·냉장·냉동 차량까지 필요한 차종의 배차 가능 여부를 상담합니다. 당일 또는 지정일 배차는 접수 시 확인합니다."
       },
       {
         "heading": "접수 전에 확인할 내용",
@@ -1214,10 +1152,7 @@
     "regionId": "daegu-dalseong",
     "serviceId": "damas",
     "primaryKeyword": "대구 달성군 다마스퀵",
-    "secondaryKeywords": [
-      "대구 달성군 화물배송",
-      "대구 달성군 당일배송"
-    ],
+    "secondaryKeywords": ["대구 달성군 화물배송", "대구 달성군 당일배송"],
     "slug": "daegu-dalseong-damas",
     "title": "대구 달성군 다마스 배송",
     "h1": "대구 달성군 다마스 배송 접수 안내",
@@ -1229,6 +1164,10 @@
       {
         "heading": "대구 달성군에서 다마스 배송가 필요할 때",
         "body": "산업단지와 읍·면 지역 이동 거리가 긴 달성군에서는 이동 거리와 시간대, 상하차 위치에 따라 진행 조건이 달라집니다. 박스가 여러 개이거나 높이와 부피가 있는 소형 화물을 한 번에 이동해야 할 때 검토합니다."
+      },
+      {
+        "heading": "달성군 논공읍 배차 안내",
+        "body": "논공읍을 포함한 달성군 구간은 정확한 주소와 화물 조건을 확인해 오토바이, 다마스, 라보, 1톤 용달부터 카고·윙바디·리프트·냉장·냉동 차량까지 필요한 차종의 배차 가능 여부를 상담합니다. 당일 또는 지정일 배차는 접수 시 확인합니다."
       },
       {
         "heading": "접수 전에 확인할 내용",
@@ -1269,10 +1208,7 @@
     "regionId": "daegu-dalseong",
     "serviceId": "one-ton",
     "primaryKeyword": "대구 달성군 1톤용달",
-    "secondaryKeywords": [
-      "대구 달성군 화물배송",
-      "대구 달성군 당일배송"
-    ],
+    "secondaryKeywords": ["대구 달성군 화물배송", "대구 달성군 당일배송"],
     "slug": "daegu-dalseong-one-ton",
     "title": "대구 달성군 1톤 용달",
     "h1": "대구 달성군 1톤 용달 접수 안내",
@@ -1284,6 +1220,10 @@
       {
         "heading": "대구 달성군에서 1톤 용달가 필요할 때",
         "body": "산업단지와 읍·면 지역 이동 거리가 긴 달성군에서는 이동 거리와 시간대, 상하차 위치에 따라 진행 조건이 달라집니다. 사업장 자재, 가전, 사무용 집기 등 승합 차량에 싣기 어려운 화물을 운송할 때 상담합니다."
+      },
+      {
+        "heading": "달성군 논공읍 배차 안내",
+        "body": "논공읍을 포함한 달성군 구간은 정확한 주소와 화물 조건을 확인해 오토바이, 다마스, 라보, 1톤 용달부터 카고·윙바디·리프트·냉장·냉동 차량까지 필요한 차종의 배차 가능 여부를 상담합니다. 당일 또는 지정일 배차는 접수 시 확인합니다."
       },
       {
         "heading": "접수 전에 확인할 내용",
@@ -1324,10 +1264,7 @@
     "regionId": "daegu-dasa",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "대구 다사 퀵서비스",
-    "secondaryKeywords": [
-      "대구 다사 화물배송",
-      "대구 다사 당일배송"
-    ],
+    "secondaryKeywords": ["대구 다사 화물배송", "대구 다사 당일배송"],
     "slug": "daegu-dasa-quick-motorcycle",
     "title": "대구 다사 퀵서비스",
     "h1": "대구 다사 퀵서비스 접수 안내",
@@ -1379,10 +1316,7 @@
     "regionId": "daegu-dasa",
     "serviceId": "damas",
     "primaryKeyword": "대구 다사 다마스퀵",
-    "secondaryKeywords": [
-      "대구 다사 화물배송",
-      "대구 다사 당일배송"
-    ],
+    "secondaryKeywords": ["대구 다사 화물배송", "대구 다사 당일배송"],
     "slug": "daegu-dasa-damas",
     "title": "대구 다사 다마스 배송",
     "h1": "대구 다사 다마스 배송 접수 안내",
@@ -1434,10 +1368,7 @@
     "regionId": "daegu-dasa",
     "serviceId": "one-ton",
     "primaryKeyword": "대구 다사 1톤용달",
-    "secondaryKeywords": [
-      "대구 다사 화물배송",
-      "대구 다사 당일배송"
-    ],
+    "secondaryKeywords": ["대구 다사 화물배송", "대구 다사 당일배송"],
     "slug": "daegu-dasa-one-ton",
     "title": "대구 다사 1톤 용달",
     "h1": "대구 다사 1톤 용달 접수 안내",
@@ -1489,10 +1420,7 @@
     "regionId": "daegu-seongseo",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "대구 성서 퀵서비스",
-    "secondaryKeywords": [
-      "대구 성서 화물배송",
-      "대구 성서 당일배송"
-    ],
+    "secondaryKeywords": ["대구 성서 화물배송", "대구 성서 당일배송"],
     "slug": "daegu-seongseo-quick-motorcycle",
     "title": "대구 성서 퀵서비스",
     "h1": "대구 성서 퀵서비스 접수 안내",
@@ -1544,10 +1472,7 @@
     "regionId": "daegu-seongseo",
     "serviceId": "damas",
     "primaryKeyword": "대구 성서 다마스퀵",
-    "secondaryKeywords": [
-      "대구 성서 화물배송",
-      "대구 성서 당일배송"
-    ],
+    "secondaryKeywords": ["대구 성서 화물배송", "대구 성서 당일배송"],
     "slug": "daegu-seongseo-damas",
     "title": "대구 성서 다마스 배송",
     "h1": "대구 성서 다마스 배송 접수 안내",
@@ -1599,10 +1524,7 @@
     "regionId": "daegu-seongseo",
     "serviceId": "one-ton",
     "primaryKeyword": "대구 성서 1톤용달",
-    "secondaryKeywords": [
-      "대구 성서 화물배송",
-      "대구 성서 당일배송"
-    ],
+    "secondaryKeywords": ["대구 성서 화물배송", "대구 성서 당일배송"],
     "slug": "daegu-seongseo-one-ton",
     "title": "대구 성서 1톤 용달",
     "h1": "대구 성서 1톤 용달 접수 안내",
@@ -1654,10 +1576,7 @@
     "regionId": "gyeongbuk-gyeongsan",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "경북 경산 퀵서비스",
-    "secondaryKeywords": [
-      "경북 경산 화물배송",
-      "경북 경산 당일배송"
-    ],
+    "secondaryKeywords": ["경북 경산 화물배송", "경북 경산 당일배송"],
     "slug": "gyeongbuk-gyeongsan-quick-motorcycle",
     "title": "경북 경산 퀵서비스",
     "h1": "경북 경산 퀵서비스 접수 안내",
@@ -1709,10 +1628,7 @@
     "regionId": "gyeongbuk-gyeongsan",
     "serviceId": "damas",
     "primaryKeyword": "경북 경산 다마스퀵",
-    "secondaryKeywords": [
-      "경북 경산 화물배송",
-      "경북 경산 당일배송"
-    ],
+    "secondaryKeywords": ["경북 경산 화물배송", "경북 경산 당일배송"],
     "slug": "gyeongbuk-gyeongsan-damas",
     "title": "경북 경산 다마스 배송",
     "h1": "경북 경산 다마스 배송 접수 안내",
@@ -1764,10 +1680,7 @@
     "regionId": "gyeongbuk-hayang",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "경북 하양 퀵서비스",
-    "secondaryKeywords": [
-      "경북 하양 화물배송",
-      "경북 하양 당일배송"
-    ],
+    "secondaryKeywords": ["경북 하양 화물배송", "경북 하양 당일배송"],
     "slug": "gyeongbuk-hayang-quick-motorcycle",
     "title": "경북 하양 퀵서비스",
     "h1": "경북 하양 퀵서비스 접수 안내",
@@ -1819,10 +1732,7 @@
     "regionId": "gyeongbuk-hayang",
     "serviceId": "damas",
     "primaryKeyword": "경북 하양 다마스퀵",
-    "secondaryKeywords": [
-      "경북 하양 화물배송",
-      "경북 하양 당일배송"
-    ],
+    "secondaryKeywords": ["경북 하양 화물배송", "경북 하양 당일배송"],
     "slug": "gyeongbuk-hayang-damas",
     "title": "경북 하양 다마스 배송",
     "h1": "경북 하양 다마스 배송 접수 안내",
@@ -1874,10 +1784,7 @@
     "regionId": "gyeongbuk-jillyang",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "경북 진량 퀵서비스",
-    "secondaryKeywords": [
-      "경북 진량 화물배송",
-      "경북 진량 당일배송"
-    ],
+    "secondaryKeywords": ["경북 진량 화물배송", "경북 진량 당일배송"],
     "slug": "gyeongbuk-jillyang-quick-motorcycle",
     "title": "경북 진량 퀵서비스",
     "h1": "경북 진량 퀵서비스 접수 안내",
@@ -1929,10 +1836,7 @@
     "regionId": "gyeongbuk-jillyang",
     "serviceId": "damas",
     "primaryKeyword": "경북 진량 다마스퀵",
-    "secondaryKeywords": [
-      "경북 진량 화물배송",
-      "경북 진량 당일배송"
-    ],
+    "secondaryKeywords": ["경북 진량 화물배송", "경북 진량 당일배송"],
     "slug": "gyeongbuk-jillyang-damas",
     "title": "경북 진량 다마스 배송",
     "h1": "경북 진량 다마스 배송 접수 안내",
@@ -1984,10 +1888,7 @@
     "regionId": "gyeongbuk-pohang",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "경북 포항 퀵서비스",
-    "secondaryKeywords": [
-      "경북 포항 화물배송",
-      "경북 포항 당일배송"
-    ],
+    "secondaryKeywords": ["경북 포항 화물배송", "경북 포항 당일배송"],
     "slug": "gyeongbuk-pohang-quick-motorcycle",
     "title": "경북 포항 퀵서비스",
     "h1": "경북 포항 퀵서비스 접수 안내",
@@ -2039,10 +1940,7 @@
     "regionId": "gyeongbuk-pohang",
     "serviceId": "damas",
     "primaryKeyword": "경북 포항 다마스퀵",
-    "secondaryKeywords": [
-      "경북 포항 화물배송",
-      "경북 포항 당일배송"
-    ],
+    "secondaryKeywords": ["경북 포항 화물배송", "경북 포항 당일배송"],
     "slug": "gyeongbuk-pohang-damas",
     "title": "경북 포항 다마스 배송",
     "h1": "경북 포항 다마스 배송 접수 안내",
@@ -2094,10 +1992,7 @@
     "regionId": "gyeongbuk-gyeongju",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "경북 경주 퀵서비스",
-    "secondaryKeywords": [
-      "경북 경주 화물배송",
-      "경북 경주 당일배송"
-    ],
+    "secondaryKeywords": ["경북 경주 화물배송", "경북 경주 당일배송"],
     "slug": "gyeongbuk-gyeongju-quick-motorcycle",
     "title": "경북 경주 퀵서비스",
     "h1": "경북 경주 퀵서비스 접수 안내",
@@ -2149,10 +2044,7 @@
     "regionId": "gyeongbuk-gyeongju",
     "serviceId": "damas",
     "primaryKeyword": "경북 경주 다마스퀵",
-    "secondaryKeywords": [
-      "경북 경주 화물배송",
-      "경북 경주 당일배송"
-    ],
+    "secondaryKeywords": ["경북 경주 화물배송", "경북 경주 당일배송"],
     "slug": "gyeongbuk-gyeongju-damas",
     "title": "경북 경주 다마스 배송",
     "h1": "경북 경주 다마스 배송 접수 안내",
@@ -2204,10 +2096,7 @@
     "regionId": "gyeongbuk-gumi",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "경북 구미 퀵서비스",
-    "secondaryKeywords": [
-      "경북 구미 화물배송",
-      "경북 구미 당일배송"
-    ],
+    "secondaryKeywords": ["경북 구미 화물배송", "경북 구미 당일배송"],
     "slug": "gyeongbuk-gumi-quick-motorcycle",
     "title": "경북 구미 퀵서비스",
     "h1": "경북 구미 퀵서비스 접수 안내",
@@ -2259,10 +2148,7 @@
     "regionId": "gyeongbuk-gumi",
     "serviceId": "damas",
     "primaryKeyword": "경북 구미 다마스퀵",
-    "secondaryKeywords": [
-      "경북 구미 화물배송",
-      "경북 구미 당일배송"
-    ],
+    "secondaryKeywords": ["경북 구미 화물배송", "경북 구미 당일배송"],
     "slug": "gyeongbuk-gumi-damas",
     "title": "경북 구미 다마스 배송",
     "h1": "경북 구미 다마스 배송 접수 안내",
@@ -2314,10 +2200,7 @@
     "regionId": "gyeongbuk-andong",
     "serviceId": "quick-motorcycle",
     "primaryKeyword": "경북 안동 퀵서비스",
-    "secondaryKeywords": [
-      "경북 안동 화물배송",
-      "경북 안동 당일배송"
-    ],
+    "secondaryKeywords": ["경북 안동 화물배송", "경북 안동 당일배송"],
     "slug": "gyeongbuk-andong-quick-motorcycle",
     "title": "경북 안동 퀵서비스",
     "h1": "경북 안동 퀵서비스 접수 안내",
@@ -2369,10 +2252,7 @@
     "regionId": "gyeongbuk-andong",
     "serviceId": "damas",
     "primaryKeyword": "경북 안동 다마스퀵",
-    "secondaryKeywords": [
-      "경북 안동 화물배송",
-      "경북 안동 당일배송"
-    ],
+    "secondaryKeywords": ["경북 안동 화물배송", "경북 안동 당일배송"],
     "slug": "gyeongbuk-andong-damas",
     "title": "경북 안동 다마스 배송",
     "h1": "경북 안동 다마스 배송 접수 안내",
@@ -2424,10 +2304,7 @@
     "regionId": "seoul-gangnam",
     "serviceId": "express-bus",
     "primaryKeyword": "서울 강남구 고속버스택배",
-    "secondaryKeywords": [
-      "서울 강남구 화물배송",
-      "서울 강남구 당일배송"
-    ],
+    "secondaryKeywords": ["서울 강남구 화물배송", "서울 강남구 당일배송"],
     "slug": "seoul-gangnam-express-bus",
     "title": "서울 강남구 고속버스택배",
     "h1": "서울 강남구 고속버스택배 접수 안내",
@@ -2439,6 +2316,10 @@
       {
         "heading": "서울 강남구에서 고속버스택배가 필요할 때",
         "body": "업무시설과 상업 지역 간 긴급 이동이 잦은 강남구에서는 이동 거리와 시간대, 상하차 위치에 따라 진행 조건이 달라집니다. 도시 간 정기 노선을 이용할 수 있는 소형 화물과 긴급 물품의 터미널 연계를 검토합니다."
+      },
+      {
+        "heading": "고속버스택배 운송 방식",
+        "body": "출발지 픽업, 고속·시외버스 터미널 수화물 접수, 도착 터미널 인수와 최종 배송을 연결합니다. 이용 가능 여부는 버스 노선, 접수 마감과 품목 제한을 확인한 뒤 안내합니다."
       },
       {
         "heading": "접수 전에 확인할 내용",
@@ -2457,6 +2338,10 @@
       {
         "question": "고속버스택배 비용은 어떻게 확인하나요?",
         "answer": "이동 거리, 화물 크기와 무게, 상하차 조건, 희망 시간에 따라 달라지므로 전화 상담 후 안내합니다."
+      },
+      {
+        "question": "터미널에 직접 가야 하나요?",
+        "answer": "출발지 픽업과 도착 터미널 인수 후 최종 배송까지 연계할 수 있습니다. 실제 주소와 운행편을 확인해 안내합니다."
       }
     ],
     "ctaLabel": "서울 강남구 접수 1661-0122",
@@ -2479,10 +2364,7 @@
     "regionId": "busan-busanjin",
     "serviceId": "express-bus",
     "primaryKeyword": "부산 부산진구 고속버스택배",
-    "secondaryKeywords": [
-      "부산 부산진구 화물배송",
-      "부산 부산진구 당일배송"
-    ],
+    "secondaryKeywords": ["부산 부산진구 화물배송", "부산 부산진구 당일배송"],
     "slug": "busan-busanjin-express-bus",
     "title": "부산 부산진구 고속버스택배",
     "h1": "부산 부산진구 고속버스택배 접수 안내",
@@ -2494,6 +2376,10 @@
       {
         "heading": "부산 부산진구에서 고속버스택배가 필요할 때",
         "body": "부산 도심 교통과 터미널 접근을 함께 고려하는 부산진구에서는 이동 거리와 시간대, 상하차 위치에 따라 진행 조건이 달라집니다. 도시 간 정기 노선을 이용할 수 있는 소형 화물과 긴급 물품의 터미널 연계를 검토합니다."
+      },
+      {
+        "heading": "고속버스택배 운송 방식",
+        "body": "출발지 픽업, 고속·시외버스 터미널 수화물 접수, 도착 터미널 인수와 최종 배송을 연결합니다. 이용 가능 여부는 버스 노선, 접수 마감과 품목 제한을 확인한 뒤 안내합니다."
       },
       {
         "heading": "접수 전에 확인할 내용",
@@ -2512,6 +2398,10 @@
       {
         "question": "고속버스택배 비용은 어떻게 확인하나요?",
         "answer": "이동 거리, 화물 크기와 무게, 상하차 조건, 희망 시간에 따라 달라지므로 전화 상담 후 안내합니다."
+      },
+      {
+        "question": "터미널에 직접 가야 하나요?",
+        "answer": "출발지 픽업과 도착 터미널 인수 후 최종 배송까지 연계할 수 있습니다. 실제 주소와 운행편을 확인해 안내합니다."
       }
     ],
     "ctaLabel": "부산 부산진구 접수 1661-0122",
@@ -2534,10 +2424,7 @@
     "regionId": "daejeon-yuseong",
     "serviceId": "ktx",
     "primaryKeyword": "대전 유성구 KTX택배",
-    "secondaryKeywords": [
-      "대전 유성구 화물배송",
-      "대전 유성구 당일배송"
-    ],
+    "secondaryKeywords": ["대전 유성구 화물배송", "대전 유성구 당일배송"],
     "slug": "daejeon-yuseong-ktx",
     "title": "대전 유성구 KTX택배",
     "h1": "대전 유성구 KTX택배 접수 안내",
@@ -2549,6 +2436,10 @@
       {
         "heading": "대전 유성구에서 KTX택배가 필요할 때",
         "body": "연구·산업 시설과 대전역 연계를 함께 검토하는 유성구에서는 이동 거리와 시간대, 상하차 위치에 따라 진행 조건이 달라집니다. 역을 이용할 수 있는 긴급 서류와 소형 물품의 도시 간 이동이 필요한 경우 검토합니다."
+      },
+      {
+        "heading": "KTX택배 운송 방식",
+        "body": "출발지 픽업, KTX 특송 영업소 접수, 도착역 인수와 최종 배송을 연결합니다. 영업소 운영 여부, 열차 시간과 품목 제한을 먼저 확인합니다."
       },
       {
         "heading": "접수 전에 확인할 내용",
@@ -2567,6 +2458,10 @@
       {
         "question": "KTX택배 비용은 어떻게 확인하나요?",
         "answer": "이동 거리, 화물 크기와 무게, 상하차 조건, 희망 시간에 따라 달라지므로 전화 상담 후 안내합니다."
+      },
+      {
+        "question": "KTX역까지 직접 가야 하나요?",
+        "answer": "출발지 픽업과 도착역 인수 후 최종 배송을 함께 상담할 수 있습니다. 특송 영업소 운영 여부를 먼저 확인합니다."
       }
     ],
     "ctaLabel": "대전 유성구 접수 1661-0122",
@@ -2589,10 +2484,7 @@
     "regionId": "jeju-jeju-city",
     "serviceId": "jeju-air",
     "primaryKeyword": "제주 제주시 제주항공화물",
-    "secondaryKeywords": [
-      "제주 제주시 화물배송",
-      "제주 제주시 당일배송"
-    ],
+    "secondaryKeywords": ["제주 제주시 화물배송", "제주 제주시 당일배송"],
     "slug": "jeju-jeju-city-jeju-air",
     "title": "제주 제주시 제주 항공화물",
     "h1": "제주 제주시 제주 항공화물 접수 안내",
@@ -2604,6 +2496,10 @@
       {
         "heading": "제주 제주시에서 제주 항공화물가 필요할 때",
         "body": "공항과 제주시 생활권의 출도착 연결이 필요한 제주시에서는 이동 거리와 시간대, 상하차 위치에 따라 진행 조건이 달라집니다. 항공 운송이 가능한 긴급 화물과 일정이 정해진 물품의 제주 이동을 검토합니다."
+      },
+      {
+        "heading": "제주 항공화물 운송 방식",
+        "body": "전국 출발지 픽업, 국내선 항공 화물 접수, 제주공항 인수와 제주 현지 배송을 양방향으로 연결합니다. 기상과 항공편에 따라 일정이 변경될 수 있습니다."
       },
       {
         "heading": "접수 전에 확인할 내용",
@@ -2622,6 +2518,10 @@
       {
         "question": "제주 항공화물 비용은 어떻게 확인하나요?",
         "answer": "이동 거리, 화물 크기와 무게, 상하차 조건, 희망 시간에 따라 달라지므로 전화 상담 후 안내합니다."
+      },
+      {
+        "question": "제주 숙소나 골프장까지 연결되나요?",
+        "answer": "제주공항 인수 후 숙소나 골프장 등 지정 주소까지 현지 배송을 상담할 수 있습니다."
       }
     ],
     "ctaLabel": "제주 제주시 접수 1661-0122",
@@ -2644,10 +2544,7 @@
     "regionId": "jeju-seogwipo",
     "serviceId": "jeju-sea",
     "primaryKeyword": "제주 서귀포시 제주선박화물",
-    "secondaryKeywords": [
-      "제주 서귀포시 화물배송",
-      "제주 서귀포시 당일배송"
-    ],
+    "secondaryKeywords": ["제주 서귀포시 화물배송", "제주 서귀포시 당일배송"],
     "slug": "jeju-seogwipo-jeju-sea",
     "title": "제주 서귀포시 제주 선박화물",
     "h1": "제주 서귀포시 제주 선박화물 접수 안내",
@@ -2659,6 +2556,10 @@
       {
         "heading": "제주 서귀포시에서 제주 선박화물가 필요할 때",
         "body": "제주 남부권까지 내륙 탁송 일정을 함께 봐야 하는 서귀포시에서는 이동 거리와 시간대, 상하차 위치에 따라 진행 조건이 달라집니다. 항공보다 부피가 크거나 일정에 여유가 있는 화물의 제주 이동 방법을 검토합니다."
+      },
+      {
+        "heading": "제주 선박화물 운송 방식",
+        "body": "내륙 화물차 상차, 항만 선적, 제주항 인수와 제주 현지 하차를 연결합니다. 출항 일정과 기상, 품목 규정을 확인한 뒤 운송일을 안내합니다."
       },
       {
         "heading": "접수 전에 확인할 내용",
@@ -2677,6 +2578,10 @@
       {
         "question": "제주 선박화물 비용은 어떻게 확인하나요?",
         "answer": "이동 거리, 화물 크기와 무게, 상하차 조건, 희망 시간에 따라 달라지므로 전화 상담 후 안내합니다."
+      },
+      {
+        "question": "항구까지 직접 보내야 하나요?",
+        "answer": "출발지 상차부터 항만 선적과 제주 현지 배송까지 연계 상담할 수 있습니다."
       }
     ],
     "ctaLabel": "제주 서귀포시 접수 1661-0122",
@@ -2699,10 +2604,7 @@
     "regionId": "gyeonggi-yongin",
     "serviceId": "golf-bag",
     "primaryKeyword": "경기 용인 골프백배송",
-    "secondaryKeywords": [
-      "경기 용인 화물배송",
-      "경기 용인 당일배송"
-    ],
+    "secondaryKeywords": ["경기 용인 화물배송", "경기 용인 당일배송"],
     "slug": "gyeonggi-yongin-golf-bag",
     "title": "경기 용인 골프백 배송",
     "h1": "경기 용인 골프백 배송 접수 안내",
@@ -2714,6 +2616,10 @@
       {
         "heading": "경기 용인에서 골프백 배송가 필요할 때",
         "body": "여러 골프장과 수도권 생활권이 연결되는 용인에서는 이동 거리와 시간대, 상하차 위치에 따라 진행 조건이 달라집니다. 이동 중 무거운 장비를 직접 들고 다니지 않도록 일정에 앞서 골프백 배송을 검토합니다."
+      },
+      {
+        "heading": "골프백 배송 운송 방식",
+        "body": "내륙은 다마스·라보 전담 차량으로 자택과 골프장을 연결하고, 제주 구간은 항공편과 현지 배송을 상담합니다. 안내 편도 운임은 수도권 출발 충청 10만원, 경북 10만~13만원, 경남 13만~15만원, 전북 12만~15만원, 전남·강원 13만~17만원이며 제주 15만~20만원, 서귀포 17만~22만원입니다. 수량과 추가 수하물 조건에 따라 최종 금액을 확인합니다."
       },
       {
         "heading": "접수 전에 확인할 내용",
@@ -2732,6 +2638,10 @@
       {
         "question": "골프백 배송 비용은 어떻게 확인하나요?",
         "answer": "이동 거리, 화물 크기와 무게, 상하차 조건, 희망 시간에 따라 달라지므로 전화 상담 후 안내합니다."
+      },
+      {
+        "question": "여러 개의 골프백을 함께 보낼 수 있나요?",
+        "answer": "차량 적재 범위 안에서 함께 보낼 수 있습니다. 골프백과 보스턴백 수량을 모두 알려주시면 운임을 확인합니다."
       }
     ],
     "ctaLabel": "경기 용인 접수 1661-0122",

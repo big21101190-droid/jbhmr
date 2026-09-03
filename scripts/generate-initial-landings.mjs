@@ -11,15 +11,27 @@ const daegu = [
   ['daegu-seo', '대구 서구', '산업단지와 상업 지역이 함께 있는 서구'],
   ['daegu-nam', '대구 남구', '주거지와 의료·교육 시설이 연결된 남구'],
   ['daegu-buk', '대구 북구', '유통단지와 도심 생활권이 넓게 형성된 북구'],
-  ['daegu-suseong', '대구 수성구', '업무·주거 지역과 생활 편의시설이 모인 수성구'],
+  [
+    'daegu-suseong',
+    '대구 수성구',
+    '업무·주거 지역과 생활 편의시설이 모인 수성구',
+  ],
   ['daegu-dalseo', '대구 달서구', '성서산업단지와 대규모 주거권이 있는 달서구'],
-  ['daegu-dalseong', '대구 달성군', '산업단지와 읍·면 지역 이동 거리가 긴 달성군'],
+  [
+    'daegu-dalseong',
+    '대구 달성군',
+    '산업단지와 읍·면 지역 이동 거리가 긴 달성군',
+  ],
   ['daegu-dasa', '대구 다사', '대구 서북부 생활권과 성서 지역이 가까운 다사'],
   ['daegu-seongseo', '대구 성서', '산업 현장과 사업체 물류 수요가 많은 성서'],
 ];
 
 const gyeongbuk = [
-  ['gyeongbuk-gyeongsan', '경북 경산', '대구 생활권과 산업·대학가가 이어지는 경산'],
+  [
+    'gyeongbuk-gyeongsan',
+    '경북 경산',
+    '대구 생활권과 산업·대학가가 이어지는 경산',
+  ],
   ['gyeongbuk-hayang', '경북 하양', '대학가와 주거·산업 지역이 연결되는 하양'],
   ['gyeongbuk-jillyang', '경북 진량', '산업단지와 주변 사업장이 분포한 진량'],
   ['gyeongbuk-pohang', '경북 포항', '산업 물류와 해안 생활권이 넓은 포항'],
@@ -30,64 +42,183 @@ const gyeongbuk = [
 
 const services = {
   'quick-motorcycle': {
-    name: '퀵서비스', image: '/service-freight.png', keyword: '퀵서비스',
-    summary: '서류, 샘플과 소형 물품을 보낼 때 출발지와 도착지를 확인해 오토바이 퀵 접수를 안내합니다.',
+    name: '퀵서비스',
+    image: '/service-freight.png',
+    keyword: '퀵서비스',
+    summary:
+      '서류, 샘플과 소형 물품을 보낼 때 출발지와 도착지를 확인해 오토바이 퀵 접수를 안내합니다.',
     use: '작은 물품을 정해진 시간 안에 전달해야 하는 업무 연락, 부품 전달, 서류 이동에 적합한지 확인합니다.',
-    check: '포장 상태와 물품 크기, 수령 가능 시간을 알려주시면 이동 구간에 맞춰 상담할 수 있습니다.',
+    check:
+      '포장 상태와 물품 크기, 수령 가능 시간을 알려주시면 이동 구간에 맞춰 상담할 수 있습니다.',
   },
   damas: {
-    name: '다마스 배송', image: '/service-freight.png', keyword: '다마스퀵',
-    summary: '오토바이에 싣기 어려운 박스와 소형 집기는 수량과 크기를 확인해 다마스 차량을 상담합니다.',
+    name: '다마스 배송',
+    image: '/service-freight.png',
+    keyword: '다마스퀵',
+    summary:
+      '오토바이에 싣기 어려운 박스와 소형 집기는 수량과 크기를 확인해 다마스 차량을 상담합니다.',
     use: '박스가 여러 개이거나 높이와 부피가 있는 소형 화물을 한 번에 이동해야 할 때 검토합니다.',
-    check: '가장 큰 물품의 가로·세로·높이와 전체 수량을 알려주시면 차량 적재 가능 여부 확인이 빠릅니다.',
+    check:
+      '가장 큰 물품의 가로·세로·높이와 전체 수량을 알려주시면 차량 적재 가능 여부 확인이 빠릅니다.',
   },
   'one-ton': {
-    name: '1톤 용달', image: '/service-freight.png', keyword: '1톤용달',
-    summary: '자재와 집기처럼 크고 무거운 화물은 상하차 조건을 함께 확인해 1톤 차량을 안내합니다.',
+    name: '1톤 용달',
+    image: '/service-freight.png',
+    keyword: '1톤용달',
+    summary:
+      '자재와 집기처럼 크고 무거운 화물은 상하차 조건을 함께 확인해 1톤 차량을 안내합니다.',
     use: '사업장 자재, 가전, 사무용 집기 등 승합 차량에 싣기 어려운 화물을 운송할 때 상담합니다.',
-    check: '총중량, 가장 큰 물품 크기, 엘리베이터와 지게차 사용 여부를 접수 전에 확인합니다.',
+    check:
+      '총중량, 가장 큰 물품 크기, 엘리베이터와 지게차 사용 여부를 접수 전에 확인합니다.',
   },
   'express-bus': {
-    name: '고속버스택배', image: '/service-ktx.jpg', keyword: '고속버스택배',
-    summary: '주요 도시 터미널 노선과 접수 마감 시간을 확인해 당일 도시 간 화물 이동을 상담합니다.',
+    name: '고속버스택배',
+    image: '/service-ktx.jpg',
+    keyword: '고속버스택배',
+    summary:
+      '주요 도시 터미널 노선과 접수 마감 시간을 확인해 당일 도시 간 화물 이동을 상담합니다.',
     use: '도시 간 정기 노선을 이용할 수 있는 소형 화물과 긴급 물품의 터미널 연계를 검토합니다.',
-    check: '출발·도착 터미널과 희망 수령 시간, 앞뒤 구간 퀵 연계 필요 여부를 확인합니다.',
+    check:
+      '출발·도착 터미널과 희망 수령 시간, 앞뒤 구간 퀵 연계 필요 여부를 확인합니다.',
+    detail:
+      '출발지 픽업, 고속·시외버스 터미널 수화물 접수, 도착 터미널 인수와 최종 배송을 연결합니다. 이용 가능 여부는 버스 노선, 접수 마감과 품목 제한을 확인한 뒤 안내합니다.',
+    faq: {
+      question: '터미널에 직접 가야 하나요?',
+      answer:
+        '출발지 픽업과 도착 터미널 인수 후 최종 배송까지 연계할 수 있습니다. 실제 주소와 운행편을 확인해 안내합니다.',
+    },
   },
   ktx: {
-    name: 'KTX택배', image: '/service-ktx.jpg', keyword: 'KTX택배',
-    summary: '이용 가능한 철도 구간과 열차 시간을 확인하고 역 앞뒤 구간을 포함한 배송을 상담합니다.',
+    name: 'KTX택배',
+    image: '/service-ktx.jpg',
+    keyword: 'KTX택배',
+    summary:
+      '이용 가능한 철도 구간과 열차 시간을 확인하고 역 앞뒤 구간을 포함한 배송을 상담합니다.',
     use: '역을 이용할 수 있는 긴급 서류와 소형 물품의 도시 간 이동이 필요한 경우 검토합니다.',
-    check: '열차 운행과 접수 가능 여부가 달라질 수 있어 품목과 희망 시간을 먼저 확인합니다.',
+    check:
+      '열차 운행과 접수 가능 여부가 달라질 수 있어 품목과 희망 시간을 먼저 확인합니다.',
+    detail:
+      '출발지 픽업, KTX 특송 영업소 접수, 도착역 인수와 최종 배송을 연결합니다. 영업소 운영 여부, 열차 시간과 품목 제한을 먼저 확인합니다.',
+    faq: {
+      question: 'KTX역까지 직접 가야 하나요?',
+      answer:
+        '출발지 픽업과 도착역 인수 후 최종 배송을 함께 상담할 수 있습니다. 특송 영업소 운영 여부를 먼저 확인합니다.',
+    },
   },
   'jeju-air': {
-    name: '제주 항공화물', image: '/service-jeju.png', keyword: '제주항공화물',
-    summary: '품목과 크기, 희망 도착 일정에 따라 제주행 항공화물과 지역 탁송 연계를 상담합니다.',
+    name: '제주 항공화물',
+    image: '/service-jeju.png',
+    keyword: '제주항공화물',
+    summary:
+      '품목과 크기, 희망 도착 일정에 따라 제주행 항공화물과 지역 탁송 연계를 상담합니다.',
     use: '항공 운송이 가능한 긴급 화물과 일정이 정해진 물품의 제주 이동을 검토합니다.',
-    check: '항공 제한 품목과 포장 상태, 출발 공항 전후 운송 구간을 접수 전에 확인합니다.',
+    check:
+      '항공 제한 품목과 포장 상태, 출발 공항 전후 운송 구간을 접수 전에 확인합니다.',
+    detail:
+      '전국 출발지 픽업, 국내선 항공 화물 접수, 제주공항 인수와 제주 현지 배송을 양방향으로 연결합니다. 기상과 항공편에 따라 일정이 변경될 수 있습니다.',
+    faq: {
+      question: '제주 숙소나 골프장까지 연결되나요?',
+      answer:
+        '제주공항 인수 후 숙소나 골프장 등 지정 주소까지 현지 배송을 상담할 수 있습니다.',
+    },
   },
   'jeju-sea': {
-    name: '제주 선박화물', image: '/service-jeju.png', keyword: '제주선박화물',
-    summary: '부피와 중량, 선박 일정을 기준으로 제주·서귀포 방향 화물 운송을 상담합니다.',
+    name: '제주 선박화물',
+    image: '/service-jeju.png',
+    keyword: '제주선박화물',
+    summary:
+      '부피와 중량, 선박 일정을 기준으로 제주·서귀포 방향 화물 운송을 상담합니다.',
     use: '항공보다 부피가 크거나 일정에 여유가 있는 화물의 제주 이동 방법을 검토합니다.',
-    check: '품목, 전체 크기와 무게, 희망 도착일을 바탕으로 운항 일정과 탁송 구간을 확인합니다.',
+    check:
+      '품목, 전체 크기와 무게, 희망 도착일을 바탕으로 운항 일정과 탁송 구간을 확인합니다.',
+    detail:
+      '내륙 화물차 상차, 항만 선적, 제주항 인수와 제주 현지 하차를 연결합니다. 출항 일정과 기상, 품목 규정을 확인한 뒤 운송일을 안내합니다.',
+    faq: {
+      question: '항구까지 직접 보내야 하나요?',
+      answer:
+        '출발지 상차부터 항만 선적과 제주 현지 배송까지 연계 상담할 수 있습니다.',
+    },
   },
   'golf-bag': {
-    name: '골프백 배송', image: '/service-golf.png', keyword: '골프백배송',
-    summary: '골프장 또는 숙소 이용일에 맞춰 골프백과 캐디백의 출발·도착 일정을 상담합니다.',
+    name: '골프백 배송',
+    image: '/service-golf.png',
+    keyword: '골프백배송',
+    summary:
+      '골프장 또는 숙소 이용일에 맞춰 골프백과 캐디백의 출발·도착 일정을 상담합니다.',
     use: '이동 중 무거운 장비를 직접 들고 다니지 않도록 일정에 앞서 골프백 배송을 검토합니다.',
-    check: '이용일, 수량, 출발지와 정확한 수령 장소를 알려주시면 필요한 기간을 안내합니다.',
+    check:
+      '이용일, 수량, 출발지와 정확한 수령 장소를 알려주시면 필요한 기간을 안내합니다.',
+    detail:
+      '내륙은 다마스·라보 전담 차량으로 자택과 골프장을 연결하고, 제주 구간은 항공편과 현지 배송을 상담합니다. 안내 편도 운임은 수도권 출발 충청 10만원, 경북 10만~13만원, 경남 13만~15만원, 전북 12만~15만원, 전남·강원 13만~17만원이며 제주 15만~20만원, 서귀포 17만~22만원입니다. 수량과 추가 수하물 조건에 따라 최종 금액을 확인합니다.',
+    faq: {
+      question: '여러 개의 골프백을 함께 보낼 수 있나요?',
+      answer:
+        '차량 적재 범위 안에서 함께 보낼 수 있습니다. 골프백과 보스턴백 수량을 모두 알려주시면 운임을 확인합니다.',
+    },
   },
 };
 
 const combinations = [
-  ...daegu.flatMap(([regionId, regionName, note]) => ['quick-motorcycle', 'damas', 'one-ton'].map((serviceId) => ({ regionId, regionName, note, serviceId, phone: '053-955-2005' }))),
-  ...gyeongbuk.flatMap(([regionId, regionName, note]) => ['quick-motorcycle', 'damas'].map((serviceId) => ({ regionId, regionName, note, serviceId, phone: '1661-0122' }))),
-  { regionId: 'seoul-gangnam', regionName: '서울 강남구', note: '업무시설과 상업 지역 간 긴급 이동이 잦은 강남구', serviceId: 'express-bus', phone: '1661-0122' },
-  { regionId: 'busan-busanjin', regionName: '부산 부산진구', note: '부산 도심 교통과 터미널 접근을 함께 고려하는 부산진구', serviceId: 'express-bus', phone: '1661-0122' },
-  { regionId: 'daejeon-yuseong', regionName: '대전 유성구', note: '연구·산업 시설과 대전역 연계를 함께 검토하는 유성구', serviceId: 'ktx', phone: '1661-0122' },
-  { regionId: 'jeju-jeju-city', regionName: '제주 제주시', note: '공항과 제주시 생활권의 출도착 연결이 필요한 제주시', serviceId: 'jeju-air', phone: '1661-0122' },
-  { regionId: 'jeju-seogwipo', regionName: '제주 서귀포시', note: '제주 남부권까지 내륙 탁송 일정을 함께 봐야 하는 서귀포시', serviceId: 'jeju-sea', phone: '1661-0122' },
-  { regionId: 'gyeonggi-yongin', regionName: '경기 용인', note: '여러 골프장과 수도권 생활권이 연결되는 용인', serviceId: 'golf-bag', phone: '1661-0122' },
+  ...daegu.flatMap(([regionId, regionName, note]) =>
+    ['quick-motorcycle', 'damas', 'one-ton'].map((serviceId) => ({
+      regionId,
+      regionName,
+      note,
+      serviceId,
+      phone: '053-955-2005',
+    })),
+  ),
+  ...gyeongbuk.flatMap(([regionId, regionName, note]) =>
+    ['quick-motorcycle', 'damas'].map((serviceId) => ({
+      regionId,
+      regionName,
+      note,
+      serviceId,
+      phone: '1661-0122',
+    })),
+  ),
+  {
+    regionId: 'seoul-gangnam',
+    regionName: '서울 강남구',
+    note: '업무시설과 상업 지역 간 긴급 이동이 잦은 강남구',
+    serviceId: 'express-bus',
+    phone: '1661-0122',
+  },
+  {
+    regionId: 'busan-busanjin',
+    regionName: '부산 부산진구',
+    note: '부산 도심 교통과 터미널 접근을 함께 고려하는 부산진구',
+    serviceId: 'express-bus',
+    phone: '1661-0122',
+  },
+  {
+    regionId: 'daejeon-yuseong',
+    regionName: '대전 유성구',
+    note: '연구·산업 시설과 대전역 연계를 함께 검토하는 유성구',
+    serviceId: 'ktx',
+    phone: '1661-0122',
+  },
+  {
+    regionId: 'jeju-jeju-city',
+    regionName: '제주 제주시',
+    note: '공항과 제주시 생활권의 출도착 연결이 필요한 제주시',
+    serviceId: 'jeju-air',
+    phone: '1661-0122',
+  },
+  {
+    regionId: 'jeju-seogwipo',
+    regionName: '제주 서귀포시',
+    note: '제주 남부권까지 내륙 탁송 일정을 함께 봐야 하는 서귀포시',
+    serviceId: 'jeju-sea',
+    phone: '1661-0122',
+  },
+  {
+    regionId: 'gyeonggi-yongin',
+    regionName: '경기 용인',
+    note: '여러 골프장과 수도권 생활권이 연결되는 용인',
+    serviceId: 'golf-bag',
+    phone: '1661-0122',
+  },
 ];
 
 const variantIntros = [
@@ -104,12 +235,27 @@ const landings = combinations.map((item, index) => {
   const keyword = `${item.regionName} ${service.keyword}`;
   const title = `${item.regionName} ${service.name}`;
   const summary = `${item.note}에서 ${service.summary} ${variantIntros[index % variantIntros.length]}`;
+  const serviceDetail = service.detail
+    ? [{ heading: `${service.name} 운송 방식`, body: service.detail }]
+    : [];
+  const nongongDetail =
+    item.regionId === 'daegu-dalseong'
+      ? [
+          {
+            heading: '달성군 논공읍 배차 안내',
+            body: '논공읍을 포함한 달성군 구간은 정확한 주소와 화물 조건을 확인해 오토바이, 다마스, 라보, 1톤 용달부터 카고·윙바디·리프트·냉장·냉동 차량까지 필요한 차종의 배차 가능 여부를 상담합니다. 당일 또는 지정일 배차는 접수 시 확인합니다.',
+          },
+        ]
+      : [];
   return {
     id: `initial-${String(index + 1).padStart(3, '0')}`,
     regionId: item.regionId,
     serviceId: item.serviceId,
     primaryKeyword: keyword,
-    secondaryKeywords: [`${item.regionName} 화물배송`, `${item.regionName} 당일배송`],
+    secondaryKeywords: [
+      `${item.regionName} 화물배송`,
+      `${item.regionName} 당일배송`,
+    ],
     slug,
     title,
     h1: `${title} 접수 안내`,
@@ -118,13 +264,32 @@ const landings = combinations.map((item, index) => {
     heroImage: service.image,
     summary,
     sections: [
-      { heading: `${item.regionName}에서 ${service.name}가 필요할 때`, body: `${item.note}에서는 이동 거리와 시간대, 상하차 위치에 따라 진행 조건이 달라집니다. ${service.use}` },
-      { heading: '접수 전에 확인할 내용', body: `${service.check} ${variantIntros[(index + 2) % variantIntros.length]}` },
-      { heading: '출발지부터 도착지까지 상담', body: `제이복합물류는 ${item.regionName} 출발과 도착 요청을 모두 상담합니다. 주소, 품목, 수량과 희망 시간을 전화로 알려주시면 확인 가능한 운송 방법을 안내합니다.` },
+      {
+        heading: `${item.regionName}에서 ${service.name}가 필요할 때`,
+        body: `${item.note}에서는 이동 거리와 시간대, 상하차 위치에 따라 진행 조건이 달라집니다. ${service.use}`,
+      },
+      ...serviceDetail,
+      ...nongongDetail,
+      {
+        heading: '접수 전에 확인할 내용',
+        body: `${service.check} ${variantIntros[(index + 2) % variantIntros.length]}`,
+      },
+      {
+        heading: '출발지부터 도착지까지 상담',
+        body: `제이복합물류는 ${item.regionName} 출발과 도착 요청을 모두 상담합니다. 주소, 품목, 수량과 희망 시간을 전화로 알려주시면 확인 가능한 운송 방법을 안내합니다.`,
+      },
     ],
     faq: [
-      { question: `${item.regionName}에서 바로 접수할 수 있나요?`, answer: `네. ${item.phone}로 출발지와 도착지, 물품 정보를 알려주시면 ${item.regionName} 구간을 확인해 안내합니다.` },
-      { question: `${service.name} 비용은 어떻게 확인하나요?`, answer: '이동 거리, 화물 크기와 무게, 상하차 조건, 희망 시간에 따라 달라지므로 전화 상담 후 안내합니다.' },
+      {
+        question: `${item.regionName}에서 바로 접수할 수 있나요?`,
+        answer: `네. ${item.phone}로 출발지와 도착지, 물품 정보를 알려주시면 ${item.regionName} 구간을 확인해 안내합니다.`,
+      },
+      {
+        question: `${service.name} 비용은 어떻게 확인하나요?`,
+        answer:
+          '이동 거리, 화물 크기와 무게, 상하차 조건, 희망 시간에 따라 달라지므로 전화 상담 후 안내합니다.',
+      },
+      ...(service.faq ? [service.faq] : []),
     ],
     ctaLabel: `${item.regionName} 접수 ${item.phone}`,
     ctaLink: `tel:${item.phone.replaceAll('-', '')}`,
@@ -143,10 +308,39 @@ const landings = combinations.map((item, index) => {
   };
 });
 
-if (landings.length !== 50) throw new Error(`Expected 50 landings, got ${landings.length}`);
+if (landings.length !== 50)
+  throw new Error(`Expected 50 landings, got ${landings.length}`);
 
 await mkdir(resolve(root, 'data'), { recursive: true });
-await writeFile(resolve(root, 'data/initial-landings.json'), `${JSON.stringify(landings, null, 2)}\n`);
-await writeFile(resolve(root, 'initial-landing-plan.json'), `${JSON.stringify(landings.map(({ id, regionId, serviceId, primaryKeyword, slug, status, indexPolicy }) => ({ id, regionId, serviceId, primaryKeyword, slug, status, indexPolicy })), null, 2)}\n`);
+await writeFile(
+  resolve(root, 'data/initial-landings.json'),
+  `${JSON.stringify(landings, null, 2)}\n`,
+);
+await writeFile(
+  resolve(root, 'initial-landing-plan.json'),
+  `${JSON.stringify(
+    landings.map(
+      ({
+        id,
+        regionId,
+        serviceId,
+        primaryKeyword,
+        slug,
+        status,
+        indexPolicy,
+      }) => ({
+        id,
+        regionId,
+        serviceId,
+        primaryKeyword,
+        slug,
+        status,
+        indexPolicy,
+      }),
+    ),
+    null,
+    2,
+  )}\n`,
+);
 
 console.log(`Generated ${landings.length} initial landings.`);

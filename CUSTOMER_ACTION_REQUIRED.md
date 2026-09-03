@@ -8,9 +8,10 @@
 
 1. 고객 Netlify 팀에서 GitHub 저장소 `samduck150906-lgtm/j`를 연결합니다.
 2. Build command는 `npm run build`, Publish directory는 `.next`, Node는 22.13 이상으로 설정합니다.
-3. 정식 도메인을 연결한 뒤 `NEXT_PUBLIC_SITE_URL`을 `https://정식도메인`으로 설정하고 재배포합니다.
-4. 한 가지 host(www 또는 non-www)만 기본 도메인으로 정합니다.
-5. canonical·OG URL·robots·sitemap을 정식 도메인으로 확인한 뒤에만 `NEXT_PUBLIC_ROBOTS_INDEX=true`로 바꾸고 재배포합니다.
+3. `16610122.com`은 2026-09-03 조회 기준 등록 정보와 DNS가 확인되지 않았습니다. 카페24에서 먼저 등록한 뒤 DNS를 Netlify 안내값으로 설정합니다.
+4. 정식 도메인을 연결한 뒤 `NEXT_PUBLIC_SITE_URL`을 `https://16610122.com` 또는 확정한 www 주소로 설정하고 재배포합니다.
+5. 한 가지 host(www 또는 non-www)만 기본 도메인으로 정합니다.
+6. canonical·OG URL·robots·sitemap을 정식 도메인으로 확인한 뒤에만 `NEXT_PUBLIC_ROBOTS_INDEX=true`로 바꾸고 재배포합니다.
 
 초기 랜딩 50개는 저장소에 포함되어 있어 새 프로젝트에서도 배포됩니다. 이후 관리자가 만든 랜딩과 업로드 이미지를 유지해야 한다면 기존 Netlify Blobs 데이터를 별도로 이전해야 합니다.
 
@@ -18,7 +19,7 @@
 
 1. 고객 Netlify 프로젝트의 **Project configuration → Identity**에서 Identity를 활성화합니다.
 2. Registration은 **Invite only**로 설정합니다. 공개 회원가입은 사용하지 않습니다.
-3. 실제 관리자 이메일을 초대합니다.
+3. 실제 관리자 이메일 `iaanis@naver.com`을 초대합니다.
 4. 해당 사용자의 `app_metadata.roles`에 `admin` 역할을 지정합니다.
 5. 초대 메일에서 비밀번호를 설정한 뒤 `/admin/login`에서 로그인합니다.
 
@@ -30,15 +31,21 @@ Identity가 활성화되지 않으면 공개 사이트는 동작하지만 관리
 - 문의 제출에는 개인정보가 있으므로 Netlify 팀 접근 권한을 필요한 운영자에게만 부여합니다.
 - 알림 수신처를 정한 뒤 문의 폼을 한 번 제출해 Forms 저장과 실제 알림 수신을 함께 확인합니다.
 
-## 4. 검색·분석 도구
+## 4. 고객 상담 채널
+
+- 문자 상담은 `010-3144-2224`로 연결되어 있습니다.
+- 카카오톡 URL은 아직 제공되지 않았으므로 임의 링크를 만들지 않았습니다. 사용할 채널 URL을 전달받으면 별도 버튼을 추가합니다.
+
+## 5. 검색·분석 도구
 
 - `NEXT_PUBLIC_GA4_ID`: GA4 측정 ID
 - `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`: Google Search Console HTML 태그의 content 값
 - `NEXT_PUBLIC_NAVER_SITE_VERIFICATION`: Naver Search Advisor 확인 태그의 content 값
 - 값을 설정한 뒤 재배포하고 `/sitemap.xml`을 Google과 Naver에 제출합니다.
 - 문의자의 이름, 전화번호, 출발지·도착지는 GA4 이벤트 매개변수로 보내지 않습니다.
+- 계정 후보는 `iaanis@naver.com`, `big21101190@gmail.com`이며 Google/Naver 용도를 고객이 지정해야 합니다.
 
-## 5. 고객 인계 후 최종 점검
+## 6. 고객 인계 후 최종 점검
 
 - `/admin/login`에서 고객 관리자 로그인
 - 테스트 랜딩 초안 생성, 이미지 업로드, 미리보기, 공개 후 비공개

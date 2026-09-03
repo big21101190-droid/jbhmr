@@ -10,6 +10,8 @@
 - 랜딩 저장소: `j-complex-logistics-content`
 - 이미지 저장소: `j-complex-logistics-assets`
 - 문의 폼: `inquiry`
+- 고객 관리자 초대 대상: `iaanis@naver.com`
+- 예정 정식 도메인: `16610122.com` (2026-09-03 조회 기준 미등록 판단, 카페24 등록·DNS 필요)
 
 Netlify Blobs는 하나의 사이트에 귀속되고 Netlify UI의 Project ID가 Blobs의 Site ID입니다. 따라서 새 프로젝트를 만들기보다 같은 프로젝트를 팀 간 이전하고 Project ID가 그대로인지 확인하는 편이 운영 데이터 손실 위험이 낮습니다.
 
@@ -22,12 +24,13 @@ Netlify Blobs는 하나의 사이트에 귀속되고 Netlify UI의 Project ID가
 ## 1. 이전 전 준비
 
 1. 고객 Netlify 팀을 준비합니다.
-2. 이전을 실행할 계정이 현재 팀의 Team Owner인지 확인합니다.
-3. 같은 계정이 고객 팀의 Owner 또는 Developer인지 확인합니다.
-4. 현재 팀의 **Team settings → Access & security → Transfer site settings**에서 프로젝트 이전이 허용되어 있는지 확인합니다.
-5. 현재 팀과 고객 팀의 요금제를 비교합니다. 고객 팀 요금제가 낮으면 일부 설정이나 기능이 사라질 수 있습니다.
-6. 고객 팀에 없는 기존 프로젝트 멤버는 이전 후 대시보드 접근을 잃을 수 있으므로 필요한 사람을 고객 팀에 먼저 초대합니다.
-7. 이전 작업 시간 동안 관리자에서 랜딩을 수정하거나 문의 데이터를 정리하지 않도록 운영을 잠시 동결합니다.
+2. 고객 팀에 관리자 이메일 `iaanis@naver.com`을 초대할 준비를 합니다.
+3. 이전을 실행할 계정이 현재 팀의 Team Owner인지 확인합니다.
+4. 같은 계정이 고객 팀의 Owner 또는 Developer인지 확인합니다.
+5. 현재 팀의 **Team settings → Access & security → Transfer site settings**에서 프로젝트 이전이 허용되어 있는지 확인합니다.
+6. 현재 팀과 고객 팀의 요금제를 비교합니다. 고객 팀 요금제가 낮으면 일부 설정이나 기능이 사라질 수 있습니다.
+7. 고객 팀에 없는 기존 프로젝트 멤버는 이전 후 대시보드 접근을 잃을 수 있으므로 필요한 사람을 고객 팀에 먼저 초대합니다.
+8. 이전 작업 시간 동안 관리자에서 랜딩을 수정하거나 문의 데이터를 정리하지 않도록 운영을 잠시 동결합니다.
 
 ## 2. 이전 전 상태 기록과 백업
 
@@ -62,6 +65,7 @@ NEXT_PUBLIC_ROBOTS_INDEX=false
 정식 도메인을 연결한 뒤에만 다음 순서로 공개합니다.
 
 1. `NEXT_PUBLIC_SITE_URL=https://정식도메인` 설정
+   - 현재 예정값은 `https://16610122.com`이며 실제 등록·DNS와 기본 호스트 확정 후 입력합니다.
 2. 정식 도메인을 Netlify의 primary production domain으로 지정
 3. 임시 `netlify.app` 주소가 정식 도메인으로 301 이동하는지 확인
 4. canonical, OG URL, robots와 sitemap이 정식 도메인을 사용하는지 확인

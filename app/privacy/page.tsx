@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { PageHero } from '@/components/page-hero';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
+import { company } from '@/lib/company';
 
 export const metadata: Metadata = {
   title: '개인정보처리방침',
@@ -29,9 +30,9 @@ export default function PrivacyPage() {
           보유 및 이용 기간
         </h2>
         <p className="mt-3">
-          문의 처리와 관련 법령상 의무 이행에 필요한 기간 동안 보관한 뒤 지체
-          없이 파기합니다. 구체적인 법정 보존 기간과 개인정보 보호 책임자 정보는
-          사업자 정보 확인 후 보완됩니다.
+          문의 답변과 상담이 끝나 개인정보가 더 이상 필요하지 않으면 지체 없이
+          파기합니다. 다만 관계 법령에 따라 보존해야 하는 정보가 있으면 해당
+          법정 기간 동안 분리해 보관합니다.
         </p>
         <h2 className="mt-10 text-xl font-black text-[#101828]">
           동의 거부 권리
@@ -47,9 +48,27 @@ export default function PrivacyPage() {
           통해 안전하게 접수됩니다. 운영자가 인증된 관리 화면에서만 제출 내용을
           확인합니다.
         </p>
-        <p className="mt-12 rounded-xl bg-[#fff7e6] p-5 text-sm">
-          사업자 주소·대표자·개인정보 보호 책임자·구체적인 보존 기간은 고객 확인
-          후 운영 전 최종 반영해야 합니다.
+        <h2 className="mt-10 text-xl font-black text-[#101828]">
+          개인정보 관련 문의
+        </h2>
+        <p className="mt-3">
+          처리자: {company.name} · 대표 {company.representative}
+          <br />
+          주소: {company.address}
+          <br />
+          이메일:{' '}
+          <a
+            className="font-bold text-[#1b4dff] underline"
+            href={`mailto:${company.email}`}
+          >
+            {company.email}
+          </a>
+          <br />
+          전화: {company.nationalPhone} (대구 {company.daeguPhone})
+        </p>
+        <p className="mt-8 rounded-xl bg-[#edf3fb] p-5 text-sm">
+          본 방침은 2026년 9월 3일부터 적용합니다. 별도의 개인정보 보호책임자
+          지정 정보가 확인되면 해당 연락처를 추가합니다.
         </p>
       </article>
       <SiteFooter />

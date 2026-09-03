@@ -11,12 +11,49 @@ export type CompanySettings = {
   EnglishName: string;
   nationalPhone: string;
   daeguPhone: string;
+  mobilePhone: string;
+  smsPhone: string;
   email: string | null;
   address: string | null;
   representative: string | null;
   businessRegistrationNumber: string | null;
   businessHours: string | null;
   kakaoUrl: string | null;
+  legacySiteUrl: string | null;
+  plannedDomain: string | null;
+};
+
+export type ServiceContentStatus =
+  | 'CONFIRMED_DETAIL'
+  | 'CONFIRMED_BASIC'
+  | 'NEEDS_MORE_INFO';
+
+export type ServiceFact = {
+  label: string;
+  value: string;
+};
+
+export type ServiceStep = {
+  title: string;
+  body: string;
+};
+
+export type ServicePricingGroup = {
+  title: string;
+  columns: string[];
+  rows: string[][];
+};
+
+export type ServicePricing = {
+  title: string;
+  description: string;
+  groups: ServicePricingGroup[];
+  notes: string[];
+};
+
+export type ServiceProvenance = {
+  source: string;
+  note: string;
 };
 
 export type Service = {
@@ -28,6 +65,18 @@ export type Service = {
   description: string;
   keywords: string[];
   image: string;
+  contentStatus: ServiceContentStatus;
+  heroTitle: string;
+  heroAccent: string;
+  summary: string;
+  facts: ServiceFact[];
+  items: string[];
+  transport: string[];
+  areas: string[];
+  process: ServiceStep[];
+  pricing: ServicePricing | null;
+  trustNotes: string[];
+  provenance: ServiceProvenance[];
   faqs: FaqItem[];
   active: boolean;
   sortOrder: number;
@@ -83,6 +132,9 @@ export type Landing = {
   publishedAt: string | null;
 };
 
-export type LandingInput = Omit<Landing, 'id' | 'createdAt' | 'updatedAt' | 'publishedAt'> & {
+export type LandingInput = Omit<
+  Landing,
+  'id' | 'createdAt' | 'updatedAt' | 'publishedAt'
+> & {
   id?: string;
 };
