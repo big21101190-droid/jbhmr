@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Analytics } from '@/components/analytics';
+import { AuthCallbackRedirect } from '@/components/auth-callback-redirect';
 import { SITE_URL, company } from '@/lib/company';
 import './globals.css';
 
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
-      <body>{children}<Analytics /></body>
+      <body>{children}<AuthCallbackRedirect /><Analytics /></body>
     </html>
   );
 }
