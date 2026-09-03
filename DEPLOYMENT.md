@@ -10,7 +10,7 @@
 - Node: 22.13 이상
 - Next.js runtime: `@netlify/plugin-nextjs` 5.15.13
 
-현재 production URL은 `https://lovely-tarsier-c21dea.netlify.app`이며, 2026-09-02 배포 `6a9800d2503ef40008e142a4`에서 Next.js server handler와 Netlify Form이 정상 배포됐습니다.
+현재 production URL은 `https://lovely-tarsier-c21dea.netlify.app`이며, 2026-09-03 배포 `6a9905a6cce2bd0007c3b7ee`(commit `c0de46a`)에서 Next.js server handler, Netlify Form, Identity 초대/복구 콜백이 정상 배포됐습니다. 이 사이트는 제작자 계정에서 검수 중인 임시 운영 프로젝트이며, 완성 후 고객 Netlify로 인계합니다.
 
 ## 로컬 확인
 
@@ -26,6 +26,8 @@ npm run build
 
 Netlify Identity는 현재 로컬 `netlify dev`에서 지원되지 않으므로 인증 E2E는 Netlify 배포 환경에서 수행합니다.
 
+2026-09-03 production 관리자 E2E에서 로그인, 초안 생성, 이미지 업로드, 미리보기, 공개, SEO/sitemap 반영, 본문·이미지 수정, 비공개, 보관을 모두 통과했습니다.
+
 ## 자동 배포
 
 검증이 끝난 commit을 `main`에 push하면 연결된 Netlify 프로젝트가 자동 배포합니다. 중간 작업 commit은 운영에 바로 반영될 수 있으므로 push 전 전체 QA를 수행합니다.
@@ -36,6 +38,15 @@ Netlify Identity는 현재 로컬 `netlify dev`에서 지원되지 않으므로 
 - 업로드 이미지: Netlify Blobs `j-complex-logistics-assets`
 - 문의: Netlify Forms `inquiry`
 - Production은 site-scoped 저장소, Deploy Preview는 deploy-scoped 저장소를 사용합니다.
+
+## 고객 Netlify로 이동
+
+가능하면 고객 팀에서 기존 사이트를 그대로 인계할지, 고객 팀에 새 사이트를 만들지 먼저 결정합니다.
+
+- 기존 사이트를 인계하는 경우: 인계 후 Git 연결, 도메인, 환경변수, Identity 사용자/역할, Forms 알림, Blobs 데이터를 각각 다시 확인합니다.
+- 새 사이트를 만드는 경우: GitHub 저장소를 새 프로젝트에 연결하고 환경변수·Identity·Forms 알림을 새로 설정합니다. Netlify Blobs와 Identity 사용자는 Git 배포에 포함되지 않으므로 필요한 운영 데이터를 별도 이전하거나 새로 생성합니다.
+- 새 사이트의 production 검증이 끝나기 전에는 현재 검수 사이트를 삭제하거나 연결 해제하지 않습니다.
+- 최종 전환 뒤 `NEXT_PUBLIC_SITE_URL`을 정식 도메인으로 바꾸고 재배포한 다음 canonical과 sitemap을 다시 검사합니다.
 
 ## 환경변수
 
