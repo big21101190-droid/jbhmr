@@ -41,12 +41,13 @@ Netlify Identity는 현재 로컬 `netlify dev`에서 지원되지 않으므로 
 
 ## 고객 Netlify로 이동
 
-가능하면 고객 팀에서 기존 사이트를 그대로 인계할지, 고객 팀에 새 사이트를 만들지 먼저 결정합니다.
+기본 인계안은 현재 프로젝트를 고객 팀으로 transfer하는 것입니다. 세부 절차는 `HANDOFF_RUNBOOK.md`를 따릅니다.
 
 - 기존 사이트를 인계하는 경우: 인계 후 Git 연결, 도메인, 환경변수, Identity 사용자/역할, Forms 알림, Blobs 데이터를 각각 다시 확인합니다.
 - 새 사이트를 만드는 경우: GitHub 저장소를 새 프로젝트에 연결하고 환경변수·Identity·Forms 알림을 새로 설정합니다. Netlify Blobs와 Identity 사용자는 Git 배포에 포함되지 않으므로 필요한 운영 데이터를 별도 이전하거나 새로 생성합니다.
 - 새 사이트의 production 검증이 끝나기 전에는 현재 검수 사이트를 삭제하거나 연결 해제하지 않습니다.
 - 최종 전환 뒤 `NEXT_PUBLIC_SITE_URL`을 정식 도메인으로 바꾸고 재배포한 다음 canonical과 sitemap을 다시 검사합니다.
+- 위 SEO 검사 전까지 `NEXT_PUBLIC_ROBOTS_INDEX=false`를 유지하고, 정식 도메인 최종 승인 뒤에만 `true`로 전환합니다.
 
 ## 환경변수
 

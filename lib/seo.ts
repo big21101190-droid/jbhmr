@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL, company } from '@/lib/company';
 import type { Landing } from '@/lib/domain';
+import { isIndexingEnabled } from '@/lib/indexing';
 
 export function absoluteUrl(path: string) {
   if (/^https?:\/\//.test(path)) return path;
@@ -11,11 +12,17 @@ export function getLandingPath(landing: Pick<Landing, 'slug'>) {
   return `/delivery/${landing.slug}`;
 }
 
-export function getLandingMetadata(landing: Landing): Metadata {
+export function getLandingMetadata(
+  landing: Landing,
+  siteIndexingEnabled = isIndexingEnabled(),
+): Metadata {
   const canonical = landing.canonical || absoluteUrl(getLandingPath(landing));
-  const robots = landing.status === 'PUBLISHED' && landing.indexPolicy === 'INDEX'
-    ? { index: true, follow: true }
-    : { index: false, follow: false };
+  const robots =
+    siteIndexingEnabled &&
+    landing.status === 'PUBLISHED' &&
+    landing.indexPolicy === 'INDEX'
+      ? { index: true, follow: true }
+      : { index: false, follow: false };
   return {
     title: { absolute: landing.metaTitle },
     description: landing.metaDescription,

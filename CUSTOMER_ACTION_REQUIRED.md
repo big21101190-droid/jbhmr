@@ -1,6 +1,8 @@
 # 고객 Netlify 인계 때 필요한 작업
 
-현재 테스트 운영 사이트 `lovely-tarsier-c21dea`에는 Identity와 관리자 계정까지 설정되어 있습니다. 최종 고객 Netlify에서 **새 프로젝트를 만드는 경우** 아래 항목을 다시 설정해야 합니다. 코드와 Git 이력만 연결해도 Identity 사용자, Netlify Forms 제출 내역, Netlify Blobs에 저장된 관리자 작성글과 업로드 이미지는 자동으로 복사되지 않습니다.
+현재 테스트 운영 사이트 `lovely-tarsier-c21dea`에는 Identity와 관리자 계정까지 설정되어 있습니다. 인계는 새 프로젝트 생성보다 **현재 프로젝트를 고객 팀으로 transfer**하는 방식을 우선합니다. 자세한 실행 순서는 `HANDOFF_RUNBOOK.md`, QA 데이터 정리는 `QA_CLEANUP_CHECKLIST.md`를 따릅니다.
+
+새 프로젝트를 만드는 경우 코드와 Git 이력만 연결해도 Identity 사용자, Netlify Forms 제출 내역, Netlify Blobs에 저장된 관리자 작성글과 업로드 이미지는 자동으로 복사되지 않습니다.
 
 ## 1. 프로젝트 연결과 환경변수
 
@@ -8,6 +10,7 @@
 2. Build command는 `npm run build`, Publish directory는 `.next`, Node는 22.13 이상으로 설정합니다.
 3. 정식 도메인을 연결한 뒤 `NEXT_PUBLIC_SITE_URL`을 `https://정식도메인`으로 설정하고 재배포합니다.
 4. 한 가지 host(www 또는 non-www)만 기본 도메인으로 정합니다.
+5. canonical·OG URL·robots·sitemap을 정식 도메인으로 확인한 뒤에만 `NEXT_PUBLIC_ROBOTS_INDEX=true`로 바꾸고 재배포합니다.
 
 초기 랜딩 50개는 저장소에 포함되어 있어 새 프로젝트에서도 배포됩니다. 이후 관리자가 만든 랜딩과 업로드 이미지를 유지해야 한다면 기존 Netlify Blobs 데이터를 별도로 이전해야 합니다.
 

@@ -20,7 +20,7 @@
 - [x] 초기 50개 validator PASS
 - [x] typecheck PASS
 - [x] lint PASS
-- [x] unit tests 10 PASS
+- [x] unit tests 11 PASS
 - [x] production build PASS
 - [x] production dependency audit: 0 vulnerabilities
 
@@ -37,5 +37,8 @@
 - [x] 문의 Form 실 제출 및 Netlify Forms 저장 확인
 - [x] Netlify Identity 활성화, Invite only 설정, 관리자 초대와 `admin` 역할 지정
 - [x] 관리자 실제 로그인→작성→업로드→미리보기→공개→수정→비공개→보관 E2E
+- [x] Git 초기 랜딩 `initial-004` 관리자 수정→공개 반영→원복 E2E
+- [x] 임시 호스트 fail-closed noindex·X-Robots-Tag·robots 전체 차단·빈 sitemap
+- [x] 정식 도메인 공개 변수 활성화 시 index·robots·sitemap 복원 검증
 
-공개 사이트와 50개 초기 랜딩은 production에서 정상 운영 중입니다. 2026-09-03 관리자 E2E에서는 점검용 랜딩 1개를 실제로 생성하고 대표 이미지를 업로드한 뒤, 미리보기·공개·SEO 및 sitemap 반영·본문/이미지 수정·비공개·보관까지 확인했습니다. 점검용 URL은 현재 404와 noindex를 반환하고 sitemap에서도 제외됩니다. 같은 날 `inquiry` 문의 폼에 QA 데이터 1건을 실제 제출해 성공 메시지와 Netlify Forms 저장을 확인했습니다. 운영 알림 수신 여부는 고객 알림 이메일 또는 Webhook 설정 후 마지막으로 확인합니다.
+공개 사이트와 50개 초기 랜딩은 production에서 정상 운영 중입니다. 2026-09-03 관리자 E2E에서는 점검용 랜딩 1개의 전체 수명주기와 Git 초기 랜딩 1개의 제목·본문·이미지 수정 및 원복을 확인했습니다. 점검용 URL은 현재 404와 noindex를 반환하고 sitemap에서도 제외됩니다. 같은 날 `inquiry` 문의 폼에 QA 데이터 1건을 실제 제출해 성공 메시지와 Netlify Forms 저장을 확인했습니다. 정식 도메인 연결 전에는 `NEXT_PUBLIC_ROBOTS_INDEX=false`로 색인을 차단하며, 운영 알림 수신 여부는 고객 알림 이메일 또는 Webhook 설정 후 마지막으로 확인합니다.
