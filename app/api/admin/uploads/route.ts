@@ -1,4 +1,4 @@
-import { getDeployStore, getStore } from '@netlify/blobs';
+import { getStore } from '@netlify/blobs';
 import { randomUUID } from 'node:crypto';
 import { requireAdminApi } from '@/lib/auth';
 
@@ -11,9 +11,10 @@ const allowedTypes = new Map([
 const maxBytes = 5 * 1024 * 1024;
 
 function assetStore() {
-  return process.env.CONTEXT === 'production'
-    ? getStore('j-complex-logistics-assets', { consistency: 'strong' })
-    : getDeployStore('j-complex-logistics-assets');
+  return getStore({
+    name: 'j-complex-logistics-assets',
+    consistency: 'strong',
+  });
 }
 
 export async function POST(request: Request) {

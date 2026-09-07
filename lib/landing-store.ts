@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { getDeployStore, getStore } from '@netlify/blobs';
+import { getStore } from '@netlify/blobs';
 import { randomUUID } from 'node:crypto';
 import initialData from '@/data/initial-landings.json';
 import type { Landing, LandingInput } from '@/lib/domain';
@@ -20,9 +20,7 @@ function hydrateLanding(landing: Landing): Landing {
 }
 
 function contentStore() {
-  return process.env.CONTEXT === 'production'
-    ? getStore(storeName, { consistency: 'strong' })
-    : getDeployStore(storeName);
+  return getStore({ name: storeName, consistency: 'strong' });
 }
 
 async function getOverrides(): Promise<Landing[]> {

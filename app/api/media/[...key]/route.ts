@@ -1,11 +1,9 @@
-import { getDeployStore, getStore } from '@netlify/blobs';
+import { getStore } from '@netlify/blobs';
 
 export const dynamic = 'force-dynamic';
 
 function assetStore() {
-  return process.env.CONTEXT === 'production'
-    ? getStore('j-complex-logistics-assets')
-    : getDeployStore('j-complex-logistics-assets');
+  return getStore({ name: 'j-complex-logistics-assets' });
 }
 
 export async function GET(_request: Request, { params }: { params: Promise<{ key: string[] }> }) {

@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { getDeployStore, getStore } from '@netlify/blobs';
+import { getStore } from '@netlify/blobs';
 import { randomUUID } from 'node:crypto';
 import { regions as seedRegions } from '@/data/regions';
 import { services as seedServices } from '@/data/services';
@@ -23,9 +23,7 @@ export class CatalogValidationError extends Error {
 }
 
 function contentStore() {
-  return process.env.CONTEXT === 'production'
-    ? getStore(storeName, { consistency: 'strong' })
-    : getDeployStore(storeName);
+  return getStore({ name: storeName, consistency: 'strong' });
 }
 
 async function getRecords<T>(prefix: 'regions/' | 'services/') {
