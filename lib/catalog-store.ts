@@ -54,7 +54,9 @@ function normalizeRegion(raw: Partial<Region>, previous?: Region): Region {
   const name = cleanText(raw.name ?? previous?.name, 100);
   if (!name)
     throw new CatalogValidationError('지역명을 입력해주세요.', 400, 'name');
-  const slug = slugify(cleanText(raw.slug, 100) || name);
+  const slug = slugify(
+    cleanText(raw.slug === undefined ? previous?.slug : raw.slug, 100) || name,
+  );
   if (!slug)
     throw new CatalogValidationError('지역 URL을 확인해주세요.', 400, 'slug');
   const type = raw.type || previous?.type || 'AREA';
@@ -96,7 +98,9 @@ function normalizeService(raw: Partial<Service>, previous?: Service): Service {
   const name = cleanText(raw.name ?? previous?.name, 100);
   if (!name)
     throw new CatalogValidationError('서비스명을 입력해주세요.', 400, 'name');
-  const slug = slugify(cleanText(raw.slug, 100) || name);
+  const slug = slugify(
+    cleanText(raw.slug === undefined ? previous?.slug : raw.slug, 100) || name,
+  );
   if (!slug)
     throw new CatalogValidationError('서비스 URL을 확인해주세요.', 400, 'slug');
   const group = raw.group || previous?.group || 'LOCAL';
