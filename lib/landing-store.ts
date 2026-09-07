@@ -23,6 +23,10 @@ function contentStore() {
   return getStore({ name: storeName, consistency: 'strong' });
 }
 
+function slugIndexKey(slug: string) {
+  return `landing-slugs/${encodeURIComponent(slug)}.json`;
+}
+
 async function getOverrides(): Promise<Landing[]> {
   try {
     const store = contentStore();
@@ -63,6 +67,17 @@ export async function listLandings(
 }
 
 export async function getLandingById(id: string) {
+  try {
+    const override = (await contentStore().get(`landings/${id}.json`, {
+      type: 'json',
+    })) as Landing | null;
+    if (override) return hydrateLanding(override);
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'production')
+      console.warn(`Netlify Blobs unavailable for landing ${id}.`, error);
+  }
+  const initial = initialLandings.find((item) => item.id === id);
+  if (initial) return hydrateLanding(initial);
   return (
     (await listLandings({ includeArchived: true })).find(
       (item) => item.id === id,
@@ -74,6 +89,23 @@ export async function getLandingBySlug(
   slug: string,
   includeUnpublished = false,
 ) {
+  try {
+    const index = (await contentStore().get(slugIndexKey(slug), {
+      type: 'json',
+    })) as { id?: string } | null;
+    if (index?.id) {
+      const landing = await getLandingById(index.id);
+      if (
+        landing &&
+        landing.slug === slug &&
+        (includeUnpublished || landing.status === 'PUBLISHED')
+      )
+        return landing;
+    }
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'production')
+      console.warn(`Netlify Blobs unavailable for slug ${slug}.`, error);
+  }
   const records = await listLandings({
     includeArchived: includeUnpublished,
     publishedOnly: !includeUnpublished,
@@ -120,6 +152,9 @@ export async function saveLanding(rawInput: LandingInput): Promise<Landing> {
       input.status === 'PUBLISHED' ? previous?.publishedAt || now : null,
   };
   await contentStore().setJSON(`landings/${record.id}.json`, record);
+  await contentStore().setJSON(slugIndexKey(record.slug), { id: record.id });
+  if (previous?.slug && previous.slug !== record.slug)
+    await contentStore().delete(slugIndexKey(previous.slug));
   return record;
 }
 
