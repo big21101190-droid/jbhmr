@@ -27,6 +27,14 @@ function slugIndexKey(slug: string) {
   return `landing-slugs/${encodeURIComponent(slug)}.json`;
 }
 
+function decodeSlug(slug: string) {
+  try {
+    return decodeURIComponent(slug);
+  } catch {
+    return slug;
+  }
+}
+
 async function getOverrides(): Promise<Landing[]> {
   try {
     const store = contentStore();
@@ -89,28 +97,32 @@ export async function getLandingBySlug(
   slug: string,
   includeUnpublished = false,
 ) {
+  const normalizedSlug = decodeSlug(slug);
   try {
-    const index = (await contentStore().get(slugIndexKey(slug), {
+    const index = (await contentStore().get(slugIndexKey(normalizedSlug), {
       type: 'json',
     })) as { id?: string } | null;
     if (index?.id) {
       const landing = await getLandingById(index.id);
       if (
         landing &&
-        landing.slug === slug &&
+        landing.slug === normalizedSlug &&
         (includeUnpublished || landing.status === 'PUBLISHED')
       )
         return landing;
     }
   } catch (error) {
     if (process.env.NODE_ENV !== 'production')
-      console.warn(`Netlify Blobs unavailable for slug ${slug}.`, error);
+      console.warn(
+        `Netlify Blobs unavailable for slug ${normalizedSlug}.`,
+        error,
+      );
   }
   const records = await listLandings({
     includeArchived: includeUnpublished,
     publishedOnly: !includeUnpublished,
   });
-  return records.find((item) => item.slug === slug) ?? null;
+  return records.find((item) => item.slug === normalizedSlug) ?? null;
 }
 
 export async function saveLanding(rawInput: LandingInput): Promise<Landing> {
