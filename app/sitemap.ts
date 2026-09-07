@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
-import { services } from '@/data/services';
-import { regions } from '@/data/regions';
+import { busRoutes } from '@/data/bus-routes';
+import { listRegions, listServices } from '@/lib/catalog-store';
 import { SITE_URL } from '@/lib/company';
 import { isIndexingEnabled } from '@/lib/indexing';
 import { listLandings } from '@/lib/landing-store';
@@ -10,6 +10,10 @@ export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (!isIndexingEnabled()) return [];
+  const [services, regions] = await Promise.all([
+    listServices(),
+    listRegions(),
+  ]);
   const now = new Date();
   const core = [
     '',
@@ -49,5 +53,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     }));
-  return [...core, ...servicePages, ...regionPages, ...landingPages];
+  const routePages = busRoutes.map((item) => ({
+    url: `${SITE_URL}/routes/${item.slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+  return [
+    ...core,
+    ...servicePages,
+    ...regionPages,
+    ...routePages,
+    ...landingPages,
+  ];
 }

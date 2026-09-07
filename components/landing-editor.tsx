@@ -1,16 +1,29 @@
 'use client';
 
 import { useState } from 'react';
-import { regions } from '@/data/regions';
-import { services } from '@/data/services';
-import type { Landing, LandingInput, PublicationStatus } from '@/lib/domain';
-import { createLandingDefaults } from '@/lib/landing-defaults';
+import type {
+  Landing,
+  LandingInput,
+  PublicationStatus,
+  Region,
+  Service,
+} from '@/lib/domain';
+import { createLandingDefaultsFor } from '@/lib/landing-defaults';
+import { slugify } from '@/lib/seo';
 
 const fieldClass =
   'rounded-xl border border-[#cfd9e6] bg-white px-4 py-3 outline-none focus:border-[#1b4dff] focus:ring-2 focus:ring-[#1b4dff]/15';
 const labelClass = 'grid gap-2 text-sm font-bold';
 
-export function LandingEditor({ initial }: { initial: LandingInput }) {
+export function LandingEditor({
+  initial,
+  regions,
+  services,
+}: {
+  initial: LandingInput;
+  regions: Region[];
+  services: Service[];
+}) {
   const [form, setForm] = useState<LandingInput>(initial);
   const [message, setMessage] = useState('');
   const [saving, setSaving] = useState(false);
@@ -18,16 +31,24 @@ export function LandingEditor({ initial }: { initial: LandingInput }) {
   const set = <K extends keyof LandingInput>(key: K, value: LandingInput[K]) =>
     setForm((current) => ({ ...current, [key]: value }));
   const suggest = () => {
-    const defaults = createLandingDefaults(
-      form.regionId,
-      form.serviceId,
+    const region = regions.find((item) => item.id === form.regionId);
+    const service = services.find((item) => item.id === form.serviceId);
+    if (!region || !service) {
+      setMessage('선택한 지역 또는 서비스를 찾을 수 없습니다.');
+      return;
+    }
+    const defaults = createLandingDefaultsFor(
+      region,
+      service,
       form.primaryKeyword,
     );
     setForm((current) => ({
       ...defaults,
       id: current.id,
+      slug: current.slug,
       heroImage: current.heroImage || defaults.heroImage,
       ogImage: current.ogImage || defaults.ogImage,
+      bodyTopImages: current.bodyTopImages || [],
     }));
     setMessage(
       '지역·서비스 기준 자동값을 채웠습니다. 모두 수정할 수 있습니다.',
@@ -60,7 +81,7 @@ export function LandingEditor({ initial }: { initial: LandingInput }) {
     if (!initial.id)
       window.history.replaceState({}, '', `/admin/landings/${data.landing.id}`);
   };
-  const upload = async (file: File) => {
+  const upload = async (file: File, bodyIndex?: number) => {
     setMessage('이미지 업로드 중…');
     const body = new FormData();
     body.append('file', file);
@@ -73,11 +94,16 @@ export function LandingEditor({ initial }: { initial: LandingInput }) {
       setMessage(data.error || '이미지 업로드에 실패했습니다.');
       return;
     }
-    setForm((current) => ({
-      ...current,
-      heroImage: data.url,
-      ogImage: data.url,
-    }));
+    setForm((current) => {
+      if (bodyIndex === undefined)
+        return { ...current, heroImage: data.url, ogImage: data.url };
+      const images = [...(current.bodyTopImages || [])];
+      images[bodyIndex] = {
+        url: data.url,
+        alt: `${current.primaryKeyword || current.title} 이미지 ${bodyIndex + 1}`,
+      };
+      return { ...current, bodyTopImages: images.filter(Boolean).slice(0, 3) };
+    });
     setMessage('이미지를 업로드했습니다.');
   };
   const previewId = record?.id || form.id;
@@ -134,7 +160,11 @@ export function LandingEditor({ initial }: { initial: LandingInput }) {
               className={fieldClass}
             >
               {regions
-                .filter((r) => r.parentId)
+                .filter(
+                  (r) =>
+                    r.parentId &&
+                    ((r.active && !r.archived) || r.id === form.regionId),
+                )
                 .map((r) => (
                   <option key={r.id} value={r.id}>
                     {r.name}
@@ -150,7 +180,9 @@ export function LandingEditor({ initial }: { initial: LandingInput }) {
               className={fieldClass}
             >
               {services
-                .filter((s) => s.active)
+                .filter(
+                  (s) => (s.active && !s.archived) || s.id === form.serviceId,
+                )
                 .map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.name}
@@ -224,6 +256,84 @@ export function LandingEditor({ initial }: { initial: LandingInput }) {
             />
           ) : null}
         </label>
+        <fieldset className="rounded-2xl border border-[#dce5f0] p-5">
+          <legend className="px-2 font-black">본문 상단 이미지</legend>
+          <p className="mb-5 text-sm text-[#667085]">
+            본문이 시작되기 전에 표시할 사진을 0~3장 등록할 수 있습니다.
+          </p>
+          <div className="grid gap-4 md:grid-cols-3">
+            {[0, 1, 2].map((index) => {
+              const image = form.bodyTopImages?.[index];
+              return (
+                <div
+                  key={index}
+                  className="rounded-xl border border-[#dce5f0] bg-[#f9fbfd] p-3"
+                >
+                  {image ? (
+                    <img
+                      src={image.url}
+                      alt={
+                        image.alt || `본문 상단 이미지 ${index + 1} 미리보기`
+                      }
+                      className="aspect-[4/3] w-full rounded-lg object-cover"
+                    />
+                  ) : (
+                    <div className="grid aspect-[4/3] place-items-center rounded-lg bg-[#edf3fb] text-sm font-bold text-[#667085]">
+                      사진 {index + 1}
+                    </div>
+                  )}
+                  <label className="mt-3 block cursor-pointer rounded-lg bg-[#10243e] px-3 py-2.5 text-center text-sm font-black text-white">
+                    {image ? '교체' : `사진 ${index + 1} 업로드`}
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      className="sr-only"
+                      onChange={(event) => {
+                        const file = event.target.files?.[0];
+                        if (file) void upload(file, index);
+                        event.currentTarget.value = '';
+                      }}
+                    />
+                  </label>
+                  {image ? (
+                    <>
+                      <input
+                        aria-label={`사진 ${index + 1} 대체 텍스트`}
+                        value={image.alt || ''}
+                        onChange={(event) =>
+                          set(
+                            'bodyTopImages',
+                            (form.bodyTopImages || []).map((item, itemIndex) =>
+                              itemIndex === index
+                                ? { ...item, alt: event.target.value }
+                                : item,
+                            ),
+                          )
+                        }
+                        placeholder="대체 텍스트"
+                        className={`${fieldClass} mt-2 w-full`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          set(
+                            'bodyTopImages',
+                            (form.bodyTopImages || []).filter(
+                              (_, itemIndex) => itemIndex !== index,
+                            ),
+                          )
+                        }
+                        className="mt-2 w-full py-2 text-sm font-black text-red-600"
+                      >
+                        삭제
+                      </button>
+                    </>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+        </fieldset>
         <label className={labelClass}>
           요약
           <textarea
@@ -354,8 +464,14 @@ export function LandingEditor({ initial }: { initial: LandingInput }) {
               <input
                 value={form.slug}
                 onChange={(e) => set('slug', e.target.value)}
+                placeholder="비워두면 발행 시 대표 키워드로 자동 생성"
                 className={fieldClass}
               />
+              <span className="text-xs font-normal text-[#667085]">
+                예상 공개 URL: /delivery/
+                {slugify(form.slug || form.primaryKeyword || form.title) ||
+                  '자동-생성'}
+              </span>
             </label>
             <label className={labelClass}>
               보조 키워드 (쉼표 구분)

@@ -3,12 +3,11 @@ import { JsonLd } from '@/components/json-ld';
 import { PhoneFab } from '@/components/phone-fab';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
-import { getRegion } from '@/data/regions';
-import { getService } from '@/data/services';
+import { getRegionRecord, getServiceRecord } from '@/lib/catalog-store';
 import { SITE_URL, company, phoneForRegion } from '@/lib/company';
 import type { Landing } from '@/lib/domain';
 
-export function LandingView({
+export async function LandingView({
   landing,
   related = [],
   preview = false,
@@ -17,10 +16,13 @@ export function LandingView({
   related?: Landing[];
   preview?: boolean;
 }) {
-  const region = getRegion(landing.regionId);
-  const service = getService(landing.serviceId);
+  const [region, service] = await Promise.all([
+    getRegionRecord(landing.regionId),
+    getServiceRecord(landing.serviceId),
+  ]);
   if (!region || !service) return null;
   const phone = phoneForRegion(region.usesDaeguPhone);
+  const bodyTopImages = landing.bodyTopImages || [];
   const canonical = landing.canonical || `${SITE_URL}/delivery/${landing.slug}`;
   const schemas = [
     {
@@ -136,6 +138,40 @@ export function LandingView({
           />
         </div>
       </section>
+      {bodyTopImages.length ? (
+        <section
+          className="bg-white px-5 pt-14 sm:pt-20"
+          aria-label="본문 상단 이미지"
+        >
+          <div
+            className={`mx-auto grid max-w-[1040px] gap-4 ${bodyTopImages.length === 2 ? 'md:grid-cols-2' : bodyTopImages.length === 3 ? 'md:grid-cols-2' : ''}`}
+          >
+            {bodyTopImages.map((image, index) => (
+              <figure
+                key={`${image.url}-${index}`}
+                className={
+                  bodyTopImages.length === 3 && index === 0
+                    ? 'md:row-span-2'
+                    : ''
+                }
+              >
+                <img
+                  src={image.url}
+                  alt={
+                    image.alt || `${landing.primaryKeyword} 이미지 ${index + 1}`
+                  }
+                  className={`w-full rounded-2xl object-cover shadow-[0_12px_35px_rgba(16,36,62,.10)] ${bodyTopImages.length === 3 && index === 0 ? 'h-full min-h-[300px]' : 'aspect-[16/10]'}`}
+                />
+                {image.caption ? (
+                  <figcaption className="mt-2 text-sm text-[#667085]">
+                    {image.caption}
+                  </figcaption>
+                ) : null}
+              </figure>
+            ))}
+          </div>
+        </section>
+      ) : null}
       <section className="bg-white px-5 py-16 sm:py-20">
         <div className="mx-auto max-w-[1040px]">
           {landing.sections.map((section, index) => (

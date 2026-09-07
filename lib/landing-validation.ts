@@ -2,14 +2,20 @@ import type { Landing, LandingInput } from '@/lib/domain';
 import { slugify } from '@/lib/seo';
 
 export class LandingValidationError extends Error {
-  constructor(message: string, public readonly field?: string, public readonly existing?: Landing) {
+  constructor(
+    message: string,
+    public readonly field?: string,
+    public readonly existing?: Landing,
+  ) {
     super(message);
     this.name = 'LandingValidationError';
   }
 }
 
 export function normalizeLandingInput(input: LandingInput): LandingInput {
-  const normalizedSlug = slugify(input.slug || input.primaryKeyword);
+  const normalizedSlug = slugify(
+    input.slug || input.primaryKeyword || input.title,
+  );
   return {
     ...input,
     slug: normalizedSlug,
@@ -19,17 +25,31 @@ export function normalizeLandingInput(input: LandingInput): LandingInput {
     metaTitle: (input.metaTitle || `${input.title} | 제이복합물류`).trim(),
     metaDescription: input.metaDescription.trim(),
     summary: input.summary.trim(),
-    secondaryKeywords: input.secondaryKeywords.map((item) => item.trim()).filter(Boolean),
+    secondaryKeywords: input.secondaryKeywords
+      .map((item) => item.trim())
+      .filter(Boolean),
     sections: input.sections
-      .map((section) => ({ heading: section.heading.trim(), body: section.body.trim() }))
+      .map((section) => ({
+        heading: section.heading.trim(),
+        body: section.body.trim(),
+      }))
       .filter((section) => section.heading && section.body),
     faq: input.faq
-      .map((item) => ({ question: item.question.trim(), answer: item.answer.trim() }))
+      .map((item) => ({
+        question: item.question.trim(),
+        answer: item.answer.trim(),
+      }))
       .filter((item) => item.question && item.answer),
     canonical: input.canonical?.trim() || null,
     ogTitle: (input.ogTitle || input.title).trim(),
     ogDescription: (input.ogDescription || input.metaDescription).trim(),
     ogImage: input.ogImage || input.heroImage,
+    bodyTopImages: (input.bodyTopImages || []).slice(0, 4).map((image) => ({
+      url: image.url.trim(),
+      alt: image.alt?.trim() || undefined,
+      caption: image.caption?.trim() || undefined,
+      storageKey: image.storageKey?.trim() || undefined,
+    })),
   };
 }
 
@@ -49,25 +69,104 @@ export function validateLandingInput(input: LandingInput) {
   ];
   for (const [field, message] of required) {
     const value = input[field];
-    if (typeof value !== 'string' || !value.trim()) throw new LandingValidationError(message, field);
+    if (typeof value !== 'string' || !value.trim())
+      throw new LandingValidationError(message, field);
   }
-  if (!/^[a-z0-9-]+$/.test(input.slug)) throw new LandingValidationError('URL은 영문 소문자, 숫자와 하이픈만 사용할 수 있습니다.', 'slug');
-  if (input.slug.length > 100) throw new LandingValidationError('URL은 100자 이내로 입력해주세요.', 'slug');
-  if (input.metaTitle.length > 70) throw new LandingValidationError('SEO 제목은 70자 이내로 입력해주세요.', 'metaTitle');
-  if (input.metaDescription.length > 170) throw new LandingValidationError('메타 설명은 170자 이내로 입력해주세요.', 'metaDescription');
-  if (input.sections.length === 0) throw new LandingValidationError('본문 내용을 한 개 이상 입력해주세요.', 'sections');
-  if (!['DRAFT', 'PUBLISHED', 'ARCHIVED'].includes(input.status)) throw new LandingValidationError('올바른 공개 상태가 아닙니다.', 'status');
-  if (!['INDEX', 'NOINDEX'].includes(input.indexPolicy)) throw new LandingValidationError('올바른 색인 설정이 아닙니다.', 'indexPolicy');
-  if (!/^(\/|https?:\/\/|tel:)/.test(input.ctaLink)) throw new LandingValidationError('CTA 연결 주소 형식을 확인해주세요.', 'ctaLink');
+  if (!/^[a-z0-9가-힣-]+$/.test(input.slug))
+    throw new LandingValidationError(
+      'URL은 한글, 영문 소문자, 숫자와 하이픈만 사용할 수 있습니다.',
+      'slug',
+    );
+  if (input.slug.length > 100)
+    throw new LandingValidationError(
+      'URL은 100자 이내로 입력해주세요.',
+      'slug',
+    );
+  if (
+    ['admin', 'api', 'services', 'regions', 'delivery', 'contact'].includes(
+      input.slug,
+    )
+  )
+    throw new LandingValidationError(
+      '사이트에서 사용하는 예약 URL은 사용할 수 없습니다.',
+      'slug',
+    );
+  if (input.metaTitle.length > 70)
+    throw new LandingValidationError(
+      'SEO 제목은 70자 이내로 입력해주세요.',
+      'metaTitle',
+    );
+  if (input.metaDescription.length > 170)
+    throw new LandingValidationError(
+      '메타 설명은 170자 이내로 입력해주세요.',
+      'metaDescription',
+    );
+  if (input.sections.length === 0)
+    throw new LandingValidationError(
+      '본문 내용을 한 개 이상 입력해주세요.',
+      'sections',
+    );
+  if (!['DRAFT', 'PUBLISHED', 'ARCHIVED'].includes(input.status))
+    throw new LandingValidationError('올바른 공개 상태가 아닙니다.', 'status');
+  if (!['INDEX', 'NOINDEX'].includes(input.indexPolicy))
+    throw new LandingValidationError(
+      '올바른 색인 설정이 아닙니다.',
+      'indexPolicy',
+    );
+  if (!/^(\/|https?:\/\/|tel:)/.test(input.ctaLink))
+    throw new LandingValidationError(
+      'CTA 연결 주소 형식을 확인해주세요.',
+      'ctaLink',
+    );
+  if ((input.bodyTopImages || []).length > 3)
+    throw new LandingValidationError(
+      '본문 상단 이미지는 최대 3장까지 등록할 수 있습니다.',
+      'bodyTopImages',
+    );
+  for (const image of input.bodyTopImages || []) {
+    if (!image.url || !/^(\/|https?:\/\/)/.test(image.url))
+      throw new LandingValidationError(
+        '본문 상단 이미지 주소를 확인해주세요.',
+        'bodyTopImages',
+      );
+  }
 }
 
-export function assertNoDuplicate(candidate: LandingInput, existing: Landing[]) {
+export function assertNoDuplicate(
+  candidate: LandingInput,
+  existing: Landing[],
+) {
   const currentId = candidate.id;
   const active = existing.filter((item) => item.id !== currentId);
-  const sameSlug = active.find((item) => item.slug.toLowerCase() === candidate.slug.toLowerCase());
-  if (sameSlug) throw new LandingValidationError('이미 존재하는 URL입니다.', 'slug', sameSlug);
-  const sameKeyword = active.find((item) => item.primaryKeyword.trim().toLowerCase() === candidate.primaryKeyword.trim().toLowerCase());
-  if (sameKeyword) throw new LandingValidationError('동일한 대표 키워드가 이미 존재합니다.', 'primaryKeyword', sameKeyword);
-  const samePair = active.find((item) => item.regionId === candidate.regionId && item.serviceId === candidate.serviceId);
-  if (samePair) throw new LandingValidationError('동일한 지역·서비스 랜딩이 이미 존재합니다.', 'serviceId', samePair);
+  const sameSlug = active.find(
+    (item) => item.slug.toLowerCase() === candidate.slug.toLowerCase(),
+  );
+  if (sameSlug)
+    throw new LandingValidationError(
+      '동일한 URL이 이미 존재합니다.',
+      'slug',
+      sameSlug,
+    );
+  const sameKeyword = active.find(
+    (item) =>
+      item.primaryKeyword.trim().toLowerCase() ===
+      candidate.primaryKeyword.trim().toLowerCase(),
+  );
+  if (sameKeyword)
+    throw new LandingValidationError(
+      '동일한 대표 키워드가 이미 존재합니다.',
+      'primaryKeyword',
+      sameKeyword,
+    );
+  const samePair = active.find(
+    (item) =>
+      item.regionId === candidate.regionId &&
+      item.serviceId === candidate.serviceId,
+  );
+  if (samePair)
+    throw new LandingValidationError(
+      '동일한 지역·서비스 랜딩이 이미 존재합니다.',
+      'serviceId',
+      samePair,
+    );
 }

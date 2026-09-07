@@ -49,7 +49,7 @@ export function slugify(value: string) {
   return value
     .trim()
     .toLowerCase()
-    .normalize('NFKD')
+    .normalize('NFKC')
     .replace(/[^a-z0-9가-힣]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .slice(0, 100);

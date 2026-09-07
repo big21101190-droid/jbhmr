@@ -1,4 +1,5 @@
 import { company, telHref } from '@/lib/company';
+import { busRoutes } from '@/data/bus-routes';
 
 export const NATIONAL_PHONE = company.nationalPhone;
 export const DAEGU_PHONE = company.daeguPhone;
@@ -193,21 +194,7 @@ export const serviceCards = [
   },
 ];
 
-export const intercityRoutes = [
-  '서울–부산',
-  '서울–대전',
-  '서울–천안',
-  '서울–청주',
-  '서울–대구',
-  '서울–울산',
-  '서울–강릉',
-  '서울–속초',
-  '서울–포항',
-  '서울–경주',
-  '서울–광주',
-  '서울–전주',
-  '서울–목포',
-];
+export const intercityRoutes = busRoutes;
 
 export function areaHref(region: RegionGroup, place: string) {
   return `/area/${region.slug}-${place}`;

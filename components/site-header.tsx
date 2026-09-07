@@ -63,7 +63,7 @@ export function SiteHeader({
   return (
     <>
       <div className="bg-[#10243e] px-4 py-2.5 text-center text-[12px] font-semibold text-white sm:text-sm">
-        전국 접수{' '}
+        전화접수{' '}
         <a
           className="ml-1 font-black text-[#ffce3a]"
           href={telHref(NATIONAL_PHONE)}
@@ -71,12 +71,11 @@ export function SiteHeader({
           {NATIONAL_PHONE}
         </a>
         <span className="mx-2 text-white/30 sm:mx-3">|</span>
-        대구 전용{' '}
         <a
-          className="ml-1 font-black text-[#ffce3a]"
-          href={telHref(DAEGU_PHONE)}
+          className="font-black text-[#ffce3a] underline decoration-transparent underline-offset-4 transition hover:decoration-current"
+          href="/contact"
         >
-          {DAEGU_PHONE}
+          인터넷접수
         </a>
       </div>
 

@@ -2,7 +2,7 @@ import { getRegion } from '@/data/regions';
 import { getService } from '@/data/services';
 import { customerKeywordIntents } from '@/data/customer-keywords';
 import { phoneForRegion, telHref } from '@/lib/company';
-import type { LandingInput } from '@/lib/domain';
+import type { LandingInput, Region, Service } from '@/lib/domain';
 
 export function createLandingDefaults(
   regionId: string,
@@ -13,6 +13,16 @@ export function createLandingDefaults(
   const service = getService(serviceId);
   if (!region || !service)
     throw new Error('지역 또는 서비스를 찾을 수 없습니다.');
+  return createLandingDefaultsFor(region, service, keyword);
+}
+
+export function createLandingDefaultsFor(
+  region: Region,
+  service: Service,
+  keyword?: string,
+): LandingInput {
+  const regionId = region.id;
+  const serviceId = service.id;
   const primaryKeyword =
     keyword?.trim() || `${region.name} ${service.keywords[0]}`;
   const title = `${region.name} ${service.name}`;
@@ -46,6 +56,7 @@ export function createLandingDefaults(
     metaTitle: `${title} 상담 | 제이복합물류`,
     metaDescription: `${region.name} ${service.name} 상담. 출발지·도착지와 화물 정보를 확인해 접수 방법을 안내합니다. 전화 ${phone}.`,
     heroImage,
+    bodyTopImages: [],
     summary: `${region.name}에서 출발하거나 도착하는 ${service.name}을 화물 조건과 희망 시간에 맞춰 상담합니다. ${service.shortDescription}`,
     sections: [
       {

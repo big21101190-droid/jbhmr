@@ -20,6 +20,7 @@ export function SiteFooter() {
             </p>
             <p>{company.address}</p>
             <p>상담 운영시간 {company.businessHours}</p>
+            <p>화물자동차 운송주선사업 허가 제2024-05호</p>
           </div>
         </div>
         <div>

@@ -89,6 +89,9 @@ export type Service = {
   faqs: FaqItem[];
   active: boolean;
   sortOrder: number;
+  archived?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type Region = {
@@ -104,6 +107,16 @@ export type Region = {
   sortOrder: number;
   usesDaeguPhone: boolean;
   administrativeParentId?: string;
+  archived?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type LandingImage = {
+  url: string;
+  alt?: string;
+  caption?: string;
+  storageKey?: string;
 };
 
 export type LandingSection = {
@@ -123,6 +136,7 @@ export type Landing = {
   metaTitle: string;
   metaDescription: string;
   heroImage: string;
+  bodyTopImages?: LandingImage[];
   summary: string;
   sections: LandingSection[];
   faq: FaqItem[];

@@ -108,13 +108,13 @@ export default function Home() {
                 href={telHref(NATIONAL_PHONE)}
                 className="inline-flex items-center justify-center gap-3 rounded-xl bg-[#1b4dff] px-6 py-4 font-extrabold text-white shadow-[0_12px_30px_rgba(27,77,255,.24)]"
               >
-                전국 {NATIONAL_PHONE} <ArrowRight size={18} />
+                전화접수 {NATIONAL_PHONE} <ArrowRight size={18} />
               </a>
               <a
-                href={telHref(DAEGU_PHONE)}
+                href="/contact"
                 className="inline-flex items-center justify-center gap-3 rounded-xl border border-[#cbd5e1] bg-white px-6 py-4 font-extrabold text-[#10243e]"
               >
-                대구 {DAEGU_PHONE}
+                인터넷접수
               </a>
             </div>
             <div className="mt-7 flex flex-wrap gap-x-6 gap-y-3 text-sm font-semibold text-[#344054]">
@@ -293,12 +293,13 @@ export default function Home() {
               </p>
               <div className="mt-7 flex flex-wrap gap-2">
                 {intercityRoutes.map((route) => (
-                  <span
-                    key={route}
-                    className="rounded-lg bg-[#f4f7fb] px-3 py-2 text-xs font-bold text-[#344054]"
+                  <a
+                    key={route.slug}
+                    href={`/routes/${route.slug}`}
+                    className="rounded-lg bg-[#f4f7fb] px-3 py-2 text-xs font-bold text-[#344054] transition hover:bg-[#e7eeff] hover:text-[#1b4dff] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1b4dff]"
                   >
-                    {route}
-                  </span>
+                    {route.origin}–{route.destination}
+                  </a>
                 ))}
               </div>
               <a
@@ -534,13 +535,13 @@ export default function Home() {
               href={telHref(NATIONAL_PHONE)}
               className="rounded-xl bg-white px-6 py-4 text-center font-black text-[#1b4dff]"
             >
-              전국 {NATIONAL_PHONE}
+              전화접수 {NATIONAL_PHONE}
             </a>
             <a
-              href={telHref(DAEGU_PHONE)}
+              href="/contact"
               className="rounded-xl border border-white/35 px-6 py-4 text-center font-black"
             >
-              대구 {DAEGU_PHONE}
+              인터넷접수
             </a>
           </div>
         </div>

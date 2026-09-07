@@ -14,11 +14,15 @@ import { PageHero } from '@/components/page-hero';
 import { PhoneFab } from '@/components/phone-fab';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
-import { getService, services } from '@/data/services';
+import { getBusRouteByDestination } from '@/data/bus-routes';
+import { services as seedServices } from '@/data/services';
+import { getServiceRecord } from '@/lib/catalog-store';
 import { SITE_URL, company, telHref } from '@/lib/company';
 
+export const dynamic = 'force-dynamic';
+
 export function generateStaticParams() {
-  return services.map(({ slug }) => ({ slug }));
+  return seedServices.map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -26,7 +30,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const service = getService((await params).slug);
+  const service = await getServiceRecord((await params).slug);
   if (!service) return {};
   return {
     title: service.name,
@@ -46,8 +50,8 @@ export default async function ServicePage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const service = getService((await params).slug);
-  if (!service) notFound();
+  const service = await getServiceRecord((await params).slug);
+  if (!service || service.archived || !service.active) notFound();
 
   const serviceUrl = `${SITE_URL}/services/${service.slug}`;
   const schemas = [
@@ -188,17 +192,36 @@ export default async function ServicePage({
               안내합니다.
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {service.routeIntents.map((route) => (
-                <div
-                  key={`${route.origin}-${route.destination}`}
-                  className="flex items-center gap-3 rounded-2xl border border-[#dce5f0] bg-[#f9fbfd] px-5 py-4"
-                >
-                  <Route size={18} className="shrink-0 text-[#1b4dff]" />
-                  <span className="text-sm font-black text-[#344054]">
-                    {route.label}
-                  </span>
-                </div>
-              ))}
+              {service.routeIntents.map((route) => {
+                const busRoute =
+                  service.id === 'express-bus'
+                    ? getBusRouteByDestination(route.destination)
+                    : null;
+                const content = (
+                  <>
+                    <Route size={18} className="shrink-0 text-[#1b4dff]" />
+                    <span className="text-sm font-black text-[#344054]">
+                      {route.label}
+                    </span>
+                  </>
+                );
+                return busRoute ? (
+                  <a
+                    key={`${route.origin}-${route.destination}`}
+                    href={`/routes/${busRoute.slug}`}
+                    className="flex items-center gap-3 rounded-2xl border border-[#dce5f0] bg-[#f9fbfd] px-5 py-4 transition hover:border-[#1b4dff] hover:bg-[#eff4ff] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1b4dff]"
+                  >
+                    {content}
+                  </a>
+                ) : (
+                  <div
+                    key={`${route.origin}-${route.destination}`}
+                    className="flex items-center gap-3 rounded-2xl border border-[#dce5f0] bg-[#f9fbfd] px-5 py-4"
+                  >
+                    {content}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
