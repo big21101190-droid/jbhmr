@@ -26,4 +26,10 @@ describe('client revision release contract', () => {
     ].join('\n');
     expect(source).not.toMatch(/MAX_(REGIONS|SERVICES)/);
   });
+
+  it('keeps active root and child regions available to landing editors', () => {
+    const editor = readFileSync('components/landing-editor.tsx', 'utf8');
+    expect(editor).not.toContain('r.parentId &&');
+    expect(editor).toContain('r.active && !r.archived');
+  });
 });

@@ -162,7 +162,6 @@ export function LandingEditor({
               {regions
                 .filter(
                   (r) =>
-                    r.parentId &&
                     ((r.active && !r.archived) || r.id === form.regionId),
                 )
                 .map((r) => (

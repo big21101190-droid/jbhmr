@@ -89,13 +89,11 @@ export function LandingAdminList({
           className="w-full min-w-0 rounded-xl border border-[#dce5f0] bg-white px-3 py-3 text-sm"
         >
           <option value="ALL">전체 지역</option>
-          {regions
-            .filter((r) => r.parentId)
-            .map((r) => (
-              <option key={r.id} value={r.id}>
-                {r.name}
-              </option>
-            ))}
+          {regions.map((r) => (
+            <option key={r.id} value={r.id}>
+              {r.name}
+            </option>
+          ))}
         </select>
         <select
           value={service}
