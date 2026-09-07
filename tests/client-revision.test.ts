@@ -4,11 +4,15 @@ import { busRoutes } from '@/data/bus-routes';
 
 describe('client revision release contract', () => {
   it('defines thirteen unique linked bus routes', () => {
+    const home = readFileSync('app/page.tsx', 'utf8');
+    const routePage = readFileSync('app/routes/[slug]/page.tsx', 'utf8');
     expect(busRoutes).toHaveLength(13);
     expect(new Set(busRoutes.map((route) => route.slug)).size).toBe(13);
     expect(
       busRoutes.every((route) => route.label.endsWith('고속버스택배')),
     ).toBe(true);
+    expect(home).toContain('href={`/routes/${route.slug}`}');
+    expect(routePage).toContain('href={`/routes/${item.slug}`}');
   });
 
   it('keeps the exact global reception and footer license copy', () => {
