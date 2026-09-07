@@ -59,7 +59,7 @@ export function LandingAdminList({
     setMessage('변경했습니다.');
   };
   return (
-    <section className="rounded-2xl bg-white p-5 shadow-sm sm:p-7">
+    <section className="min-w-0 rounded-2xl bg-white p-5 shadow-sm sm:p-7">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-black">SEO 랜딩페이지</h1>
@@ -81,12 +81,12 @@ export function LandingAdminList({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="제목·키워드·URL 검색"
-          className="rounded-xl border border-[#dce5f0] px-4 py-3 text-sm"
+          className="w-full min-w-0 rounded-xl border border-[#dce5f0] px-4 py-3 text-sm"
         />
         <select
           value={region}
           onChange={(e) => setRegion(e.target.value)}
-          className="rounded-xl border border-[#dce5f0] bg-white px-3 py-3 text-sm"
+          className="w-full min-w-0 rounded-xl border border-[#dce5f0] bg-white px-3 py-3 text-sm"
         >
           <option value="ALL">전체 지역</option>
           {regions
@@ -100,7 +100,7 @@ export function LandingAdminList({
         <select
           value={service}
           onChange={(e) => setService(e.target.value)}
-          className="rounded-xl border border-[#dce5f0] bg-white px-3 py-3 text-sm"
+          className="w-full min-w-0 rounded-xl border border-[#dce5f0] bg-white px-3 py-3 text-sm"
         >
           <option value="ALL">전체 서비스</option>
           {services.map((s) => (
@@ -112,7 +112,7 @@ export function LandingAdminList({
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="rounded-xl border border-[#dce5f0] bg-white px-3 py-3 text-sm"
+          className="w-full min-w-0 rounded-xl border border-[#dce5f0] bg-white px-3 py-3 text-sm"
         >
           <option value="ALL">전체 상태</option>
           <option>DRAFT</option>
@@ -126,7 +126,7 @@ export function LandingAdminList({
       >
         {message}
       </p>
-      <div className="mt-2 overflow-x-auto">
+      <div className="mt-2 min-w-0 max-w-full overflow-x-auto">
         <table className="w-full min-w-[900px] text-left text-sm">
           <thead className="border-b border-[#dce5f0] text-xs text-[#667085]">
             <tr>

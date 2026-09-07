@@ -5,7 +5,7 @@ import type { Region, Service } from '@/lib/domain';
 import { slugify } from '@/lib/seo';
 
 const fieldClass =
-  'rounded-xl border border-[#cfd9e6] bg-white px-4 py-3 text-sm outline-none focus:border-[#1b4dff] focus:ring-2 focus:ring-[#1b4dff]/15';
+  'w-full min-w-0 rounded-xl border border-[#cfd9e6] bg-white px-4 py-3 text-sm outline-none focus:border-[#1b4dff] focus:ring-2 focus:ring-[#1b4dff]/15';
 
 type RegionDraft = Pick<
   Region,
@@ -90,7 +90,7 @@ export function RegionManager({ initial }: { initial: Region[] }) {
   };
 
   return (
-    <section id="regions" className="rounded-2xl bg-white p-5 shadow-sm sm:p-7">
+    <section id="regions" className="min-w-0 rounded-2xl bg-white p-5 shadow-sm sm:p-7">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h2 className="text-xl font-black">지역 관리</h2>
@@ -114,7 +114,7 @@ export function RegionManager({ initial }: { initial: Region[] }) {
         {message}
       </p>
       <div className="mt-3 grid gap-6 xl:grid-cols-[1.15fr_.85fr]">
-        <div className="max-h-[600px] overflow-auto rounded-xl border border-[#dce5f0]">
+        <div className="min-w-0 max-h-[600px] max-w-full overflow-auto rounded-xl border border-[#dce5f0]">
           <table className="w-full min-w-[680px] text-left text-sm">
             <thead className="sticky top-0 bg-[#edf3fb] text-xs text-[#667085]">
               <tr>
@@ -250,7 +250,7 @@ export function RegionManager({ initial }: { initial: Region[] }) {
                 ))}
             </select>
           </label>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid gap-3 sm:grid-cols-2">
             <label className="grid gap-2 text-sm font-bold">
               유형
               <select
@@ -412,7 +412,7 @@ export function ServiceManager({ initial }: { initial: Service[] }) {
   return (
     <section
       id="services"
-      className="rounded-2xl bg-white p-5 shadow-sm sm:p-7"
+      className="min-w-0 rounded-2xl bg-white p-5 shadow-sm sm:p-7"
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
@@ -437,7 +437,7 @@ export function ServiceManager({ initial }: { initial: Service[] }) {
         {message}
       </p>
       <div className="mt-3 grid gap-6 xl:grid-cols-[1.15fr_.85fr]">
-        <div className="max-h-[520px] overflow-auto rounded-xl border border-[#dce5f0]">
+        <div className="min-w-0 max-h-[520px] max-w-full overflow-auto rounded-xl border border-[#dce5f0]">
           <table className="w-full min-w-[620px] text-left text-sm">
             <thead className="sticky top-0 bg-[#edf3fb] text-xs text-[#667085]">
               <tr>
@@ -551,7 +551,7 @@ export function ServiceManager({ initial }: { initial: Service[] }) {
               className={fieldClass}
             />
           </label>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid gap-3 sm:grid-cols-2">
             <label className="grid gap-2 text-sm font-bold">
               그룹
               <select

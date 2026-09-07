@@ -12,7 +12,7 @@ import { createLandingDefaultsFor } from '@/lib/landing-defaults';
 import { slugify } from '@/lib/seo';
 
 const fieldClass =
-  'rounded-xl border border-[#cfd9e6] bg-white px-4 py-3 outline-none focus:border-[#1b4dff] focus:ring-2 focus:ring-[#1b4dff]/15';
+  'w-full min-w-0 rounded-xl border border-[#cfd9e6] bg-white px-4 py-3 outline-none focus:border-[#1b4dff] focus:ring-2 focus:ring-[#1b4dff]/15';
 const labelClass = 'grid gap-2 text-sm font-bold';
 
 export function LandingEditor({
@@ -108,7 +108,7 @@ export function LandingEditor({
   };
   const previewId = record?.id || form.id;
   return (
-    <section className="rounded-2xl bg-white p-5 shadow-sm sm:p-8">
+    <section className="min-w-0 rounded-2xl bg-white p-5 shadow-sm sm:p-8">
       <div className="flex flex-col gap-4 border-b border-[#dce5f0] pb-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-xs font-black tracking-[.15em] text-[#1b4dff]">
