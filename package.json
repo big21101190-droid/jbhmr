@@ -13,6 +13,7 @@
     "lint": "oxlint app components data lib scripts tests",
     "format": "oxfmt app components data lib scripts tests",
     "test": "vitest run",
+    "test:browser": "playwright test",
     "validate:landings": "node scripts/validate-landings.mjs",
     "qa:urls": "node scripts/qa-landings.mjs",
     "qa:links": "node scripts/qa-links.mjs"
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^5.15.13",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "4.2.1",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
@@ -36,6 +38,7 @@
     "oxlint-tsgolint": "7.0.2001",
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3",
+    "vite": "^8.2.2",
     "vitest": "^4.1.11"
   },
   "type": "module"

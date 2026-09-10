@@ -1,5 +1,6 @@
 import type { Service, ServiceRouteIntent } from '@/lib/domain';
 import { slugify } from '@/lib/seo';
+import { decodeUrlSegment } from '@/lib/url-segment';
 
 const placeSlugs: Record<string, string> = {
   서울: 'seoul',
@@ -71,7 +72,10 @@ export function getServiceRoutes(service: Service): ServiceRoute[] {
 }
 
 export function getServiceRoute(services: Service[], slug: string) {
+  const lookup = decodeUrlSegment(slug);
+  if (lookup === null) return undefined;
   return services
+    .filter((service) => service.active && !service.archived)
     .flatMap((service) => getServiceRoutes(service))
-    .find((route) => route.slug === slug);
+    .find((route) => route.slug.normalize('NFC') === lookup);
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { ChevronDown, Menu, Phone, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BrandLogo } from '@/components/brand-logo';
 import {
   areaHref,
@@ -59,6 +59,39 @@ export function SiteHeader({
   const [regionOpen, setRegionOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeRegion, setActiveRegion] = useState(regionGroups[0]);
+  const serviceButton = useRef<HTMLButtonElement>(null);
+  const regionButton = useRef<HTMLButtonElement>(null);
+  const mobileButton = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape' || !(serviceOpen || regionOpen || mobileOpen))
+        return;
+      event.preventDefault();
+      const trigger = mobileOpen
+        ? mobileButton
+        : serviceOpen
+          ? serviceButton
+          : regionButton;
+      setServiceOpen(false);
+      setRegionOpen(false);
+      setMobileOpen(false);
+      trigger.current?.focus();
+    };
+    document.addEventListener('keydown', closeOnEscape);
+    return () => document.removeEventListener('keydown', closeOnEscape);
+  }, [serviceOpen, regionOpen, mobileOpen]);
+
+  useEffect(() => {
+    const breakpoint = window.matchMedia('(min-width: 1280px)');
+    const closeOnResize = () => {
+      setServiceOpen(false);
+      setRegionOpen(false);
+      setMobileOpen(false);
+    };
+    breakpoint.addEventListener('change', closeOnResize);
+    return () => breakpoint.removeEventListener('change', closeOnResize);
+  }, []);
 
   return (
     <>
@@ -79,7 +112,7 @@ export function SiteHeader({
         </a>
       </div>
 
-      <header className="sticky top-0 z-50 border-b border-[#dce5f0] bg-white/95 px-4 backdrop-blur-xl sm:px-5">
+      <header className="sticky top-0 z-50 border-b border-[#dce5f0] bg-white/95 px-4 backdrop-blur-xl sm:px-5 [&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-offset-2 [&_a:focus-visible]:outline-[#1b4dff] [&_button:focus-visible]:outline-2 [&_button:focus-visible]:outline-offset-2 [&_button:focus-visible]:outline-[#1b4dff]">
         <div className="mx-auto flex h-[72px] max-w-[1240px] items-center justify-between">
           <a
             href="/"
@@ -107,6 +140,8 @@ export function SiteHeader({
               }}
               className="flex h-full items-center gap-1.5 font-extrabold transition-colors hover:text-[#1b4dff]"
               aria-expanded={serviceOpen}
+              aria-controls="header-services"
+              ref={serviceButton}
             >
               서비스 안내{' '}
               <ChevronDown
@@ -135,6 +170,8 @@ export function SiteHeader({
               }}
               className="flex h-full items-center gap-1.5 font-extrabold transition-colors hover:text-[#1b4dff]"
               aria-expanded={regionOpen}
+              aria-controls="header-regions"
+              ref={regionButton}
             >
               지역별 접수{' '}
               <ChevronDown
@@ -160,6 +197,9 @@ export function SiteHeader({
               onClick={() => setMobileOpen((value) => !value)}
               className="grid h-11 w-11 place-items-center rounded-xl border border-[#dce5f0] bg-white xl:hidden"
               aria-label={mobileOpen ? '메뉴 닫기' : '메뉴 열기'}
+              aria-expanded={mobileOpen}
+              aria-controls="header-mobile"
+              ref={mobileButton}
             >
               {mobileOpen ? <X size={21} /> : <Menu size={21} />}
             </button>
@@ -167,7 +207,10 @@ export function SiteHeader({
         </div>
 
         {serviceOpen && (
-          <div className="absolute left-1/2 top-full hidden w-[min(980px,calc(100%-40px))] -translate-x-1/2 rounded-b-2xl border border-t-0 border-[#dce5f0] bg-white p-7 shadow-[0_28px_70px_rgba(16,36,62,.2)] xl:block">
+          <div
+            id="header-services"
+            className="absolute left-1/2 top-full hidden max-h-[calc(100dvh-120px)] w-[min(980px,calc(100%-40px))] -translate-x-1/2 overflow-y-auto rounded-b-2xl border border-t-0 border-[#dce5f0] bg-white p-7 shadow-[0_28px_70px_rgba(16,36,62,.2)] xl:block"
+          >
             <div className="flex items-end justify-between border-b border-[#e3e9f2] pb-5">
               <div>
                 <p className="text-[11px] font-black tracking-[.15em] text-[#1b4dff]">
@@ -208,7 +251,10 @@ export function SiteHeader({
         )}
 
         {regionOpen && (
-          <div className="absolute left-1/2 top-full hidden w-[min(980px,calc(100%-40px))] -translate-x-1/2 overflow-hidden rounded-b-2xl border border-t-0 border-[#dce5f0] bg-white shadow-[0_28px_70px_rgba(16,36,62,.2)] xl:grid xl:grid-cols-[260px_1fr]">
+          <div
+            id="header-regions"
+            className="absolute left-1/2 top-full hidden max-h-[calc(100dvh-120px)] w-[min(980px,calc(100%-40px))] -translate-x-1/2 overflow-y-auto rounded-b-2xl border border-t-0 border-[#dce5f0] bg-white shadow-[0_28px_70px_rgba(16,36,62,.2)] xl:grid xl:grid-cols-[260px_1fr]"
+          >
             <div className="max-h-[560px] overflow-y-auto bg-[#f4f7fb] p-3">
               {regionGroups.map((region) => (
                 <button
@@ -252,7 +298,10 @@ export function SiteHeader({
         )}
 
         {mobileOpen && (
-          <div className="max-h-[calc(100vh-110px)] overflow-y-auto border-t border-[#e3e9f2] bg-white px-1 py-4 xl:hidden">
+          <div
+            id="header-mobile"
+            className="max-h-[calc(100dvh-110px)] overflow-y-auto border-t border-[#e3e9f2] bg-white px-1 py-4 xl:hidden"
+          >
             {primaryLinks.map(([label, href]) => (
               <a
                 key={href}

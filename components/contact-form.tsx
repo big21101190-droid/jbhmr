@@ -1,6 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import {
+  contactPhonePattern,
+  normalizeContactPhone,
+  phoneErrorMessage,
+} from '@/lib/contact-phone';
 
 const serviceOptions = [
   '오토바이 퀵서비스',
@@ -15,6 +20,13 @@ const serviceOptions = [
 ];
 
 export function ContactForm() {
+  const [phoneError, setPhoneError] = useState(false);
+  const checkPhone = (input: HTMLInputElement, showError: boolean) => {
+    const valid = normalizeContactPhone(input.value) !== null;
+    input.setCustomValidity(valid ? '' : phoneErrorMessage);
+    if (showError || valid) setPhoneError(!valid);
+    return valid;
+  };
   const [state, setState] = useState<
     'idle' | 'submitting' | 'success' | 'error'
   >('idle');
@@ -22,10 +34,16 @@ export function ContactForm() {
     event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>,
   ) => {
     event.preventDefault();
-    setState('submitting');
     const form = event.currentTarget;
+    const phoneInput = form.elements.namedItem('phone') as HTMLInputElement;
+    if (!checkPhone(phoneInput, true) || !form.reportValidity()) {
+      phoneInput.reportValidity();
+      return;
+    }
+    setState('submitting');
     try {
       const formData = new FormData(form);
+      formData.set('phone', normalizeContactPhone(phoneInput.value)!);
       const response = await fetch('/__forms.html', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -35,6 +53,7 @@ export function ContactForm() {
       });
       if (!response.ok) throw new Error('submit failed');
       form.reset();
+      setPhoneError(false);
       setState('success');
       window.gtag?.('event', 'inquiry_submit');
     } catch {
@@ -63,7 +82,7 @@ export function ContactForm() {
           <input name="bot-field" tabIndex={-1} autoComplete="off" />
         </label>
       </p>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid items-start gap-5 sm:grid-cols-2">
         <label className="grid gap-2 text-sm font-bold">
           이름 또는 회사명
           <input
@@ -73,17 +92,45 @@ export function ContactForm() {
             className="rounded-xl border border-[#cfd9e6] px-4 py-3 outline-none focus:border-[#1b4dff] focus:ring-2 focus:ring-[#1b4dff]/15"
           />
         </label>
-        <label className="grid gap-2 text-sm font-bold">
-          연락처
+        <div className="grid gap-2 text-sm font-bold">
+          <label htmlFor="inquiry-phone">연락처</label>
           <input
+            id="inquiry-phone"
             required
             name="phone"
             type="tel"
             inputMode="tel"
             maxLength={30}
+            pattern={contactPhonePattern}
+            title={phoneErrorMessage}
+            aria-invalid={phoneError}
+            aria-describedby={
+              phoneError
+                ? 'inquiry-phone-help inquiry-phone-error'
+                : 'inquiry-phone-help'
+            }
+            onChange={(event) => checkPhone(event.currentTarget, phoneError)}
+            onBlur={(event) => checkPhone(event.currentTarget, true)}
+            onInvalid={(event) => checkPhone(event.currentTarget, true)}
             className="rounded-xl border border-[#cfd9e6] px-4 py-3 outline-none focus:border-[#1b4dff] focus:ring-2 focus:ring-[#1b4dff]/15"
           />
-        </label>
+          <p
+            id="inquiry-phone-help"
+            className="text-xs font-normal text-[#667085]"
+          >
+            휴대전화·지역번호·대표번호를 입력하세요. 공백과 하이픈을 사용할 수
+            있습니다.
+          </p>
+          {phoneError ? (
+            <output
+              id="inquiry-phone-error"
+              htmlFor="inquiry-phone"
+              className="text-xs font-bold text-red-600"
+            >
+              {phoneErrorMessage}
+            </output>
+          ) : null}
+        </div>
         <label className="grid gap-2 text-sm font-bold">
           출발지
           <input

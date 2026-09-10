@@ -49,27 +49,23 @@ describe('landing create and lifecycle', () => {
     );
   });
 
-  it('blocks duplicate primary keyword', () => {
+  it('allows a shared primary keyword when the URL is unique', () => {
     const existing = landings[0];
     const candidate = {
       ...createLandingDefaults('seoul-seocho', 'one-ton'),
       primaryKeyword: existing.primaryKeyword,
     };
-    expect(() => assertNoDuplicate(candidate, landings)).toThrow(
-      '동일한 대표 키워드가 이미 존재합니다.',
-    );
+    expect(() => assertNoDuplicate(candidate, landings)).not.toThrow();
   });
 
-  it('blocks duplicate region and service pair', () => {
+  it('allows a shared region and service pair with a unique URL', () => {
     const existing = landings[0];
     const candidate = {
       ...createLandingDefaults(existing.regionId, existing.serviceId),
       slug: 'different-slug',
       primaryKeyword: '완전히 다른 키워드',
     };
-    expect(() => assertNoDuplicate(candidate, landings)).toThrow(
-      '동일한 지역·서비스 랜딩이 이미 존재합니다.',
-    );
+    expect(() => assertNoDuplicate(candidate, landings)).not.toThrow();
   });
 
   it('creates unique route landing slugs from origin, destination, and service', () => {
@@ -98,7 +94,7 @@ describe('landing create and lifecycle', () => {
         { ...seoulBusan, slug: 'another-slug', primaryKeyword: '다른 키워드' },
         [{ ...landings[0], ...seoulBusan, id: 'qa-route-busan' }],
       ),
-    ).toThrow('동일한 출발지·도착지·서비스 랜딩');
+    ).not.toThrow();
   });
 
   it('refreshes a new route draft keyword, slug, and service media', () => {

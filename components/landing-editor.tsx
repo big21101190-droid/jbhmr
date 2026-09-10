@@ -10,6 +10,7 @@ import type {
 } from '@/lib/domain';
 import { refreshLandingDefaultsFor } from '@/lib/landing-defaults';
 import { slugify } from '@/lib/seo';
+import { decodeUrlSegment } from '@/lib/url-segment';
 
 const fieldClass =
   'w-full min-w-0 rounded-xl border border-[#cfd9e6] bg-white px-4 py-3 outline-none focus:border-[#1b4dff] focus:ring-2 focus:ring-[#1b4dff]/15';
@@ -45,7 +46,7 @@ export function LandingEditor({
     );
     setMessage(
       form.id
-        ? '지역·서비스 기준 본문을 채웠습니다. 기존 URL·키워드·이미지는 유지했습니다.'
+        ? '제목·본문·FAQ·보조 키워드·SEO/OG 문구·전화 CTA를 새로 채웠습니다. 기존 URL·대표 키워드·이미지·색인·Canonical·공개 상태·연결 설정은 유지했습니다.'
         : '선택값 기준 키워드·URL·이미지와 본문을 새로 채웠습니다.',
     );
   };
@@ -56,29 +57,45 @@ export function LandingEditor({
     const url = form.id
       ? `/api/admin/landings/${form.id}`
       : '/api/admin/landings';
-    const response = await fetch(url, {
-      method: form.id ? 'PATCH' : 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    const data = await response.json();
-    if (!response.ok) {
+    try {
+      const response = await fetch(url, {
+        method: form.id ? 'PATCH' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setMessage(
+          data.existing
+            ? `${data.error} 기존 페이지: ${data.existing.title}`
+            : data.error || '저장하지 못했습니다.',
+        );
+        if (data.field === 'slug') {
+          setMessage(
+            (current) =>
+              `${current} 고급 SEO 설정의 URL slug에 세부 주제를 붙여 고유한 주소로 입력해주세요. 작성 내용은 유지됩니다.`,
+          );
+        }
+        return;
+      }
+      setForm(data.landing);
+      setRecord(data.landing);
       setMessage(
-        data.existing
-          ? `${data.error} 기존 페이지: ${data.existing.title}`
-          : data.error || '저장하지 못했습니다.',
+        status === 'PUBLISHED' ? '공개했습니다.' : '초안으로 저장했습니다.',
       );
+      if (!initial.id)
+        window.history.replaceState(
+          {},
+          '',
+          `/admin/landings/${data.landing.id}`,
+        );
+    } catch {
+      setMessage(
+        '저장 결과를 확인하지 못했습니다. 작성 내용은 유지됩니다. 관리자 목록에서 저장 여부를 확인한 뒤 다시 시도해주세요.',
+      );
+    } finally {
       setSaving(false);
-      return;
     }
-    setForm(data.landing);
-    setRecord(data.landing);
-    setMessage(
-      status === 'PUBLISHED' ? '공개했습니다.' : '초안으로 저장했습니다.',
-    );
-    setSaving(false);
-    if (!initial.id)
-      window.history.replaceState({}, '', `/admin/landings/${data.landing.id}`);
   };
   const upload = async (file: File, bodyIndex?: number) => {
     setMessage('이미지 업로드 중…');
@@ -307,7 +324,7 @@ export function LandingEditor({
                       alt={
                         image.alt || `본문 상단 이미지 ${index + 1} 미리보기`
                       }
-                      className="aspect-[4/3] w-full rounded-lg object-cover"
+                      className="aspect-[4/3] w-full rounded-lg bg-[#edf3fb] object-contain"
                     />
                   ) : (
                     <div className="grid aspect-[4/3] place-items-center rounded-lg bg-[#edf3fb] text-sm font-bold text-[#667085]">
@@ -501,12 +518,15 @@ export function LandingEditor({
               />
               <span className="text-xs font-normal text-[#667085]">
                 예상 공개 URL: /delivery/
-                {slugify(form.slug) || automaticSlug || '자동-생성'}
+                {slugify(decodeUrlSegment(form.slug) || '') ||
+                  automaticSlug ||
+                  '자동-생성'}
               </span>
               <span className="text-xs font-normal leading-5 text-[#667085]">
-                강남/강남구 또는 서울→부산/서울→대전처럼 조합이 다르면 서로 다른
-                URL이 생성됩니다. 같은 조합이나 같은 사용자 지정 URL은 중복
-                차단됩니다.
+                같은 지역·서비스·노선도 별도 URL이면 등록할 수 있습니다. 겹치면
+                URL 끝에 세부 주제를 붙여주세요 (예:
+                seoul-busan-express-bus-documents). 초안·보관 페이지의 URL도
+                중복 사용할 수 없습니다.
               </span>
             </label>
             <label className={labelClass}>

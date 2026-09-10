@@ -21,7 +21,7 @@ function errorResponse(error: unknown) {
             }
           : null,
       },
-      { status: error.existing ? 409 : 400 },
+      { status: error.status },
     );
   }
   console.error(error);

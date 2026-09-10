@@ -1,5 +1,6 @@
 import { ArrowRight, CheckCircle2, Phone } from 'lucide-react';
 import { JsonLd } from '@/components/json-ld';
+import { LandingGallery } from '@/components/landing-gallery';
 import { PhoneFab } from '@/components/phone-fab';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
@@ -33,7 +34,6 @@ export async function LandingView({
   const routeName = destinationRegion
     ? `${region.name}–${destinationRegion.name}`
     : region.name;
-  const bodyTopImages = landing.bodyTopImages || [];
   const canonical = landing.canonical || `${SITE_URL}/delivery/${landing.slug}`;
   const schemas = [
     {
@@ -151,33 +151,10 @@ export async function LandingView({
           />
         </div>
       </section>
-      {bodyTopImages.length ? (
-        <section
-          className="bg-white px-5 pt-14 sm:pt-20"
-          aria-label="본문 상단 이미지"
-        >
-          <div
-            className={`mx-auto grid gap-4 ${bodyTopImages.length === 1 ? 'max-w-[760px]' : 'max-w-[1040px] sm:grid-cols-2'} ${bodyTopImages.length === 3 ? 'lg:grid-cols-3' : ''}`}
-          >
-            {bodyTopImages.map((image, index) => (
-              <figure key={`${image.url}-${index}`} className="min-w-0">
-                <img
-                  src={image.url}
-                  alt={
-                    image.alt || `${landing.primaryKeyword} 이미지 ${index + 1}`
-                  }
-                  className="aspect-[4/3] w-full rounded-2xl object-cover shadow-[0_12px_35px_rgba(16,36,62,.10)]"
-                />
-                {image.caption ? (
-                  <figcaption className="mt-2 text-sm text-[#667085]">
-                    {image.caption}
-                  </figcaption>
-                ) : null}
-              </figure>
-            ))}
-          </div>
-        </section>
-      ) : null}
+      <LandingGallery
+        images={landing.bodyTopImages || []}
+        keyword={landing.primaryKeyword}
+      />
       <section className="bg-white px-5 py-16 sm:py-20">
         <div className="mx-auto max-w-[1040px]">
           {landing.sections.map((section, index) => (

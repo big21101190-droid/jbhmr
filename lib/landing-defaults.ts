@@ -130,16 +130,27 @@ export function refreshLandingDefaultsFor(
     destinationRegion,
   );
 
+  if (!isExistingLanding)
+    return { ...defaults, bodyTopImages: current.bodyTopImages || [] };
+
+  // Regenerate content explicitly. Preserve current operational/SEO settings,
+  // media, relationships, and any future fields unless deliberately listed here.
   return {
-    ...defaults,
-    id: current.id,
-    slug: isExistingLanding ? current.slug : defaults.slug,
-    heroImage: isExistingLanding
-      ? current.heroImage || defaults.heroImage
-      : defaults.heroImage,
-    ogImage: isExistingLanding
-      ? current.ogImage || defaults.ogImage
-      : defaults.ogImage,
-    bodyTopImages: current.bodyTopImages || [],
+    ...current,
+    regionId: defaults.regionId,
+    destinationRegionId: defaults.destinationRegionId,
+    serviceId: defaults.serviceId,
+    title: defaults.title,
+    h1: defaults.h1,
+    summary: defaults.summary,
+    sections: defaults.sections,
+    faq: defaults.faq,
+    secondaryKeywords: defaults.secondaryKeywords,
+    metaTitle: defaults.metaTitle,
+    metaDescription: defaults.metaDescription,
+    ogTitle: defaults.ogTitle,
+    ogDescription: defaults.ogDescription,
+    ctaLabel: defaults.ctaLabel,
+    ctaLink: defaults.ctaLink,
   };
 }

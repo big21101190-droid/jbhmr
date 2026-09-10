@@ -25,6 +25,8 @@ vi.mock('@netlify/blobs', () => ({
 }));
 
 import {
+  getRegionRecord,
+  getServiceRecord,
   listRegions,
   listServices,
   saveRegion,
@@ -33,6 +35,37 @@ import {
 
 describe('dynamic catalog persistence', () => {
   beforeEach(() => blobState.clear());
+
+  it('looks up persisted Korean region/service slugs raw or encoded once', async () => {
+    const region = await saveRegion({
+      name: '서울 관악구',
+      slug: '서울-관악구',
+      parentId: 'seoul',
+    });
+    const service = await saveService({
+      name: '한글 서비스',
+      slug: '한글-서비스',
+    });
+    for (const input of [
+      region.id,
+      region.slug,
+      encodeURIComponent(region.slug),
+    ]) {
+      expect((await getRegionRecord(input))?.id).toBe(region.id);
+    }
+    expect((await getServiceRecord(encodeURIComponent(service.slug)))?.id).toBe(
+      service.id,
+    );
+    for (const bad of ['%', '%E0%A4%A', 'a%2Fb', '%252F', 'missing-region']) {
+      expect(await getRegionRecord(bad)).toBeNull();
+      expect(await getServiceRecord(bad)).toBeNull();
+    }
+    await saveRegion({ id: region.id, archived: true });
+    expect(
+      await getRegionRecord(encodeURIComponent(region.slug), false),
+    ).toBeNull();
+    expect((await getRegionRecord(region.id))?.archived).toBe(true);
+  });
 
   it('creates, persists, and archives an additional region without a count limit', async () => {
     const before = await listRegions({ includeArchived: true });

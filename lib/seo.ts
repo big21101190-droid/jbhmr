@@ -48,8 +48,8 @@ export function getLandingMetadata(
 export function slugify(value: string) {
   return value
     .trim()
-    .toLowerCase()
     .normalize('NFKC')
+    .toLowerCase()
     .replace(/[^a-z0-9가-힣]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .slice(0, 100);

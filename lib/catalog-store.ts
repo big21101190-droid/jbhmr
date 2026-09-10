@@ -6,6 +6,7 @@ import { regions as seedRegions } from '@/data/regions';
 import { services as seedServices } from '@/data/services';
 import type { Region, Service, ServiceRouteIntent } from '@/lib/domain';
 import { slugify } from '@/lib/seo';
+import { decodeUrlSegment } from '@/lib/url-segment';
 import { getServiceRouteSlug, getServiceRoutes } from '@/lib/service-routes';
 
 const storeName = 'j-complex-logistics-content';
@@ -259,9 +260,11 @@ export async function getRegionRecord(
   idOrSlug: string,
   includeArchived = true,
 ) {
+  const lookup = decodeUrlSegment(idOrSlug);
+  if (lookup === null) return null;
   return (
     (await listRegions({ includeArchived })).find(
-      (item) => item.id === idOrSlug || item.slug === idOrSlug,
+      (item) => item.id === lookup || item.slug.normalize('NFC') === lookup,
     ) || null
   );
 }
@@ -356,9 +359,11 @@ export async function getServiceRecord(
   idOrSlug: string,
   includeArchived = true,
 ) {
+  const lookup = decodeUrlSegment(idOrSlug);
+  if (lookup === null) return null;
   return (
     (await listServices({ includeArchived })).find(
-      (item) => item.id === idOrSlug || item.slug === idOrSlug,
+      (item) => item.id === lookup || item.slug.normalize('NFC') === lookup,
     ) || null
   );
 }

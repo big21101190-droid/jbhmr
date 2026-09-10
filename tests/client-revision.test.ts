@@ -50,11 +50,14 @@ describe('client revision release contract', () => {
   it('keeps large landing lists manageable and images equally sized', () => {
     const admin = readFileSync('components/landing-admin-list.tsx', 'utf8');
     const landingView = readFileSync('components/landing-view.tsx', 'utf8');
+    const gallery = readFileSync('components/landing-gallery.tsx', 'utf8');
     expect(admin).toContain('목록 펼치기');
     expect(admin).toContain('visibleCount');
     expect(admin).toContain('최근 수정순');
-    expect(landingView).toContain('lg:grid-cols-3');
-    expect(landingView).not.toContain('md:row-span-2');
+    expect(landingView).toContain('<LandingGallery');
+    expect(gallery).toContain('lg:grid-cols-3');
+    expect(gallery).toContain('object-contain');
+    expect(gallery).not.toContain('md:row-span-2');
   });
 
   it('keeps the exact global reception and footer license copy', () => {

@@ -1,11 +1,13 @@
 import type { Landing, LandingInput } from '@/lib/domain';
 import { slugify } from '@/lib/seo';
+import { decodeUrlSegment } from '@/lib/url-segment';
 
 export class LandingValidationError extends Error {
   constructor(
     message: string,
     public readonly field?: string,
     public readonly existing?: Landing,
+    public readonly status = existing ? 409 : 400,
   ) {
     super(message);
     this.name = 'LandingValidationError';
@@ -13,9 +15,15 @@ export class LandingValidationError extends Error {
 }
 
 export function normalizeLandingInput(input: LandingInput): LandingInput {
-  const normalizedSlug = slugify(
+  const slugInput = decodeUrlSegment(
     input.slug || input.primaryKeyword || input.title,
   );
+  if (slugInput === null)
+    throw new LandingValidationError(
+      'URL 인코딩을 확인해주세요. 경로 구분자나 특수 제어문자는 사용할 수 없습니다.',
+      'slug',
+    );
+  const normalizedSlug = slugify(slugInput);
   return {
     ...input,
     destinationRegionId: input.destinationRegionId?.trim() || null,
@@ -140,38 +148,12 @@ export function assertNoDuplicate(
   const currentId = candidate.id;
   const active = existing.filter((item) => item.id !== currentId);
   const sameSlug = active.find(
-    (item) => item.slug.toLowerCase() === candidate.slug.toLowerCase(),
+    (item) => slugify(item.slug) === slugify(candidate.slug),
   );
   if (sameSlug)
     throw new LandingValidationError(
       '동일한 URL이 이미 존재합니다.',
       'slug',
       sameSlug,
-    );
-  const sameKeyword = active.find(
-    (item) =>
-      item.primaryKeyword.trim().toLowerCase() ===
-      candidate.primaryKeyword.trim().toLowerCase(),
-  );
-  if (sameKeyword)
-    throw new LandingValidationError(
-      '동일한 대표 키워드가 이미 존재합니다.',
-      'primaryKeyword',
-      sameKeyword,
-    );
-  const samePair = active.find(
-    (item) =>
-      item.regionId === candidate.regionId &&
-      item.serviceId === candidate.serviceId &&
-      (item.destinationRegionId || null) ===
-        (candidate.destinationRegionId || null),
-  );
-  if (samePair)
-    throw new LandingValidationError(
-      candidate.destinationRegionId
-        ? '동일한 출발지·도착지·서비스 랜딩이 이미 존재합니다.'
-        : '동일한 지역·서비스 랜딩이 이미 존재합니다.',
-      'serviceId',
-      samePair,
     );
 }

@@ -21,7 +21,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const region = await getRegionRecord((await params).slug);
-  if (!region) return {};
+  if (!region || region.archived || !region.active) notFound();
   return {
     title: `${region.name} 배송 서비스`,
     description: region.description,

@@ -31,7 +31,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const service = await getServiceRecord((await params).slug);
-  if (!service) return {};
+  if (!service || service.archived || !service.active) notFound();
   return {
     title: service.name,
     description: service.description,

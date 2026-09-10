@@ -4,6 +4,7 @@ import { getStore } from '@netlify/blobs';
 import { randomUUID } from 'node:crypto';
 import initialData from '@/data/initial-landings.json';
 import type { Landing, LandingInput } from '@/lib/domain';
+import { decodeUrlSegment } from '@/lib/url-segment';
 import { getRegionRecord, getServiceRecord } from '@/lib/catalog-store';
 import {
   assertNoDuplicate,
@@ -27,15 +28,7 @@ function slugIndexKey(slug: string) {
   return `landing-slugs/${encodeURIComponent(slug)}.json`;
 }
 
-function decodeSlug(slug: string) {
-  try {
-    return decodeURIComponent(slug);
-  } catch {
-    return slug;
-  }
-}
-
-async function getOverrides(): Promise<Landing[]> {
+async function getOverrides(failOnStorageError = false): Promise<Landing[]> {
   try {
     const store = contentStore();
     const { blobs } = await store.list({ prefix: 'landings/' });
@@ -49,6 +42,7 @@ async function getOverrides(): Promise<Landing[]> {
       .filter((record): record is Landing => Boolean(record))
       .map(hydrateLanding);
   } catch (error) {
+    if (failOnStorageError) throw error;
     if (process.env.NODE_ENV !== 'production')
       console.warn(
         'Netlify Blobs unavailable; using bundled landing data.',
@@ -59,9 +53,13 @@ async function getOverrides(): Promise<Landing[]> {
 }
 
 export async function listLandings(
-  options: { includeArchived?: boolean; publishedOnly?: boolean } = {},
+  options: {
+    includeArchived?: boolean;
+    publishedOnly?: boolean;
+    failOnStorageError?: boolean;
+  } = {},
 ) {
-  const overrides = await getOverrides();
+  const overrides = await getOverrides(options.failOnStorageError);
   const byId = new Map(
     initialLandings.map((landing) => [landing.id, hydrateLanding(landing)]),
   );
@@ -97,7 +95,8 @@ export async function getLandingBySlug(
   slug: string,
   includeUnpublished = false,
 ) {
-  const normalizedSlug = decodeSlug(slug);
+  const normalizedSlug = decodeUrlSegment(slug);
+  if (normalizedSlug === null) return null;
   try {
     const index = (await contentStore().get(slugIndexKey(normalizedSlug), {
       type: 'json',
@@ -126,7 +125,10 @@ export async function getLandingBySlug(
 }
 
 export async function saveLanding(rawInput: LandingInput): Promise<Landing> {
-  const existing = await listLandings({ includeArchived: true });
+  const existing = await listLandings({
+    includeArchived: true,
+    failOnStorageError: true,
+  });
   const previous = rawInput.id
     ? existing.find((item) => item.id === rawInput.id)
     : null;
@@ -177,10 +179,32 @@ export async function saveLanding(rawInput: LandingInput): Promise<Landing> {
     publishedAt:
       input.status === 'PUBLISHED' ? previous?.publishedAt || now : null,
   };
-  await contentStore().setJSON(`landings/${record.id}.json`, record);
-  await contentStore().setJSON(slugIndexKey(record.slug), { id: record.id });
+  const store = contentStore();
+  // Claim the normalized URL before writing the record. A preflight list alone
+  // cannot prevent two simultaneous creates from overwriting the slug index.
+  const claim = await store.setJSON(
+    slugIndexKey(record.slug),
+    { id: record.id },
+    { onlyIfNew: true },
+  );
+  if (!claim.modified) {
+    const owner = (await store.get(slugIndexKey(record.slug), {
+      type: 'json',
+    })) as { id?: string } | null;
+    if (owner?.id !== record.id)
+      throw new LandingValidationError(
+        '동일한 URL이 이미 존재하거나 저장 중입니다. 다른 URL을 입력해주세요.',
+        'slug',
+        existing.find((item) => item.id === owner?.id),
+        409,
+      );
+  }
+  // Blobs has no multi-key transaction. If the following write fails, retain
+  // the reservation rather than risk deleting a successfully committed claim
+  // after an ambiguous network failure. Recovery needs an explicit inspection.
+  await store.setJSON(`landings/${record.id}.json`, record);
   if (previous?.slug && previous.slug !== record.slug)
-    await contentStore().delete(slugIndexKey(previous.slug));
+    await store.delete(slugIndexKey(previous.slug));
   return record;
 }
 

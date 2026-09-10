@@ -120,10 +120,12 @@ export function LandingAdminList({
                 setVisibleCount(25);
               }}
               placeholder="제목·키워드·URL 검색"
+              aria-label="랜딩페이지 제목·키워드·URL 검색"
               className="w-full min-w-0 rounded-xl border border-[#dce5f0] px-4 py-3 text-sm"
             />
             <select
               value={region}
+              aria-label="랜딩페이지 지역 필터"
               onChange={(e) => {
                 setRegion(e.target.value);
                 setVisibleCount(25);
@@ -139,6 +141,7 @@ export function LandingAdminList({
             </select>
             <select
               value={service}
+              aria-label="랜딩페이지 서비스 필터"
               onChange={(e) => {
                 setService(e.target.value);
                 setVisibleCount(25);
@@ -154,6 +157,7 @@ export function LandingAdminList({
             </select>
             <select
               value={status}
+              aria-label="랜딩페이지 상태 필터"
               onChange={(e) => {
                 setStatus(e.target.value);
                 setVisibleCount(25);
