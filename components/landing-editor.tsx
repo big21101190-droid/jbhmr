@@ -8,7 +8,7 @@ import type {
   Region,
   Service,
 } from '@/lib/domain';
-import { createLandingDefaultsFor } from '@/lib/landing-defaults';
+import { refreshLandingDefaultsFor } from '@/lib/landing-defaults';
 import { slugify } from '@/lib/seo';
 
 const fieldClass =
@@ -40,22 +40,13 @@ export function LandingEditor({
       setMessage('선택한 지역 또는 서비스를 찾을 수 없습니다.');
       return;
     }
-    const defaults = createLandingDefaultsFor(
-      region,
-      service,
-      form.primaryKeyword,
-      destinationRegion,
+    setForm((current) =>
+      refreshLandingDefaultsFor(current, region, service, destinationRegion),
     );
-    setForm((current) => ({
-      ...defaults,
-      id: current.id,
-      slug: current.slug,
-      heroImage: current.heroImage || defaults.heroImage,
-      ogImage: current.ogImage || defaults.ogImage,
-      bodyTopImages: current.bodyTopImages || [],
-    }));
     setMessage(
-      '지역·서비스 기준 자동값을 채웠습니다. 모두 수정할 수 있습니다.',
+      form.id
+        ? '지역·서비스 기준 본문을 채웠습니다. 기존 URL·키워드·이미지는 유지했습니다.'
+        : '선택값 기준 키워드·URL·이미지와 본문을 새로 채웠습니다.',
     );
   };
   const save = async (status: PublicationStatus) => {

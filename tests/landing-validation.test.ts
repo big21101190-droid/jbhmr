@@ -6,6 +6,7 @@ import type { Landing } from '@/lib/domain';
 import {
   createLandingDefaults,
   createLandingDefaultsFor,
+  refreshLandingDefaultsFor,
 } from '@/lib/landing-defaults';
 import {
   assertNoDuplicate,
@@ -98,6 +99,52 @@ describe('landing create and lifecycle', () => {
         [{ ...landings[0], ...seoulBusan, id: 'qa-route-busan' }],
       ),
     ).toThrow('동일한 출발지·도착지·서비스 랜딩');
+  });
+
+  it('refreshes a new route draft keyword, slug, and service media', () => {
+    const current = createLandingDefaults('seoul-gangnam', 'quick-motorcycle');
+    const origin = regions.find((region) => region.id === 'seoul');
+    const destination = regions.find((region) => region.id === 'busan');
+    const service = services.find((item) => item.id === 'express-bus');
+    expect(origin).toBeDefined();
+    expect(destination).toBeDefined();
+    expect(service).toBeDefined();
+    if (!origin || !destination || !service) return;
+
+    const refreshed = refreshLandingDefaultsFor(
+      current,
+      origin,
+      service,
+      destination,
+    );
+
+    expect(refreshed.primaryKeyword).toBe('서울특별시–부산광역시 고속버스택배');
+    expect(refreshed.slug).toBe('seoul-busan-express-bus');
+    expect(refreshed.heroImage).toBe(service.image);
+    expect(refreshed.ogImage).toBe(service.image);
+  });
+
+  it('keeps stable identifiers and custom media for an existing landing', () => {
+    const current = {
+      ...createLandingDefaults('seoul-gangnam', 'quick-motorcycle'),
+      id: 'existing-landing',
+      slug: 'stable-existing-url',
+      primaryKeyword: '운영 중인 맞춤 키워드',
+      heroImage: '/custom-hero.png',
+      ogImage: '/custom-og.png',
+    };
+    const region = regions.find((item) => item.id === 'seoul-seocho');
+    const service = services.find((item) => item.id === 'one-ton');
+    expect(region).toBeDefined();
+    expect(service).toBeDefined();
+    if (!region || !service) return;
+
+    const refreshed = refreshLandingDefaultsFor(current, region, service);
+
+    expect(refreshed.slug).toBe('stable-existing-url');
+    expect(refreshed.primaryKeyword).toBe('운영 중인 맞춤 키워드');
+    expect(refreshed.heroImage).toBe('/custom-hero.png');
+    expect(refreshed.ogImage).toBe('/custom-og.png');
   });
 
   it('allows Gangnam and Gangnam-gu as separate region-service landings', () => {

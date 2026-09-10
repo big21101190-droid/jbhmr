@@ -115,3 +115,31 @@ export function createLandingDefaultsFor(
     redirectTo: null,
   };
 }
+
+export function refreshLandingDefaultsFor(
+  current: LandingInput,
+  region: Region,
+  service: Service,
+  destinationRegion?: Region,
+): LandingInput {
+  const isExistingLanding = Boolean(current.id);
+  const defaults = createLandingDefaultsFor(
+    region,
+    service,
+    isExistingLanding ? current.primaryKeyword : undefined,
+    destinationRegion,
+  );
+
+  return {
+    ...defaults,
+    id: current.id,
+    slug: isExistingLanding ? current.slug : defaults.slug,
+    heroImage: isExistingLanding
+      ? current.heroImage || defaults.heroImage
+      : defaults.heroImage,
+    ogImage: isExistingLanding
+      ? current.ogImage || defaults.ogImage
+      : defaults.ogImage,
+    bodyTopImages: current.bodyTopImages || [],
+  };
+}
