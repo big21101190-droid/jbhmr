@@ -14,7 +14,7 @@ import { PageHero } from '@/components/page-hero';
 import { PhoneFab } from '@/components/phone-fab';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
-import { SITE_URL, company, telHref } from '@/lib/company';
+import { SITE_URL, company, nationwideCoverage, telHref } from '@/lib/company';
 
 export const metadata: Metadata = {
   title: '회사소개',
@@ -37,20 +37,12 @@ export default function AboutPage() {
           email: company.email,
           taxID: company.businessRegistrationNumber,
           address: company.address,
-          contactPoint: [
-            {
-              '@type': 'ContactPoint',
-              telephone: company.nationalPhone,
-              contactType: 'customer service',
-              areaServed: 'KR',
-            },
-            {
-              '@type': 'ContactPoint',
-              telephone: company.daeguPhone,
-              contactType: 'customer service',
-              areaServed: 'Daegu',
-            },
-          ],
+          contactPoint: {
+            '@type': 'ContactPoint',
+            telephone: company.nationalPhone,
+            contactType: 'customer service',
+            areaServed: 'KR',
+          },
         }}
       />
       <PageHero
@@ -89,7 +81,7 @@ export default function AboutPage() {
               [
                 MapPin,
                 '지역 확인',
-                '대구는 053 전용번호, 그 외 지역은 전국 공통번호로 접수합니다.',
+                '서울·인천·경기 수도권부터 전국 주요 도시까지 출발지와 도착지를 확인합니다.',
               ],
               [
                 Route,
@@ -139,9 +131,9 @@ export default function AboutPage() {
               ['상호', company.name],
               ['대표자', company.representative],
               ['사업자등록번호', company.businessRegistrationNumber],
-              ['사업장 주소', company.address],
+              ['전국 배송', '서울·인천·경기 수도권 및 전국 주요 도시 배송'],
               ['전국 대표전화', company.nationalPhone],
-              ['대구 전용전화', company.daeguPhone],
+              ['주요 서비스 지역', nationwideCoverage],
             ].map(([label, value]) => (
               <div
                 key={label}

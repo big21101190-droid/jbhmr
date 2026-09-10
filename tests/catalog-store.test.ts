@@ -50,9 +50,9 @@ describe('dynamic catalog persistence', () => {
     ).toBe('QA-지역자동테스트');
 
     await saveRegion({ id: created.id, archived: true, active: false });
-    expect((await listRegions()).some((region) => region.id === created.id)).toBe(
-      false,
-    );
+    expect(
+      (await listRegions()).some((region) => region.id === created.id),
+    ).toBe(false);
     expect(
       (await listRegions({ includeArchived: true })).find(
         (region) => region.id === created.id,
@@ -84,5 +84,64 @@ describe('dynamic catalog persistence', () => {
         (service) => service.id === created.id,
       )?.archived,
     ).toBe(true);
+  });
+
+  it('persists editable route intents and allows clearing the list', async () => {
+    const created = await saveService({
+      name: 'QA-노선서비스',
+      slug: 'qa-route-service',
+      active: true,
+      routeIntents: [
+        {
+          origin: '서울',
+          destination: '부산',
+          label: '서울–부산 QA 노선',
+          source: '자동 테스트',
+        },
+      ],
+    });
+    expect(
+      (await listServices({ includeArchived: true })).find(
+        (service) => service.id === created.id,
+      )?.routeIntents,
+    ).toHaveLength(1);
+
+    await saveService({ id: created.id, routeIntents: [] });
+    expect(
+      (await listServices({ includeArchived: true })).find(
+        (service) => service.id === created.id,
+      )?.routeIntents,
+    ).toEqual([]);
+  });
+
+  it('blocks route URL collisions across services', async () => {
+    await saveService({
+      name: 'QA-노선서비스-1',
+      slug: 'qa-route-one',
+      routeIntents: [
+        {
+          origin: '서울',
+          destination: '부산',
+          label: '첫 번째 노선',
+          source: '자동 테스트',
+          slug: 'qa-shared-route',
+        },
+      ],
+    });
+    await expect(
+      saveService({
+        name: 'QA-노선서비스-2',
+        slug: 'qa-route-two',
+        routeIntents: [
+          {
+            origin: '서울',
+            destination: '대전',
+            label: '두 번째 노선',
+            source: '자동 테스트',
+            slug: 'qa-shared-route',
+          },
+        ],
+      }),
+    ).rejects.toThrow('다른 서비스에서 같은 주요 노선 URL');
   });
 });

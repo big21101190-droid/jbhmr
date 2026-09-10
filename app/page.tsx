@@ -94,7 +94,7 @@ export default function Home() {
             <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#c9d8ff] bg-white px-4 py-2 text-xs font-extrabold text-[#1b4dff] shadow-sm">
               <Clock3 size={14} /> 전화 한 통으로 간편 접수
             </p>
-            <h1 className="max-w-[680px] text-[clamp(2.7rem,6vw,5.35rem)] font-black leading-[1.02] tracking-[-0.065em]">
+            <h1 className="font-display max-w-[680px] text-[clamp(2.7rem,6vw,5.35rem)] leading-[1.06]">
               가까운 퀵부터
               <br />
               <span className="text-[#1b4dff]">전국 화물</span>까지

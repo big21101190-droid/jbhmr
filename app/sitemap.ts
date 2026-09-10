@@ -1,10 +1,10 @@
 import type { MetadataRoute } from 'next';
-import { busRoutes } from '@/data/bus-routes';
 import { listRegions, listServices } from '@/lib/catalog-store';
 import { SITE_URL } from '@/lib/company';
 import { isIndexingEnabled } from '@/lib/indexing';
 import { listLandings } from '@/lib/landing-store';
 import { isSitemapEligible } from '@/lib/landing-policy';
+import { getServiceRoutes } from '@/lib/service-routes';
 
 export const dynamic = 'force-dynamic';
 
@@ -53,7 +53,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     }));
-  const routePages = busRoutes.map((item) => ({
+  const routePages = services.flatMap(getServiceRoutes).map((item) => ({
     url: `${SITE_URL}/routes/${item.slug}`,
     lastModified: now,
     changeFrequency: 'monthly' as const,

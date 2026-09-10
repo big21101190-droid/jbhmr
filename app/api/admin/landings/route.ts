@@ -9,16 +9,34 @@ export const dynamic = 'force-dynamic';
 function errorResponse(error: unknown) {
   if (error instanceof Response) return error;
   if (error instanceof LandingValidationError) {
-    return Response.json({ error: error.message, field: error.field, existing: error.existing ? { id: error.existing.id, title: error.existing.title } : null }, { status: 409 });
+    return Response.json(
+      {
+        error: error.message,
+        field: error.field,
+        existing: error.existing
+          ? {
+              id: error.existing.id,
+              title: error.existing.title,
+              slug: error.existing.slug,
+            }
+          : null,
+      },
+      { status: error.existing ? 409 : 400 },
+    );
   }
   console.error(error);
-  return Response.json({ error: '요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.' }, { status: 500 });
+  return Response.json(
+    { error: '요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.' },
+    { status: 500 },
+  );
 }
 
 export async function GET() {
   try {
     await requireAdminApi();
-    return Response.json({ landings: await listLandings({ includeArchived: true }) });
+    return Response.json({
+      landings: await listLandings({ includeArchived: true }),
+    });
   } catch (error) {
     return errorResponse(error);
   }
@@ -27,7 +45,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     await requireAdminApi();
-    const input = await request.json() as LandingInput;
+    const input = (await request.json()) as LandingInput;
     const landing = await saveLanding(input);
     revalidatePath('/sitemap.xml');
     revalidatePath(`/delivery/${landing.slug}`);

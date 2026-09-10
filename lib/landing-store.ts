@@ -132,6 +132,9 @@ export async function saveLanding(rawInput: LandingInput): Promise<Landing> {
     : null;
   const region = await getRegionRecord(rawInput.regionId);
   const service = await getServiceRecord(rawInput.serviceId);
+  const destinationRegion = rawInput.destinationRegionId
+    ? await getRegionRecord(rawInput.destinationRegionId)
+    : null;
   if (!region)
     throw new LandingValidationError(
       '선택한 지역을 찾을 수 없습니다.',
@@ -142,14 +145,25 @@ export async function saveLanding(rawInput: LandingInput): Promise<Landing> {
       '선택한 서비스를 찾을 수 없습니다.',
       'serviceId',
     );
+  if (rawInput.destinationRegionId && !destinationRegion)
+    throw new LandingValidationError(
+      '선택한 도착 지역을 찾을 수 없습니다.',
+      'destinationRegionId',
+    );
+  if (destinationRegion?.id === region.id)
+    throw new LandingValidationError(
+      '출발 지역과 도착 지역은 서로 달라야 합니다.',
+      'destinationRegionId',
+    );
   const input = normalizeLandingInput({
     ...rawInput,
+    destinationRegionId: destinationRegion?.id || null,
     slug:
       rawInput.slug?.trim() ||
       previous?.slug ||
-      rawInput.primaryKeyword?.trim() ||
-      `${region.name} ${service.name}` ||
-      rawInput.title,
+      (destinationRegion
+        ? `${region.slug}-${destinationRegion.slug}-${service.slug}`
+        : `${region.slug}-${service.slug}`),
     bodyTopImages: rawInput.bodyTopImages || [],
   });
   validateLandingInput(input);

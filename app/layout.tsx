@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Black_Han_Sans } from 'next/font/google';
 import { Analytics } from '@/components/analytics';
 import { AuthCallbackRedirect } from '@/components/auth-callback-redirect';
 import { SITE_URL, company } from '@/lib/company';
@@ -6,6 +7,13 @@ import { isIndexingEnabled } from '@/lib/indexing';
 import './globals.css';
 
 const indexingEnabled = isIndexingEnabled();
+const headingFont = Black_Han_Sans({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-heading',
+  fallback: ['Arial Black', 'Arial'],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -44,7 +52,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
-      <body>
+      <body className={headingFont.variable}>
         {children}
         <AuthCallbackRedirect />
         <Analytics />

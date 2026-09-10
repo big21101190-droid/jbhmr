@@ -17,6 +17,9 @@ export const company: CompanySettings = {
   plannedDomain: '16610122.com',
 };
 
+export const nationwideCoverage =
+  '서울·인천·경기 수도권, 천안·대전·구미·대구·진주·창원·김해·울산·포항·부산·오송·익산·전주·광주·목포·강릉·속초·삼척 외 전국';
+
 export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ||
   'https://lovely-tarsier-c21dea.netlify.app'

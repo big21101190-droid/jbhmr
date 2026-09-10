@@ -52,6 +52,11 @@ export function ContactForm() {
       className="rounded-[28px] border border-[#dce5f0] bg-white p-6 shadow-[0_18px_50px_rgba(16,36,62,.08)] sm:p-10"
     >
       <input type="hidden" name="form-name" value="inquiry" />
+      <input
+        type="hidden"
+        name="subject"
+        value="[제이복합물류] 새 견적 문의가 접수되었습니다"
+      />
       <p className="hidden">
         <label>
           작성하지 마세요{' '}
@@ -140,6 +145,16 @@ export function ContactForm() {
           에 동의합니다. 문의 답변에 필요한 최소 정보만 수집합니다.
         </span>
       </label>
+      <p className="mt-5 rounded-xl bg-[#eef3ff] px-4 py-3 text-sm font-bold leading-6 text-[#28436c]">
+        문의 접수 후 3분 이내 연락이 없으면{' '}
+        <a
+          href="tel:16610122"
+          className="font-black text-[#1b4dff] underline underline-offset-2"
+        >
+          1661-0122
+        </a>
+        로 전화 문의 부탁드립니다.
+      </p>
       <button
         disabled={state === 'submitting'}
         className="mt-7 w-full rounded-xl bg-[#1b4dff] px-6 py-4 font-black text-white disabled:opacity-60"

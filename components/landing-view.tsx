@@ -16,12 +16,23 @@ export async function LandingView({
   related?: Landing[];
   preview?: boolean;
 }) {
-  const [region, service] = await Promise.all([
+  const [region, destinationRegion, service] = await Promise.all([
     getRegionRecord(landing.regionId),
+    landing.destinationRegionId
+      ? getRegionRecord(landing.destinationRegionId)
+      : Promise.resolve(null),
     getServiceRecord(landing.serviceId),
   ]);
-  if (!region || !service) return null;
+  if (
+    !region ||
+    !service ||
+    (landing.destinationRegionId && !destinationRegion)
+  )
+    return null;
   const phone = phoneForRegion(region.usesDaeguPhone);
+  const routeName = destinationRegion
+    ? `${region.name}–${destinationRegion.name}`
+    : region.name;
   const bodyTopImages = landing.bodyTopImages || [];
   const canonical = landing.canonical || `${SITE_URL}/delivery/${landing.slug}`;
   const schemas = [
@@ -55,7 +66,9 @@ export async function LandingView({
           },
         ],
       },
-      areaServed: region.name,
+      areaServed: destinationRegion
+        ? [region.name, destinationRegion.name]
+        : region.name,
       serviceType: service.name,
     },
     {
@@ -66,7 +79,7 @@ export async function LandingView({
         {
           '@type': 'ListItem',
           position: 2,
-          name: region.name,
+          name: routeName,
           item: `${SITE_URL}/regions/${region.slug}`,
         },
         {
@@ -110,14 +123,14 @@ export async function LandingView({
             >
               <a href="/">HOME</a>
               <span>/</span>
-              <a href={`/regions/${region.slug}`}>{region.name}</a>
+              <a href={`/regions/${region.slug}`}>{routeName}</a>
               <span>/</span>
               <span>{service.name}</span>
             </nav>
             <p className="mt-9 inline-flex rounded-full border border-white/15 bg-white/[.06] px-4 py-2 text-xs font-bold">
               {landing.primaryKeyword}
             </p>
-            <h1 className="mt-5 text-[clamp(2.45rem,5.8vw,5rem)] font-black leading-[1.04] tracking-[-.06em]">
+            <h1 className="font-display mt-5 text-[clamp(2.45rem,5.8vw,5rem)] leading-[1.08]">
               {landing.h1}
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/65">
@@ -144,23 +157,16 @@ export async function LandingView({
           aria-label="본문 상단 이미지"
         >
           <div
-            className={`mx-auto grid max-w-[1040px] gap-4 ${bodyTopImages.length === 2 ? 'md:grid-cols-2' : bodyTopImages.length === 3 ? 'md:grid-cols-2' : ''}`}
+            className={`mx-auto grid gap-4 ${bodyTopImages.length === 1 ? 'max-w-[760px]' : 'max-w-[1040px] sm:grid-cols-2'} ${bodyTopImages.length === 3 ? 'lg:grid-cols-3' : ''}`}
           >
             {bodyTopImages.map((image, index) => (
-              <figure
-                key={`${image.url}-${index}`}
-                className={
-                  bodyTopImages.length === 3 && index === 0
-                    ? 'md:row-span-2'
-                    : ''
-                }
-              >
+              <figure key={`${image.url}-${index}`} className="min-w-0">
                 <img
                   src={image.url}
                   alt={
                     image.alt || `${landing.primaryKeyword} 이미지 ${index + 1}`
                   }
-                  className={`w-full rounded-2xl object-cover shadow-[0_12px_35px_rgba(16,36,62,.10)] ${bodyTopImages.length === 3 && index === 0 ? 'h-full min-h-[300px]' : 'aspect-[16/10]'}`}
+                  className="aspect-[4/3] w-full rounded-2xl object-cover shadow-[0_12px_35px_rgba(16,36,62,.10)]"
                 />
                 {image.caption ? (
                   <figcaption className="mt-2 text-sm text-[#667085]">
@@ -276,7 +282,7 @@ export async function LandingView({
         <div className="mx-auto flex max-w-[1240px] flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-sm font-bold text-white/65">
-              {region.name} 배송 상담
+              {routeName} 배송 상담
             </p>
             <h2 className="mt-2 text-3xl font-black">
               출발지와 도착지를 알려주세요
@@ -292,7 +298,7 @@ export async function LandingView({
         </div>
       </section>
       <SiteFooter />
-      <PhoneFab phone={phone} label={`${region.name} 접수`} />
+      <PhoneFab phone={phone} label={`${routeName} 접수`} />
     </main>
   );
 }

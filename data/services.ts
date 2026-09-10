@@ -507,6 +507,12 @@ export const services: Service[] = [
       '출항 일정과 기상에 따라 운송일이 변경될 수 있으며, 배터리 포함 제품 등은 품목 규정을 먼저 확인합니다.',
       insuranceNote,
     ],
+    routeIntents: ['제주', '서귀포'].map((destination) => ({
+      origin: '서울',
+      destination,
+      label: `서울–${destination} 선박화물`,
+      source: '의뢰인 운영 요청',
+    })),
     provenance: [
       {
         source: '제주도(항공.선박)화물 (선박상세).hwpx',

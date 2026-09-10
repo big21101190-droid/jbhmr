@@ -61,6 +61,9 @@ export type ServiceRouteIntent = {
   destination: string;
   label: string;
   source: string;
+  slug?: string;
+  active?: boolean;
+  sortOrder?: number;
 };
 
 export type Service = {
@@ -127,6 +130,7 @@ export type LandingSection = {
 export type Landing = {
   id: string;
   regionId: string;
+  destinationRegionId?: string | null;
   serviceId: string;
   primaryKeyword: string;
   secondaryKeywords: string[];

@@ -1,5 +1,5 @@
 import { BrandLogo } from '@/components/brand-logo';
-import { company, smsHref, telHref } from '@/lib/company';
+import { company, nationwideCoverage, telHref } from '@/lib/company';
 
 export function SiteFooter() {
   return (
@@ -18,7 +18,7 @@ export function SiteFooter() {
               대표 {company.representative} · 사업자등록번호{' '}
               {company.businessRegistrationNumber}
             </p>
-            <p>{company.address}</p>
+            <p className="max-w-xl">{nationwideCoverage}</p>
             <p>상담 운영시간 {company.businessHours}</p>
             <p>화물자동차 운송주선사업 허가 제2024-05호</p>
           </div>
@@ -34,20 +34,8 @@ export function SiteFooter() {
             전국 {company.nationalPhone}
           </a>
           <a
-            href={telHref(company.daeguPhone)}
-            className="mt-2 block text-xl font-black"
-          >
-            대구 {company.daeguPhone}
-          </a>
-          <a
-            href={smsHref(company.smsPhone)}
-            className="mt-3 block text-sm font-bold text-white/65"
-          >
-            문자 {company.smsPhone}
-          </a>
-          <a
             href={`mailto:${company.email}`}
-            className="mt-1 block break-all text-sm text-white/55"
+            className="mt-3 block break-all text-sm text-white/55"
           >
             {company.email}
           </a>

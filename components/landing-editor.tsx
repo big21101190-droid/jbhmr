@@ -33,6 +33,9 @@ export function LandingEditor({
   const suggest = () => {
     const region = regions.find((item) => item.id === form.regionId);
     const service = services.find((item) => item.id === form.serviceId);
+    const destinationRegion = regions.find(
+      (item) => item.id === form.destinationRegionId,
+    );
     if (!region || !service) {
       setMessage('선택한 지역 또는 서비스를 찾을 수 없습니다.');
       return;
@@ -41,6 +44,7 @@ export function LandingEditor({
       region,
       service,
       form.primaryKeyword,
+      destinationRegion,
     );
     setForm((current) => ({
       ...defaults,
@@ -68,7 +72,11 @@ export function LandingEditor({
     });
     const data = await response.json();
     if (!response.ok) {
-      setMessage(data.error || '저장하지 못했습니다.');
+      setMessage(
+        data.existing
+          ? `${data.error} 기존 페이지: ${data.existing.title}`
+          : data.error || '저장하지 못했습니다.',
+      );
       setSaving(false);
       return;
     }
@@ -107,6 +115,17 @@ export function LandingEditor({
     setMessage('이미지를 업로드했습니다.');
   };
   const previewId = record?.id || form.id;
+  const selectedRegion = regions.find((item) => item.id === form.regionId);
+  const selectedDestination = regions.find(
+    (item) => item.id === form.destinationRegionId,
+  );
+  const selectedService = services.find((item) => item.id === form.serviceId);
+  const automaticSlug =
+    selectedRegion && selectedService
+      ? selectedDestination
+        ? `${selectedRegion.slug}-${selectedDestination.slug}-${selectedService.slug}`
+        : `${selectedRegion.slug}-${selectedService.slug}`
+      : '';
   return (
     <section className="min-w-0 rounded-2xl bg-white p-5 shadow-sm sm:p-8">
       <div className="flex flex-col gap-4 border-b border-[#dce5f0] pb-6 sm:flex-row sm:items-center sm:justify-between">
@@ -151,9 +170,9 @@ export function LandingEditor({
         {message}
       </p>
       <div className="mt-4 grid gap-6">
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid gap-5 md:grid-cols-3">
           <label className={labelClass}>
-            지역
+            출발 지역
             <select
               value={form.regionId}
               onChange={(e) => set('regionId', e.target.value)}
@@ -161,8 +180,31 @@ export function LandingEditor({
             >
               {regions
                 .filter(
+                  (r) => (r.active && !r.archived) || r.id === form.regionId,
+                )
+                .map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.name}
+                  </option>
+                ))}
+            </select>
+          </label>
+          <label className={labelClass}>
+            도착 지역 (노선형 선택사항)
+            <select
+              value={form.destinationRegionId || ''}
+              onChange={(e) =>
+                set('destinationRegionId', e.target.value || null)
+              }
+              className={fieldClass}
+            >
+              <option value="">지역 단일형 — 선택 안 함</option>
+              {regions
+                .filter(
                   (r) =>
-                    ((r.active && !r.archived) || r.id === form.regionId),
+                    ((r.active && !r.archived) ||
+                      r.id === form.destinationRegionId) &&
+                    r.id !== form.regionId,
                 )
                 .map((r) => (
                   <option key={r.id} value={r.id}>
@@ -463,13 +505,17 @@ export function LandingEditor({
               <input
                 value={form.slug}
                 onChange={(e) => set('slug', e.target.value)}
-                placeholder="비워두면 발행 시 대표 키워드로 자동 생성"
+                placeholder="비워두면 출발·도착·서비스 조합으로 자동 생성"
                 className={fieldClass}
               />
               <span className="text-xs font-normal text-[#667085]">
                 예상 공개 URL: /delivery/
-                {slugify(form.slug || form.primaryKeyword || form.title) ||
-                  '자동-생성'}
+                {slugify(form.slug) || automaticSlug || '자동-생성'}
+              </span>
+              <span className="text-xs font-normal leading-5 text-[#667085]">
+                강남/강남구 또는 서울→부산/서울→대전처럼 조합이 다르면 서로 다른
+                URL이 생성됩니다. 같은 조합이나 같은 사용자 지정 URL은 중복
+                차단됩니다.
               </span>
             </label>
             <label className={labelClass}>

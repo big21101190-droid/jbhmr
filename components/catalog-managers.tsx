@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import type { Region, Service } from '@/lib/domain';
+import type { Region, Service, ServiceRouteIntent } from '@/lib/domain';
 import { slugify } from '@/lib/seo';
 
 const fieldClass =
@@ -90,7 +90,10 @@ export function RegionManager({ initial }: { initial: Region[] }) {
   };
 
   return (
-    <section id="regions" className="min-w-0 rounded-2xl bg-white p-5 shadow-sm sm:p-7">
+    <section
+      id="regions"
+      className="min-w-0 rounded-2xl bg-white p-5 shadow-sm sm:p-7"
+    >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h2 className="text-xl font-black">지역 관리</h2>
@@ -336,7 +339,7 @@ type ServiceDraft = Pick<
   | 'image'
   | 'active'
   | 'sortOrder'
-> & { id?: string; archived?: boolean };
+> & { id?: string; archived?: boolean; routeText: string };
 
 const emptyService: ServiceDraft = {
   name: '',
@@ -349,7 +352,61 @@ const emptyService: ServiceDraft = {
   active: true,
   sortOrder: 1000,
   archived: false,
+  routeText: '',
 };
+
+function routeTextFor(service: Pick<Service, 'routeIntents'>) {
+  return (service.routeIntents || [])
+    .map(
+      (route) =>
+        `${route.origin} | ${route.destination} | ${route.label} | ${route.active === false ? '비활성' : '활성'}`,
+    )
+    .join('\n');
+}
+
+function serviceDraftFor(item: Service): ServiceDraft {
+  return {
+    id: item.id,
+    name: item.name,
+    slug: item.slug,
+    group: item.group,
+    shortDescription: item.shortDescription,
+    description: item.description,
+    keywords: item.keywords,
+    image: item.image,
+    active: item.active,
+    sortOrder: item.sortOrder,
+    archived: Boolean(item.archived),
+    routeText: routeTextFor(item),
+  };
+}
+
+function parseRouteText(value: string, serviceName: string) {
+  const routes: ServiceRouteIntent[] = [];
+  for (const [index, line] of value.split(/\r?\n/).entries()) {
+    if (!line.trim()) continue;
+    const [origin = '', destination = '', label = '', status = '활성'] = line
+      .split('|')
+      .map((part) => part.trim());
+    if (!origin || !destination)
+      throw new Error(
+        `${index + 1}번째 주요 노선은 “출발지 | 도착지 | 표시문구 | 활성/비활성” 형식으로 입력해주세요.`,
+      );
+    if (!['활성', '비활성'].includes(status))
+      throw new Error(
+        `${index + 1}번째 주요 노선 상태는 “활성” 또는 “비활성”으로 입력해주세요.`,
+      );
+    routes.push({
+      origin,
+      destination,
+      label: label || `${origin}–${destination} ${serviceName}`,
+      source: '관리자 입력',
+      active: status === '활성',
+      sortOrder: routes.length,
+    });
+  }
+  return routes;
+}
 
 export function ServiceManager({ initial }: { initial: Service[] }) {
   const [items, setItems] = useState(initial);
@@ -365,29 +422,27 @@ export function ServiceManager({ initial }: { initial: Service[] }) {
     [items, query],
   );
 
-  const edit = (item: Service) =>
-    setForm({
-      id: item.id,
-      name: item.name,
-      slug: item.slug,
-      group: item.group,
-      shortDescription: item.shortDescription,
-      description: item.description,
-      keywords: item.keywords,
-      image: item.image,
-      active: item.active,
-      sortOrder: item.sortOrder,
-      archived: Boolean(item.archived),
-    });
+  const edit = (item: Service) => setForm(serviceDraftFor(item));
   const persist = async (draft = form) => {
     setSaving(true);
     setMessage('저장 중…');
+    let routeIntents: ServiceRouteIntent[];
+    try {
+      routeIntents = parseRouteText(draft.routeText, draft.name);
+    } catch (error) {
+      setMessage(
+        error instanceof Error ? error.message : '주요 노선을 확인해주세요.',
+      );
+      setSaving(false);
+      return;
+    }
+    const { routeText: _routeText, ...servicePayload } = draft;
     const response = await fetch(
       draft.id ? `/api/admin/services/${draft.id}` : '/api/admin/services',
       {
         method: draft.id ? 'PATCH' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(draft),
+        body: JSON.stringify({ ...servicePayload, routeIntents }),
       },
     );
     const data = await response.json();
@@ -470,7 +525,10 @@ export function ServiceManager({ initial }: { initial: Service[] }) {
                       <button
                         type="button"
                         onClick={() =>
-                          void persist({ ...item, active: !item.active })
+                          void persist({
+                            ...serviceDraftFor(item),
+                            active: !item.active,
+                          })
                         }
                         className="font-bold"
                       >
@@ -480,7 +538,7 @@ export function ServiceManager({ initial }: { initial: Service[] }) {
                         type="button"
                         onClick={() =>
                           void persist({
-                            ...item,
+                            ...serviceDraftFor(item),
                             archived: !item.archived,
                             active: Boolean(item.archived),
                           })
@@ -629,6 +687,28 @@ export function ServiceManager({ initial }: { initial: Service[] }) {
               }
               className={fieldClass}
             />
+          </label>
+          <label className="grid gap-2 text-sm font-bold">
+            주요 노선 상담
+            <textarea
+              rows={6}
+              value={form.routeText}
+              onChange={(event) =>
+                setForm((current) => ({
+                  ...current,
+                  routeText: event.target.value,
+                }))
+              }
+              placeholder={
+                '서울 | 부산 | 서울–부산 고속버스택배 | 활성\n서울 | 대전 | 서울–대전 고속버스택배 | 비활성'
+              }
+              className={fieldClass}
+            />
+            <span className="text-xs font-normal leading-5 text-[#667085]">
+              한 줄에 출발지 | 도착지 | 표시문구 | 활성/비활성 순서로
+              입력하세요. 줄 순서가 공개 정렬 순서이며, 활성 노선만 서비스
+              상세의 ‘주요 연계 노선 상담’에 표시됩니다.
+            </span>
           </label>
           <label className="grid gap-2 text-sm font-bold">
             대표 이미지 경로

@@ -4,8 +4,9 @@ import { getStore } from '@netlify/blobs';
 import { randomUUID } from 'node:crypto';
 import { regions as seedRegions } from '@/data/regions';
 import { services as seedServices } from '@/data/services';
-import type { Region, Service } from '@/lib/domain';
+import type { Region, Service, ServiceRouteIntent } from '@/lib/domain';
 import { slugify } from '@/lib/seo';
+import { getServiceRouteSlug, getServiceRoutes } from '@/lib/service-routes';
 
 const storeName = 'j-complex-logistics-content';
 const seedRegionIds = new Set(seedRegions.map((item) => item.id));
@@ -48,6 +49,51 @@ async function getRecords<T>(prefix: 'regions/' | 'services/') {
 
 function cleanText(value: unknown, maxLength: number) {
   return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
+}
+
+function normalizeRouteIntents(
+  raw: ServiceRouteIntent[] | undefined,
+  previous: ServiceRouteIntent[] | undefined,
+  serviceName: string,
+  serviceSlug: string,
+) {
+  const input = raw === undefined ? previous || [] : raw;
+  const routes = input.map((route, index) => {
+    const origin = cleanText(route.origin, 100);
+    const destination = cleanText(route.destination, 100);
+    if (!origin || !destination)
+      throw new CatalogValidationError(
+        '주요 노선은 출발지와 도착지를 모두 입력해주세요.',
+        400,
+        'routeIntents',
+      );
+    const normalized: ServiceRouteIntent = {
+      origin,
+      destination,
+      label:
+        cleanText(route.label, 160) ||
+        `${origin}–${destination} ${serviceName}`,
+      source: cleanText(route.source, 200) || '관리자 입력',
+      slug: cleanText(route.slug, 120) || undefined,
+      active: route.active !== false,
+      sortOrder: Number.isFinite(Number(route.sortOrder))
+        ? Number(route.sortOrder)
+        : index,
+    };
+    return normalized;
+  });
+  const seen = new Set<string>();
+  for (const route of routes) {
+    const routeSlug = getServiceRouteSlug({ slug: serviceSlug }, route);
+    if (seen.has(routeSlug))
+      throw new CatalogValidationError(
+        `중복된 주요 노선 URL이 있습니다: ${routeSlug}`,
+        409,
+        'routeIntents',
+      );
+    seen.add(routeSlug);
+  }
+  return routes;
 }
 
 function normalizeRegion(raw: Partial<Region>, previous?: Region): Region {
@@ -121,6 +167,12 @@ function normalizeService(raw: Partial<Service>, previous?: Service): Service {
     .map((item) => cleanText(item, 100))
     .filter(Boolean)
     .slice(0, 30);
+  const routeIntents = normalizeRouteIntents(
+    raw.routeIntents,
+    previous?.routeIntents,
+    name,
+    slug,
+  );
   return {
     id: previous?.id || raw.id || randomUUID(),
     name,
@@ -168,7 +220,7 @@ function normalizeService(raw: Partial<Service>, previous?: Service): Service {
       previous?.trustNotes || [
         '실제 접수 가능 여부와 조건은 상담 시 확인합니다.',
       ],
-    routeIntents: raw.routeIntents || previous?.routeIntents,
+    routeIntents,
     provenance: raw.provenance ||
       previous?.provenance || [
         { source: '관리자 입력', note: '고객이 관리자에서 등록한 서비스' },
@@ -327,6 +379,20 @@ export async function saveService(raw: Partial<Service>) {
       '동일한 서비스 URL이 이미 존재합니다.',
       409,
       'slug',
+    );
+  const otherRouteSlugs = new Set(
+    records
+      .filter((item) => item.id !== record.id)
+      .flatMap((item) => getServiceRoutes(item).map((route) => route.slug)),
+  );
+  const duplicateRoute = getServiceRoutes(record).find((route) =>
+    otherRouteSlugs.has(route.slug),
+  );
+  if (duplicateRoute)
+    throw new CatalogValidationError(
+      `다른 서비스에서 같은 주요 노선 URL을 사용 중입니다: ${duplicateRoute.slug}`,
+      409,
+      'routeIntents',
     );
   await contentStore().setJSON(`services/${record.id}.json`, record);
   return record;

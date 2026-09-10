@@ -18,6 +18,7 @@ export function normalizeLandingInput(input: LandingInput): LandingInput {
   );
   return {
     ...input,
+    destinationRegionId: input.destinationRegionId?.trim() || null,
     slug: normalizedSlug,
     title: input.title.trim(),
     h1: (input.h1 || input.title).trim(),
@@ -161,11 +162,15 @@ export function assertNoDuplicate(
   const samePair = active.find(
     (item) =>
       item.regionId === candidate.regionId &&
-      item.serviceId === candidate.serviceId,
+      item.serviceId === candidate.serviceId &&
+      (item.destinationRegionId || null) ===
+        (candidate.destinationRegionId || null),
   );
   if (samePair)
     throw new LandingValidationError(
-      '동일한 지역·서비스 랜딩이 이미 존재합니다.',
+      candidate.destinationRegionId
+        ? '동일한 출발지·도착지·서비스 랜딩이 이미 존재합니다.'
+        : '동일한 지역·서비스 랜딩이 이미 존재합니다.',
       'serviceId',
       samePair,
     );
