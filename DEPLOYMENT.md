@@ -34,10 +34,25 @@ Netlify Identity는 현재 로컬 `netlify dev`에서 지원되지 않으므로 
 
 ## 영속 데이터
 
-- 랜딩 레코드: Netlify Blobs `j-complex-logistics-content`
+- 랜딩·지역·서비스 레코드: Netlify Blobs `j-complex-logistics-content`
 - 업로드 이미지: Netlify Blobs `j-complex-logistics-assets`
 - 문의: Netlify Forms `inquiry`
-- Production은 site-scoped 저장소, Deploy Preview는 deploy-scoped 저장소를 사용합니다.
+- 현재 앱의 Blobs 저장소는 모두 `getStore()`로 여는 site-scoped 저장소입니다. 같은 프로젝트의 Production, branch deploy, Deploy Preview는 별도 데이터 저장소로 격리되지 않습니다.
+- Git 배포·코드 롤백은 Blobs 레코드, 업로드 이미지, Forms 제출, Identity 사용자를 이전 상태로 복구하지 않습니다. 코드와 운영 데이터의 백업·복구를 각각 준비해야 합니다.
+
+### Preview와 운영 데이터 보호
+
+- `netlify.toml`의 Preview/branch `NEXT_PUBLIC_ROBOTS_INDEX=false`는 검색 색인 차단이며 데이터 격리 또는 접근 제어가 아닙니다.
+- 같은 프로젝트 Preview에서 관리자 쓰기 QA를 하면 운영 Blobs에 영향을 줄 수 있습니다. 격리된 테스트가 필요하면 별도 승인된 테스트 프로젝트와 합성 데이터, 별도 Identity·Forms 설정을 준비합니다. 별도 프로젝트에도 운영 데이터나 문의 사본을 임의로 복사하지 않습니다.
+- 기존 초기 데이터와 운영 override는 유지합니다. 런타임 정리 과정에서 저장소 이름 변경, 전체 초기화 또는 seed 재적재를 수행하지 않습니다.
+- 문의 전송 테스트는 사용자가 금지한 상태입니다. 새 명시적 승인 전에는 폼 제출이나 이메일·문자·Webhook 테스트를 하지 않습니다. 설정 확인과 실제 수신 확인은 다른 검증으로 기록합니다.
+
+### 운영자 역할
+
+- CMS 편집자는 Netlify Identity의 `admin` 역할로 랜딩·지역·서비스와 공개 이미지를 관리합니다.
+- 문의 제출함·알림 수신처, 배포, 환경변수, 프로젝트 이전은 해당 권한을 가진 Netlify 운영자가 관리합니다. CMS 로그인 권한이 이 권한을 대신하지 않습니다.
+- 공개 랜딩 데이터에 문의 내용을 옮기지 않습니다. 이미지 URL은 공개 접근 가능하므로 비공개 고객 자료를 업로드하지 않습니다.
+- 보관·삭제, 문의 보유 기간과 사본 관리 기준은 `DECISIONS.md`의 데이터 수명주기와 `CUSTOMER_INPUT_REQUIRED.md`의 확인 대기 항목을 따릅니다.
 
 ## 고객 Netlify로 이동
 

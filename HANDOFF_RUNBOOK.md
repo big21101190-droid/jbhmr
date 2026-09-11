@@ -11,7 +11,7 @@
 - 이미지 저장소: `j-complex-logistics-assets`
 - 문의 폼: `inquiry`
 - 고객 관리자 초대 대상: `iaanis@naver.com`
-- 예정 정식 도메인: `16610122.com` (2026-09-03 조회 기준 미등록 판단, 카페24 등록·DNS 필요)
+- 예정 정식 도메인: `16610122.com` (2026-09-03에는 등록·DNS를 확인하지 못했으며, 인계 시 현재 소유권과 DNS 관리처 재확인 필요)
 
 Netlify Blobs는 하나의 사이트에 귀속되고 Netlify UI의 Project ID가 Blobs의 Site ID입니다. 따라서 새 프로젝트를 만들기보다 같은 프로젝트를 팀 간 이전하고 Project ID가 그대로인지 확인하는 편이 운영 데이터 손실 위험이 낮습니다.
 
@@ -103,7 +103,9 @@ Netlify에서 다음 메뉴를 사용합니다.
 
 ## 6. 문의 알림 출시 게이트
 
-고객 수신처가 정해지면 **Project configuration → Notifications → Emails and webhooks → Form submission notifications**에서 `inquiry` 알림을 추가합니다.
+현재 사용자의 문의 테스트 전송 금지 요청이 적용됩니다. 아래 제출·수신 절차는 새 명시적 승인과 고객 수신처 확인 후에만 실행합니다. 승인 전에는 설정을 확인하더라도 실제 알림 수신은 미검증으로 남기며, 이 문서 자체를 전송 승인으로 간주하지 않습니다.
+
+고객 수신처가 정해지면 **Project configuration → Notifications → Emails and webhooks → Form submission notifications**에서 기존 `inquiry` 알림과 대조하고 필요한 변경을 승인받습니다. 동일한 수신처를 중복 등록하지 않습니다.
 
 1. 고객 이메일 또는 Webhook을 등록
 2. `HANDOFF-NOTIFICATION-QA` 문구를 포함한 테스트 문의 1건 제출
@@ -111,6 +113,8 @@ Netlify에서 다음 메뉴를 사용합니다.
 4. 고객 이메일 또는 Webhook 실제 수신 확인
 5. 수신된 필드가 이름, 전화번호, 출발지, 도착지, 서비스, 문의 내용과 동의를 포함하는지 확인
 6. 테스트 제출을 삭제하고 운영 문의만 남김
+
+문의 보유 기간, 삭제 담당·주기, 알림 이메일과 내보낸 사본 처리 기준도 고객에게 확정받습니다. 앱에는 문의 자동 삭제 작업이 없으며, Identity CMS 관리자 초대는 Netlify Forms 제출함 접근 권한을 부여하지 않습니다.
 
 ## 7. 최종 승인 기준
 
