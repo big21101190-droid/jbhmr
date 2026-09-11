@@ -11,6 +11,12 @@ import type {
 import { refreshLandingDefaultsFor } from '@/lib/landing-defaults';
 import { slugify } from '@/lib/seo';
 import { decodeUrlSegment } from '@/lib/url-segment';
+import {
+  IMAGE_UPLOAD_ACCEPT,
+  IMAGE_UPLOAD_SIZE_ERROR,
+  IMAGE_UPLOAD_TYPE_ERROR,
+  validateImageUpload,
+} from '@/lib/image-upload-policy';
 
 const fieldClass =
   'w-full min-w-0 rounded-xl border border-[#cfd9e6] bg-white px-4 py-3 outline-none focus:border-[#1b4dff] focus:ring-2 focus:ring-[#1b4dff]/15';
@@ -28,7 +34,15 @@ export function LandingEditor({
   const [form, setForm] = useState<LandingInput>(initial);
   const [message, setMessage] = useState('');
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [sessionExpired, setSessionExpired] = useState(false);
   const [record, setRecord] = useState<Landing | null>(null);
+  const showSessionExpired = () => {
+    setSessionExpired(true);
+    setMessage(
+      '로그인 세션이 만료되었거나 관리자 인증이 필요합니다. 작성 내용은 현재 탭에 유지됩니다.',
+    );
+  };
   const set = <K extends keyof LandingInput>(key: K, value: LandingInput[K]) =>
     setForm((current) => ({ ...current, [key]: value }));
   const suggest = () => {
@@ -51,6 +65,7 @@ export function LandingEditor({
     );
   };
   const save = async (status: PublicationStatus) => {
+    if (saving || uploading) return;
     setSaving(true);
     setMessage('저장 중…');
     const payload = { ...form, status };
@@ -63,6 +78,11 @@ export function LandingEditor({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+      // Identity may return plain text rather than JSON for an expired session.
+      if (response.status === 401) {
+        showSessionExpired();
+        return;
+      }
       const data = await response.json();
       if (!response.ok) {
         setMessage(
@@ -80,6 +100,7 @@ export function LandingEditor({
       }
       setForm(data.landing);
       setRecord(data.landing);
+      setSessionExpired(false);
       setMessage(
         status === 'PUBLISHED' ? '공개했습니다.' : '초안으로 저장했습니다.',
       );
@@ -98,29 +119,67 @@ export function LandingEditor({
     }
   };
   const upload = async (file: File, bodyIndex?: number) => {
-    setMessage('이미지 업로드 중…');
-    const body = new FormData();
-    body.append('file', file);
-    const response = await fetch('/api/admin/uploads', {
-      method: 'POST',
-      body,
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      setMessage(data.error || '이미지 업로드에 실패했습니다.');
+    if (saving || uploading) return;
+    const invalid = validateImageUpload(file);
+    if (invalid) {
+      setMessage(invalid.error);
       return;
     }
-    setForm((current) => {
-      if (bodyIndex === undefined)
-        return { ...current, heroImage: data.url, ogImage: data.url };
-      const images = [...(current.bodyTopImages || [])];
-      images[bodyIndex] = {
-        url: data.url,
-        alt: `${current.primaryKeyword || current.title} 이미지 ${bodyIndex + 1}`,
-      };
-      return { ...current, bodyTopImages: images.filter(Boolean).slice(0, 3) };
-    });
-    setMessage('이미지를 업로드했습니다.');
+    setUploading(true);
+    setMessage('이미지 업로드 중…');
+    try {
+      const body = new FormData();
+      body.append('file', file);
+      const response = await fetch('/api/admin/uploads', {
+        method: 'POST',
+        body,
+      });
+      if (response.status === 401) {
+        showSessionExpired();
+        return;
+      }
+      // Platform limits can reject the request before our JSON API runs.
+      const data = await response.json().catch(() => null);
+      if (!response.ok) {
+        setMessage(
+          response.status === 413
+            ? IMAGE_UPLOAD_SIZE_ERROR
+            : response.status === 415
+              ? IMAGE_UPLOAD_TYPE_ERROR
+              : typeof data?.error === 'string' && data.error
+                ? data.error
+                : '이미지 업로드에 실패했습니다. 다시 시도해주세요.',
+        );
+        return;
+      }
+      if (typeof data?.url !== 'string' || !data.url.trim()) {
+        setMessage(
+          '업로드 응답을 확인하지 못했습니다. 기존 이미지는 유지됩니다. 다시 시도해주세요.',
+        );
+        return;
+      }
+      setForm((current) => {
+        if (bodyIndex === undefined)
+          return { ...current, heroImage: data.url, ogImage: data.url };
+        const images = [...(current.bodyTopImages || [])];
+        images[bodyIndex] = {
+          url: data.url,
+          alt: `${current.primaryKeyword || current.title} 이미지 ${bodyIndex + 1}`,
+        };
+        return {
+          ...current,
+          bodyTopImages: images.filter(Boolean).slice(0, 3),
+        };
+      });
+      setSessionExpired(false);
+      setMessage('이미지를 업로드했습니다.');
+    } catch {
+      setMessage(
+        '이미지 업로드에 실패했습니다. 기존 이미지와 작성 내용은 유지됩니다. 연결 상태를 확인한 뒤 다시 시도해주세요.',
+      );
+    } finally {
+      setUploading(false);
+    }
   };
   const previewId = record?.id || form.id;
   const selectedRegion = regions.find((item) => item.id === form.regionId);
@@ -147,7 +206,7 @@ export function LandingEditor({
         </div>
         <div className="flex flex-wrap gap-2">
           <button
-            disabled={saving}
+            disabled={saving || uploading}
             onClick={() => save('DRAFT')}
             className="rounded-xl border border-[#cfd9e6] px-4 py-3 text-sm font-black"
           >
@@ -163,7 +222,7 @@ export function LandingEditor({
             </a>
           ) : null}
           <button
-            disabled={saving}
+            disabled={saving || uploading}
             onClick={() => save('PUBLISHED')}
             className="rounded-xl bg-[#1b4dff] px-5 py-3 text-sm font-black text-white"
           >
@@ -177,6 +236,22 @@ export function LandingEditor({
       >
         {message}
       </p>
+      {sessionExpired ? (
+        <div className="mt-3 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-[#10243e]">
+          <p>
+            이 탭을 닫거나 새로고침하지 마세요. 새 탭에서 로그인한 뒤 이 탭으로
+            돌아와 저장 또는 업로드를 다시 시도해주세요.
+          </p>
+          <a
+            href="/admin/login"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-block rounded-lg bg-[#10243e] px-4 py-2.5 font-bold text-white"
+          >
+            새 탭에서 다시 로그인
+          </a>
+        </div>
+      ) : null}
       <div className="mt-4 grid gap-6">
         <div className="grid gap-5 md:grid-cols-3">
           <label className={labelClass}>
@@ -252,6 +327,7 @@ export function LandingEditor({
         <button
           type="button"
           onClick={suggest}
+          disabled={saving || uploading}
           className="w-fit rounded-xl bg-[#e7eeff] px-4 py-3 text-sm font-black text-[#1b4dff]"
         >
           선택값으로 기본 문구 자동 채우기
@@ -281,6 +357,7 @@ export function LandingEditor({
           <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
             <input
               value={form.heroImage}
+              disabled={saving || uploading}
               onChange={(e) => set('heroImage', e.target.value)}
               className={fieldClass}
             />
@@ -288,10 +365,12 @@ export function LandingEditor({
               이미지 업로드
               <input
                 type="file"
-                accept="image/jpeg,image/png,image/webp"
+                accept={IMAGE_UPLOAD_ACCEPT}
+                disabled={saving || uploading}
                 className="sr-only"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
+                  e.currentTarget.value = '';
                   if (file) void upload(file);
                 }}
               />
@@ -305,7 +384,10 @@ export function LandingEditor({
             />
           ) : null}
         </label>
-        <fieldset className="rounded-2xl border border-[#dce5f0] p-5">
+        <fieldset
+          disabled={saving || uploading}
+          className="rounded-2xl border border-[#dce5f0] p-5"
+        >
           <legend className="px-2 font-black">본문 상단 이미지</legend>
           <p className="mb-5 text-sm text-[#667085]">
             본문이 시작되기 전에 표시할 사진을 0~3장 등록할 수 있습니다.
@@ -335,7 +417,7 @@ export function LandingEditor({
                     {image ? '교체' : `사진 ${index + 1} 업로드`}
                     <input
                       type="file"
-                      accept="image/jpeg,image/png,image/webp"
+                      accept={IMAGE_UPLOAD_ACCEPT}
                       className="sr-only"
                       onChange={(event) => {
                         const file = event.target.files?.[0];

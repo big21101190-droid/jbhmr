@@ -57,8 +57,13 @@ export async function DELETE(
   try {
     await requireAdminApi();
     const { id } = await context.params;
-    const usage = (await listLandings({ includeArchived: true })).filter(
-      (item) => item.regionId === id,
+    const usage = (
+      await listLandings({
+        includeArchived: true,
+        failOnStorageError: true,
+      })
+    ).filter(
+      (item) => item.regionId === id || item.destinationRegionId === id,
     ).length;
     await deleteRegion(id, usage);
     revalidatePath('/regions');
