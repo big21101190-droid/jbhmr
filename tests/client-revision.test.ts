@@ -32,10 +32,16 @@ describe('client revision release contract', () => {
   });
 
   it('implements the requested public information cleanup', () => {
+    const home = readFileSync('app/page.tsx', 'utf8');
     const about = readFileSync('app/about/page.tsx', 'utf8');
     const contact = readFileSync('app/contact/page.tsx', 'utf8');
     const contactForm = readFileSync('components/contact-form.tsx', 'utf8');
     const footer = readFileSync('components/site-footer.tsx', 'utf8');
+    const faq = readFileSync('app/faq/page.tsx', 'utf8');
+    const service = readFileSync('app/services/[slug]/page.tsx', 'utf8');
+    expect(home).not.toContain('address: company.address');
+    expect(about).not.toContain('address: company.address');
+    expect(service).not.toContain('address: company.address');
     expect(about).not.toContain("['사업장 주소', company.address]");
     expect(about).not.toContain("['대구 전용전화', company.daeguPhone]");
     expect(contact).not.toContain('company.daeguPhone');
@@ -44,6 +50,8 @@ describe('client revision release contract', () => {
     expect(footer).not.toContain('company.daeguPhone');
     expect(footer).not.toContain('company.smsPhone');
     expect(footer).not.toContain('company.address');
+    expect(faq).not.toContain('company.smsPhone');
+    expect(faq).not.toContain('문자 상담');
     expect(contactForm).toContain('3분 이내 연락이 없으면');
   });
 

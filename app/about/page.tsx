@@ -36,7 +36,7 @@ export default function AboutPage() {
           telephone: company.nationalPhone,
           email: company.email,
           taxID: company.businessRegistrationNumber,
-          address: company.address,
+          areaServed: { '@type': 'Country', name: '대한민국' },
           contactPoint: {
             '@type': 'ContactPoint',
             telephone: company.nationalPhone,

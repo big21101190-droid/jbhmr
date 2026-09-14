@@ -69,7 +69,7 @@ export default async function ServicePage({
         telephone: company.nationalPhone,
         email: company.email,
         taxID: company.businessRegistrationNumber,
-        address: company.address,
+        areaServed: { '@type': 'Country', name: '대한민국' },
       },
       areaServed: service.areas,
       serviceType: service.name,

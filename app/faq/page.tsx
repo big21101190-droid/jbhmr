@@ -14,7 +14,7 @@ const faqs = [
   ],
   [
     '대구와 다른 지역의 번호가 다른가요?',
-    `대구는 ${company.daeguPhone}, 그 외 지역은 ${company.nationalPhone}로 접수합니다. 문자 상담은 ${company.smsPhone}입니다.`,
+    `대구 지역은 ${company.daeguPhone}, 그 외 지역은 전국 대표전화 ${company.nationalPhone}로 접수합니다.`,
   ],
   [
     '상담 운영시간은 언제인가요?',
