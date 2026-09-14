@@ -1,4 +1,9 @@
 import type { Landing, LandingInput } from '@/lib/domain';
+import {
+  findSemanticLandingDuplicate,
+  getAutomaticLandingSlug,
+  type LandingIdentity,
+} from '@/lib/landing-url';
 import { slugify } from '@/lib/seo';
 import { decodeUrlSegment } from '@/lib/url-segment';
 
@@ -6,7 +11,7 @@ export class LandingValidationError extends Error {
   constructor(
     message: string,
     public readonly field?: string,
-    public readonly existing?: Landing,
+    public readonly existing?: LandingIdentity,
     public readonly status = existing ? 409 : 400,
   ) {
     super(message);
@@ -64,6 +69,14 @@ export function normalizeLandingInput(input: LandingInput): LandingInput {
       storageKey: image.storageKey?.trim() || undefined,
     })),
   };
+}
+
+export function resolveLandingSlug(
+  rawSlug: string | undefined,
+  primaryKeyword: string,
+  existingSlug?: string,
+) {
+  return rawSlug?.trim() || existingSlug || primaryKeyword;
 }
 
 export function validateLandingInput(input: LandingInput) {
@@ -159,5 +172,24 @@ export function assertNoDuplicate(
       '동일한 URL이 이미 존재합니다.',
       'slug',
       sameSlug,
+    );
+}
+
+export function assertNoAutomaticSemanticDuplicate(
+  candidate: LandingInput,
+  existing: Landing[],
+  rawSlug: string | undefined,
+) {
+  const suppliedSlug = rawSlug?.trim() || '';
+  const usesAutomaticSlug =
+    !suppliedSlug ||
+    slugify(suppliedSlug) === getAutomaticLandingSlug(candidate.primaryKeyword);
+  if (!usesAutomaticSlug) return;
+  const sameIntent = findSemanticLandingDuplicate(candidate, existing);
+  if (sameIntent)
+    throw new LandingValidationError(
+      '동일한 의미의 기존 페이지가 있습니다. 띄어쓰기만 다른 표현은 자동으로 새 페이지를 만들 수 없습니다.',
+      'slug',
+      sameIntent,
     );
 }

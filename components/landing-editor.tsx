@@ -9,6 +9,13 @@ import type {
   Service,
 } from '@/lib/domain';
 import { refreshLandingDefaultsFor } from '@/lib/landing-defaults';
+import {
+  findLandingSlugOwner,
+  findSemanticLandingDuplicate,
+  getAutomaticLandingSlug,
+  suggestMeaningfulLandingSlug,
+  type LandingIdentity,
+} from '@/lib/landing-url';
 import { slugify } from '@/lib/seo';
 import { decodeUrlSegment } from '@/lib/url-segment';
 import {
@@ -26,10 +33,12 @@ export function LandingEditor({
   initial,
   regions,
   services,
+  existingLandings = [],
 }: {
   initial: LandingInput;
   regions: Region[];
   services: Service[];
+  existingLandings?: LandingIdentity[];
 }) {
   const [form, setForm] = useState<LandingInput>(initial);
   const [message, setMessage] = useState('');
@@ -37,6 +46,9 @@ export function LandingEditor({
   const [uploading, setUploading] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
   const [record, setRecord] = useState<Landing | null>(null);
+  const [slugManuallyEdited, setSlugManuallyEdited] = useState(
+    Boolean(initial.id),
+  );
   const [bodyUploadNames, setBodyUploadNames] = useState<string[]>(() =>
     [0, 1, 2].map((index) => initial.bodyTopImages?.[index]?.name || ''),
   );
@@ -58,9 +70,21 @@ export function LandingEditor({
       setMessage('선택한 지역 또는 서비스를 찾을 수 없습니다.');
       return;
     }
-    setForm((current) =>
-      refreshLandingDefaultsFor(current, region, service, destinationRegion),
-    );
+    setForm((current) => {
+      const refreshed = refreshLandingDefaultsFor(
+        current,
+        region,
+        service,
+        destinationRegion,
+      );
+      return {
+        ...refreshed,
+        // Retain an intentionally typed URL and all existing URLs. A fresh
+        // draft with no custom URL derives its URL from its representative
+        // keyword at save time.
+        slug: current.id || slugManuallyEdited ? current.slug : '',
+      };
+    });
     setMessage(
       form.id
         ? '제목·본문·FAQ·보조 키워드·SEO/OG 문구·전화 CTA를 새로 채웠습니다. 기존 URL·대표 키워드·이미지·색인·Canonical·공개 상태·연결 설정은 유지했습니다.'
@@ -69,6 +93,18 @@ export function LandingEditor({
   };
   const save = async (status: PublicationStatus) => {
     if (saving || uploading) return;
+    if (slugOwner) {
+      setMessage(
+        `이미 사용 중인 URL입니다. 기존 페이지: ${slugOwner.title}. ${recommendedSlug ? '추천 URL을 사용하거나 직접 URL을 수정해주세요.' : '대표 키워드나 URL slug를 더 구체적으로 입력해주세요.'}`,
+      );
+      return;
+    }
+    if (semanticDuplicate && !slugManuallyEdited) {
+      setMessage(
+        `동일한 의미의 기존 페이지가 있습니다: ${semanticDuplicate.title}. 띄어쓰기만 다른 표현은 새 페이지로 자동 생성하지 않습니다. 별도 페이지가 꼭 필요하면 고급 SEO 설정에서 다른 URL slug를 직접 입력해주세요.`,
+      );
+      return;
+    }
     setSaving(true);
     setMessage('저장 중…');
     const payload = { ...form, status };
@@ -212,17 +248,27 @@ export function LandingEditor({
     }
   };
   const previewId = record?.id || form.id;
-  const selectedRegion = regions.find((item) => item.id === form.regionId);
-  const selectedDestination = regions.find(
-    (item) => item.id === form.destinationRegionId,
-  );
   const selectedService = services.find((item) => item.id === form.serviceId);
-  const automaticSlug =
-    selectedRegion && selectedService
-      ? selectedDestination
-        ? `${selectedRegion.slug}-${selectedDestination.slug}-${selectedService.slug}`
-        : `${selectedRegion.slug}-${selectedService.slug}`
-      : '';
+  const automaticSlug = getAutomaticLandingSlug(form.primaryKeyword);
+  const decodedManualSlug = form.slug ? decodeUrlSegment(form.slug) : undefined;
+  const effectiveSlug = slugify(
+    decodedManualSlug === null ? '' : decodedManualSlug || automaticSlug,
+  );
+  const slugOwner = findLandingSlugOwner(
+    effectiveSlug,
+    existingLandings,
+    form.id,
+  );
+  const semanticDuplicate = findSemanticLandingDuplicate(
+    form,
+    existingLandings,
+  );
+  const recommendedSlug = suggestMeaningfulLandingSlug(
+    form.primaryKeyword,
+    selectedService?.slug,
+    existingLandings,
+    form.id,
+  );
   return (
     <section className="min-w-0 rounded-2xl bg-white p-5 shadow-sm sm:p-8">
       <div className="flex flex-col gap-4 border-b border-[#dce5f0] pb-6 sm:flex-row sm:items-center sm:justify-between">
@@ -697,22 +743,48 @@ export function LandingEditor({
               URL slug
               <input
                 value={form.slug}
-                onChange={(e) => set('slug', e.target.value)}
-                placeholder="비워두면 출발·도착·서비스 조합으로 자동 생성"
+                onChange={(e) => {
+                  setSlugManuallyEdited(Boolean(e.target.value.trim()));
+                  set('slug', e.target.value);
+                }}
+                placeholder="비워두면 대표 키워드로 자동 생성"
                 className={fieldClass}
               />
               <span className="text-xs font-normal text-[#667085]">
                 예상 공개 URL: /delivery/
-                {slugify(decodeUrlSegment(form.slug) || '') ||
-                  automaticSlug ||
-                  '자동-생성'}
+                {effectiveSlug || '자동-생성'}
               </span>
               <span className="text-xs font-normal leading-5 text-[#667085]">
-                같은 지역·서비스·노선도 별도 URL이면 등록할 수 있습니다. 겹치면
-                URL 끝에 세부 주제를 붙여주세요 (예:
-                seoul-busan-express-bus-documents). 초안·보관 페이지의 URL도
-                중복 사용할 수 없습니다.
+                {slugManuallyEdited
+                  ? '직접 지정한 URL입니다. 저장 단계에서 모든 초안·보관 페이지까지 중복을 다시 검사합니다.'
+                  : '대표 키워드 기반 자동 URL입니다. 띄어쓰기만 다른 표현은 동일 의미로 안내합니다.'}
               </span>
+              {slugOwner ? (
+                <span className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs font-semibold leading-5 text-[#7a4b00]">
+                  이미 사용 중인 URL입니다: /delivery/{slugOwner.slug} (
+                  {slugOwner.title})
+                  {recommendedSlug && recommendedSlug !== effectiveSlug ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSlugManuallyEdited(true);
+                        set('slug', recommendedSlug);
+                      }}
+                      className="ml-2 font-black text-[#1b4dff] underline"
+                    >
+                      추천 URL 사용
+                    </button>
+                  ) : null}
+                </span>
+              ) : null}
+              {semanticDuplicate ? (
+                <span className="rounded-lg border border-[#c9d8ff] bg-[#f3f6ff] p-3 text-xs font-semibold leading-5 text-[#294172]">
+                  동일한 의미의 기존 페이지: {semanticDuplicate.title}{' '}
+                  (/delivery/
+                  {semanticDuplicate.slug}). 띄어쓰기만 다른 키워드는 자동 중복
+                  생성하지 않습니다.
+                </span>
+              ) : null}
             </label>
             <label className={labelClass}>
               보조 키워드 (쉼표 구분)

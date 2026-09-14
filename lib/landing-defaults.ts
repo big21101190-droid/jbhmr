@@ -4,6 +4,7 @@ import { customerKeywordIntents } from '@/data/customer-keywords';
 import { phoneForRegion, telHref } from '@/lib/company';
 import type { LandingInput, Region, Service } from '@/lib/domain';
 import { withObjectParticle } from '@/lib/korean-particles';
+import { getAutomaticLandingSlug } from '@/lib/landing-url';
 
 export function createLandingDefaults(
   regionId: string,
@@ -67,9 +68,9 @@ export function createLandingDefaultsFor(
     secondaryKeywords: [
       ...new Set([`${region.name} 화물배송`, ...customerAliases]),
     ].slice(0, 8),
-    slug: destinationRegion
-      ? `${region.slug}-${destinationRegion.slug}-${service.slug}`
-      : `${region.slug}-${service.slug}`,
+    // New URLs retain the representative keyword's search intent. Existing
+    // records retain their stored slug in refreshLandingDefaultsFor below.
+    slug: getAutomaticLandingSlug(primaryKeyword),
     title,
     h1: `${title} 접수 안내`,
     metaTitle: `${title} 상담 | 제이복합물류`,

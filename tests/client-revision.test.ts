@@ -39,9 +39,11 @@ describe('client revision release contract', () => {
     const footer = readFileSync('components/site-footer.tsx', 'utf8');
     const faq = readFileSync('app/faq/page.tsx', 'utf8');
     const service = readFileSync('app/services/[slug]/page.tsx', 'utf8');
+    const landingView = readFileSync('components/landing-view.tsx', 'utf8');
     expect(home).not.toContain('address: company.address');
     expect(about).not.toContain('address: company.address');
     expect(service).not.toContain('address: company.address');
+    expect(landingView).not.toContain('address: company.address');
     expect(about).not.toContain("['사업장 주소', company.address]");
     expect(about).not.toContain("['대구 전용전화', company.daeguPhone]");
     expect(contact).not.toContain('company.daeguPhone');

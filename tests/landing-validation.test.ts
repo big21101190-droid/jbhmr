@@ -9,10 +9,18 @@ import {
   refreshLandingDefaultsFor,
 } from '@/lib/landing-defaults';
 import {
+  assertNoAutomaticSemanticDuplicate,
   assertNoDuplicate,
   normalizeLandingInput,
+  resolveLandingSlug,
   validateLandingInput,
 } from '@/lib/landing-validation';
+import {
+  findSemanticLandingDuplicate,
+  getAutomaticLandingSlug,
+  normalizeKeywordIntent,
+  suggestMeaningfulLandingSlug,
+} from '@/lib/landing-url';
 
 const landings = initialData as Landing[];
 
@@ -23,7 +31,7 @@ describe('landing create and lifecycle', () => {
     );
     expect(() => validateLandingInput(draft)).not.toThrow();
     expect(draft.status).toBe('DRAFT');
-    expect(draft.slug).toBe('seoul-seocho-one-ton');
+    expect(draft.slug).toBe(getAutomaticLandingSlug(draft.primaryKeyword));
   });
 
   it('accepts publish and unpublish state changes', () => {
@@ -81,8 +89,12 @@ describe('landing create and lifecycle', () => {
       undefined,
       'daejeon',
     );
-    expect(seoulBusan.slug).toBe('seoul-busan-express-bus');
-    expect(seoulDaejeon.slug).toBe('seoul-daejeon-express-bus');
+    expect(seoulBusan.slug).toBe(
+      getAutomaticLandingSlug(seoulBusan.primaryKeyword),
+    );
+    expect(seoulDaejeon.slug).toBe(
+      getAutomaticLandingSlug(seoulDaejeon.primaryKeyword),
+    );
     expect(seoulBusan.summary).toContain('고속버스택배를 화물 조건');
     expect(seoulBusan.summary).not.toContain('고속버스택배을');
     expect(seoulBusan.slug).not.toBe(seoulDaejeon.slug);
@@ -117,7 +129,9 @@ describe('landing create and lifecycle', () => {
     );
 
     expect(refreshed.primaryKeyword).toBe('서울특별시–부산광역시 고속버스택배');
-    expect(refreshed.slug).toBe('seoul-busan-express-bus');
+    expect(refreshed.slug).toBe(
+      getAutomaticLandingSlug(refreshed.primaryKeyword),
+    );
     expect(refreshed.heroImage).toBe(service.image);
     expect(refreshed.ogImage).toBe(service.image);
   });
@@ -163,8 +177,12 @@ describe('landing create and lifecycle', () => {
     const gangnamLanding = createLandingDefaultsFor(gangnam, motorcycle);
     const gangnamGuLanding = createLandingDefaultsFor(gangnamGu, motorcycle);
 
-    expect(gangnamLanding.slug).toBe('seoul-gangnam-area-quick-motorcycle');
-    expect(gangnamGuLanding.slug).toBe('seoul-gangnam-quick-motorcycle');
+    expect(gangnamLanding.slug).toBe(
+      getAutomaticLandingSlug(gangnamLanding.primaryKeyword),
+    );
+    expect(gangnamGuLanding.slug).toBe(
+      getAutomaticLandingSlug(gangnamGuLanding.primaryKeyword),
+    );
     expect(() =>
       assertNoDuplicate(gangnamLanding, [
         { ...landings[0], ...gangnamGuLanding, id: 'qa-gangnam-gu' },
@@ -235,5 +253,81 @@ describe('landing create and lifecycle', () => {
       name: '본문 관리 이름',
       caption: '본문 캡션',
     });
+  });
+
+  it('distinguishes SEO keyword intent while treating whitespace-only variants as duplicates', () => {
+    const base = createLandingDefaults('daegu-dong', 'quick-motorcycle');
+    const keywords = [
+      '대구 동구 퀵서비스',
+      '대구 동구 오토바이 퀵서비스',
+      '대구 동구 긴급 오토바이 퀵서비스',
+    ];
+    const slugs = keywords.map(getAutomaticLandingSlug);
+    expect(new Set(slugs).size).toBe(keywords.length);
+    expect(resolveLandingSlug('', keywords[1])).toBe(keywords[1]);
+    expect(resolveLandingSlug('', keywords[1], 'existing-stable-url')).toBe(
+      'existing-stable-url',
+    );
+    expect(normalizeKeywordIntent('대구 동구 오토바이 퀵서비스')).toBe(
+      normalizeKeywordIntent('대구 동구 오토바이 퀵 서비스'),
+    );
+    expect(normalizeKeywordIntent('대구 동구 퀵서비스')).not.toBe(
+      normalizeKeywordIntent('대구 동구 오토바이 퀵서비스'),
+    );
+
+    const existing = {
+      ...landings[0],
+      id: 'qa-daegu-motorcycle',
+      regionId: base.regionId,
+      destinationRegionId: null,
+      serviceId: base.serviceId,
+      primaryKeyword: '대구 동구 오토바이 퀵서비스',
+      slug: getAutomaticLandingSlug('대구 동구 오토바이 퀵서비스'),
+      title: '기존 오토바이 퀵서비스',
+    };
+    const whitespaceVariant = {
+      ...base,
+      primaryKeyword: '대구 동구 오토바이 퀵 서비스',
+      slug: '',
+    };
+    const semanticVariant = {
+      ...base,
+      primaryKeyword: '대구 동구 긴급 오토바이 퀵서비스',
+      slug: '',
+    };
+
+    expect(findSemanticLandingDuplicate(whitespaceVariant, [existing])).toBe(
+      existing,
+    );
+    expect(() =>
+      assertNoAutomaticSemanticDuplicate(
+        normalizeLandingInput(whitespaceVariant),
+        [existing],
+        '',
+      ),
+    ).toThrow('동일한 의미의 기존 페이지');
+    expect(() =>
+      assertNoAutomaticSemanticDuplicate(
+        normalizeLandingInput({
+          ...whitespaceVariant,
+          slug: '대구-동구-오토바이-당일-배송',
+        }),
+        [existing],
+        '대구-동구-오토바이-당일-배송',
+      ),
+    ).not.toThrow();
+    expect(
+      findSemanticLandingDuplicate(semanticVariant, [existing]),
+    ).toBeUndefined();
+    expect(() =>
+      assertNoDuplicate(normalizeLandingInput(semanticVariant), [existing]),
+    ).not.toThrow();
+    expect(
+      suggestMeaningfulLandingSlug(
+        existing.primaryKeyword,
+        'quick-motorcycle',
+        [existing],
+      ),
+    ).toBe('대구-동구-오토바이-퀵서비스-quick-motorcycle');
   });
 });

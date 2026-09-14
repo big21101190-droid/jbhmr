@@ -408,3 +408,46 @@ test('F01/F07 editor save/reopen using explicitly isolated mock API', async ({
     contentType: 'application/json',
   });
 });
+
+test('F01 keyword-based URLs preserve semantic variants and flag whitespace-only duplicates', async ({
+  page,
+}) => {
+  let payload: Record<string, unknown> | null = null;
+  await page.route('**/api/admin/landings', async (route) => {
+    payload = route.request().postDataJSON();
+    await route.fulfill({
+      status: 201,
+      json: {
+        landing: {
+          ...payload,
+          id: 'qa-semantic-variant',
+          createdAt: '2026-09-14',
+          updatedAt: '2026-09-14',
+          publishedAt: null,
+        },
+      },
+    });
+  });
+  await page.goto(fixture('slug-editor'));
+  await page.getByText('고급 SEO 설정', { exact: true }).click();
+  await expect(
+    page.getByText('동일한 의미의 기존 페이지:', { exact: false }),
+  ).toBeVisible();
+  await page
+    .getByLabel('대표 키워드', { exact: true })
+    .fill('대구 동구 긴급 오토바이 퀵서비스');
+  await expect(
+    page.getByText(
+      '예상 공개 URL: /delivery/대구-동구-긴급-오토바이-퀵서비스',
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await page.getByRole('button', { name: '초안 저장', exact: true }).click();
+  await expect(
+    page.getByText('초안으로 저장했습니다.', { exact: true }),
+  ).toBeVisible();
+  expect(payload).toMatchObject({
+    primaryKeyword: '대구 동구 긴급 오토바이 퀵서비스',
+    slug: '',
+  });
+});

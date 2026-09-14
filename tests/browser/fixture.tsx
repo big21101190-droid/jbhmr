@@ -40,6 +40,21 @@ const initial = query.get('saved')
   : view === 'existing'
     ? existing
     : createLandingDefaults('seoul', 'express-bus', undefined, 'busan');
+const slugExisting = {
+  ...existing,
+  id: 'qa-daegu-motorcycle-existing',
+  regionId: 'daegu-dong',
+  destinationRegionId: null,
+  serviceId: 'quick-motorcycle',
+  primaryKeyword: '대구 동구 오토바이 퀵서비스',
+  slug: '대구-동구-오토바이-퀵서비스',
+  title: '대구 동구 오토바이 퀵서비스',
+} as Landing;
+const slugEditorInitial = {
+  ...createLandingDefaults('daegu-dong', 'quick-motorcycle'),
+  slug: '',
+  primaryKeyword: '대구 동구 오토바이 퀵 서비스',
+};
 const serviceRoutes = services.flatMap(getAllServiceRoutes);
 const routeFixture = serviceRoutes.find(
   (route) => route.slug === 'seoul-daejeon-express-bus',
@@ -76,12 +91,22 @@ createRoot(document.getElementById('root')!).render(
       <div className="mx-auto max-w-[1160px] p-5">
         <ServiceRouteEditor initial={routeFixture} />
       </div>
+    ) : view === 'slug-editor' ? (
+      <div className="mx-auto max-w-[1160px] p-5">
+        <LandingEditor
+          initial={slugEditorInitial}
+          regions={regions}
+          services={services}
+          existingLandings={[slugExisting]}
+        />
+      </div>
     ) : view === 'editor' || view === 'existing' ? (
       <div className="mx-auto max-w-[1160px] p-5">
         <LandingEditor
           initial={initial}
           regions={regions}
           services={services}
+          existingLandings={seeds as Landing[]}
         />
       </div>
     ) : (

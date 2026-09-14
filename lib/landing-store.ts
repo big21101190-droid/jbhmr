@@ -9,9 +9,11 @@ import { repairGeneratedObjectParticle } from '@/lib/korean-particles';
 import { decodeUrlSegment } from '@/lib/url-segment';
 import { getRegionRecord, getServiceRecord } from '@/lib/catalog-store';
 import {
+  assertNoAutomaticSemanticDuplicate,
   assertNoDuplicate,
   LandingValidationError,
   normalizeLandingInput,
+  resolveLandingSlug,
   validateLandingInput,
 } from '@/lib/landing-validation';
 
@@ -169,15 +171,18 @@ export async function saveLanding(rawInput: LandingInput): Promise<Landing> {
   const input = normalizeLandingInput({
     ...rawInput,
     destinationRegionId: destinationRegion?.id || null,
-    slug:
-      rawInput.slug?.trim() ||
-      previous?.slug ||
-      (destinationRegion
-        ? `${region.slug}-${destinationRegion.slug}-${service.slug}`
-        : `${region.slug}-${service.slug}`),
+    // A new landing without a manually entered URL uses its representative
+    // keyword, never the broad region/service pair. Existing records keep
+    // their URL unless an administrator explicitly changes it.
+    slug: resolveLandingSlug(
+      rawInput.slug,
+      rawInput.primaryKeyword,
+      previous?.slug,
+    ),
     bodyTopImages: rawInput.bodyTopImages || [],
   });
   validateLandingInput(input);
+  assertNoAutomaticSemanticDuplicate(input, existing, rawInput.slug);
   assertNoDuplicate(input, existing);
   const now = new Date().toISOString();
   const record: Landing = {
