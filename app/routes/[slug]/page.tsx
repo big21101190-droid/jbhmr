@@ -11,6 +11,7 @@ import { services as seedServices } from '@/data/services';
 import { listServices } from '@/lib/catalog-store';
 import { company, telHref } from '@/lib/company';
 import { isIndexingEnabled } from '@/lib/indexing';
+import { withTopicParticle } from '@/lib/korean-particles';
 import {
   getServiceRoute,
   getServiceRoutes,
@@ -110,7 +111,7 @@ export default async function ServiceRoutePage({
         }
         description={
           route.description ||
-          `${route.label}은 출발지 픽업부터 주요 운송편과 도착지 배송까지 실제 연계 가능 여부를 확인해 안내합니다.`
+          `${withTopicParticle(route.label)} 출발지 픽업부터 주요 운송편과 도착지 배송까지 실제 연계 가능 여부를 확인해 안내합니다.`
         }
         action={
           <a

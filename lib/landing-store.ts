@@ -3,7 +3,9 @@ import 'server-only';
 import { getStore } from '@netlify/blobs';
 import { randomUUID } from 'node:crypto';
 import initialData from '@/data/initial-landings.json';
+import { getService } from '@/data/services';
 import type { Landing, LandingInput } from '@/lib/domain';
+import { repairGeneratedObjectParticle } from '@/lib/korean-particles';
 import { decodeUrlSegment } from '@/lib/url-segment';
 import { getRegionRecord, getServiceRecord } from '@/lib/catalog-store';
 import {
@@ -17,7 +19,14 @@ const initialLandings = initialData as Landing[];
 const storeName = 'j-complex-logistics-content';
 
 function hydrateLanding(landing: Landing): Landing {
-  return { ...landing, bodyTopImages: landing.bodyTopImages || [] };
+  const bundledService = getService(landing.serviceId);
+  return {
+    ...landing,
+    bodyTopImages: landing.bodyTopImages || [],
+    summary: bundledService
+      ? repairGeneratedObjectParticle(landing.summary, bundledService.name)
+      : landing.summary,
+  };
 }
 
 function contentStore() {

@@ -83,6 +83,8 @@ describe('landing create and lifecycle', () => {
     );
     expect(seoulBusan.slug).toBe('seoul-busan-express-bus');
     expect(seoulDaejeon.slug).toBe('seoul-daejeon-express-bus');
+    expect(seoulBusan.summary).toContain('고속버스택배를 화물 조건');
+    expect(seoulBusan.summary).not.toContain('고속버스택배을');
     expect(seoulBusan.slug).not.toBe(seoulDaejeon.slug);
     expect(() =>
       assertNoDuplicate(seoulDaejeon, [

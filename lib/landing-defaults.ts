@@ -3,6 +3,7 @@ import { getService } from '@/data/services';
 import { customerKeywordIntents } from '@/data/customer-keywords';
 import { phoneForRegion, telHref } from '@/lib/company';
 import type { LandingInput, Region, Service } from '@/lib/domain';
+import { withObjectParticle } from '@/lib/korean-particles';
 
 export function createLandingDefaults(
   regionId: string,
@@ -76,8 +77,8 @@ export function createLandingDefaultsFor(
     heroImage,
     bodyTopImages: [],
     summary: destinationRegion
-      ? `${region.name}에서 ${destinationRegion.name}까지 ${service.name}을 화물 조건과 희망 시간에 맞춰 상담합니다. ${service.shortDescription}`
-      : `${region.name}에서 출발하거나 도착하는 ${service.name}을 화물 조건과 희망 시간에 맞춰 상담합니다. ${service.shortDescription}`,
+      ? `${region.name}에서 ${destinationRegion.name}까지 ${withObjectParticle(service.name)} 화물 조건과 희망 시간에 맞춰 상담합니다. ${service.shortDescription}`
+      : `${region.name}에서 출발하거나 도착하는 ${withObjectParticle(service.name)} 화물 조건과 희망 시간에 맞춰 상담합니다. ${service.shortDescription}`,
     sections: [
       {
         heading: `${routeName} ${service.name} 안내`,
