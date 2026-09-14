@@ -4,11 +4,13 @@ import { ArrowRight, CheckCircle2, Phone, Route } from 'lucide-react';
 import { ContactCta } from '@/components/contact-cta';
 import { PageHero } from '@/components/page-hero';
 import { PhoneFab } from '@/components/phone-fab';
+import { PlainText } from '@/components/plain-text';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { services as seedServices } from '@/data/services';
 import { listServices } from '@/lib/catalog-store';
 import { company, telHref } from '@/lib/company';
+import { isIndexingEnabled } from '@/lib/indexing';
 import {
   getServiceRoute,
   getServiceRoutes,
@@ -35,14 +37,23 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { route } = await findRoute((await params).slug);
   if (!route) return {};
+  const description =
+    route.metaDescription ||
+    route.description ||
+    `${route.origin}에서 ${route.destination}까지 ${route.serviceName} 연계 가능 여부와 접수 절차를 안내합니다.`;
   return {
-    title: `${route.label} 접수 안내`,
-    description: `${route.origin}에서 ${route.destination}까지 ${route.serviceName} 연계 가능 여부와 접수 절차를 안내합니다.`,
+    title: route.metaTitle || `${route.label} 접수 안내`,
+    description,
     alternates: { canonical: `/routes/${route.slug}` },
+    robots:
+      isIndexingEnabled() && route.indexPolicy !== 'NOINDEX'
+        ? { index: true, follow: true }
+        : { index: false, follow: false },
     openGraph: {
-      title: `${route.label} 접수 안내 | 제이복합물류`,
-      description: `${route.origin}–${route.destination} ${route.serviceName} 상담 안내`,
+      title: route.metaTitle || `${route.label} 접수 안내 | 제이복합물류`,
+      description,
       url: `/routes/${route.slug}`,
+      images: route.image?.url ? [{ url: route.image.url }] : undefined,
     },
   };
 }
@@ -97,7 +108,10 @@ export default async function ServiceRoutePage({
             <span className="text-[#78a0ff]">{route.serviceName} 상담</span>
           </>
         }
-        description={`${route.label}은 출발지 픽업부터 주요 운송편과 도착지 배송까지 실제 연계 가능 여부를 확인해 안내합니다.`}
+        description={
+          route.description ||
+          `${route.label}은 출발지 픽업부터 주요 운송편과 도착지 배송까지 실제 연계 가능 여부를 확인해 안내합니다.`
+        }
         action={
           <a
             href={telHref(company.nationalPhone)}
@@ -108,6 +122,41 @@ export default async function ServiceRoutePage({
           </a>
         }
       />
+      {route.image?.url || route.body ? (
+        <section className="bg-[#f4f7fb] px-5 py-14 sm:py-20">
+          <div
+            className={`mx-auto grid max-w-[1050px] gap-8 ${
+              route.image?.url && route.body
+                ? 'lg:grid-cols-[.9fr_1.1fr] lg:items-start'
+                : ''
+            }`}
+          >
+            {route.image?.url ? (
+              <figure>
+                <img
+                  src={route.image.url}
+                  alt={
+                    route.image.alt ||
+                    `${route.origin} ${route.destination} ${route.serviceName} 안내`
+                  }
+                  className="aspect-[4/3] w-full rounded-2xl bg-white object-cover shadow-sm"
+                />
+                {route.image.caption ? (
+                  <figcaption className="mt-3 text-center text-sm leading-6 text-[#667085]">
+                    {route.image.caption}
+                  </figcaption>
+                ) : null}
+              </figure>
+            ) : null}
+            {route.body ? (
+              <PlainText
+                text={route.body}
+                className="space-y-5 leading-8 text-[#475467]"
+              />
+            ) : null}
+          </div>
+        </section>
+      ) : null}
       <section className="bg-white px-5 py-14 sm:py-20">
         <div className="mx-auto grid max-w-[1050px] gap-8 lg:grid-cols-[.75fr_1.25fr]">
           <div>

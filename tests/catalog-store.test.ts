@@ -177,4 +177,50 @@ describe('dynamic catalog persistence', () => {
       }),
     ).rejects.toThrow('다른 서비스에서 같은 주요 노선 URL');
   });
+
+  it('persists route paragraphs and image SEO without changing its URL', async () => {
+    const created = await saveService({
+      name: 'QA-SEO노선서비스',
+      slug: 'qa-seo-route-service',
+      routeIntents: [
+        {
+          origin: '서울',
+          destination: '대전',
+          label: '서울–대전 QA SEO 노선',
+          source: '자동 테스트',
+          slug: 'stable-route-url',
+          body: '첫 문단\n\n둘째 문단',
+          image: {
+            url: '/route.png',
+            alt: '서울 대전 고속버스 이미지',
+            name: '서울 대전 고속버스',
+            caption: '서울에서 대전 노선',
+          },
+          indexPolicy: 'NOINDEX',
+        },
+      ],
+    });
+    const before = created.routeIntents?.[0];
+    expect(before?.slug).toBe('stable-route-url');
+    expect(before?.body).toBe('첫 문단\n\n둘째 문단');
+    expect(before?.image?.alt).toBe('서울 대전 고속버스 이미지');
+
+    await saveService({
+      id: created.id,
+      routeIntents: [
+        {
+          origin: '서울',
+          destination: '대전',
+          label: '제목만 수정',
+          source: '관리자 입력',
+          slug: 'stable-route-url',
+        },
+      ],
+    });
+    const after = (await getServiceRecord(created.id))?.routeIntents?.[0];
+    expect(after?.slug).toBe('stable-route-url');
+    expect(after?.body).toBe('첫 문단\n\n둘째 문단');
+    expect(after?.image?.name).toBe('서울 대전 고속버스');
+    expect(after?.indexPolicy).toBe('NOINDEX');
+  });
 });

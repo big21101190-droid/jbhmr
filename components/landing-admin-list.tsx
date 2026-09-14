@@ -22,13 +22,20 @@ export function LandingAdminList({
   const [visibleCount, setVisibleCount] = useState(25);
   const [message, setMessage] = useState('');
   const filtered = useMemo(() => {
+    const regionName = (id?: string | null) =>
+      regions.find((item) => item.id === id)?.name || '';
+    const serviceName = (id: string) =>
+      services.find((item) => item.id === id)?.name || '';
     const next = items.filter(
       (item) =>
         (!query ||
-          `${item.title} ${item.primaryKeyword} ${item.slug}`
+          `${item.title} ${item.primaryKeyword} ${item.slug} ${regionName(item.regionId)} ${regionName(item.destinationRegionId)} ${serviceName(item.serviceId)}`
             .toLowerCase()
             .includes(query.toLowerCase())) &&
-        (status === 'ALL' || item.status === status) &&
+        (status === 'ALL' ||
+          (status === 'NOINDEX'
+            ? item.indexPolicy === 'NOINDEX'
+            : item.status === status)) &&
         (region === 'ALL' ||
           item.regionId === region ||
           item.destinationRegionId === region) &&
@@ -91,6 +98,9 @@ export function LandingAdminList({
             {items.filter((i) => i.status === 'PUBLISHED').length} · 초안{' '}
             {items.filter((i) => i.status === 'DRAFT').length}
           </p>
+          <p className="mt-1 text-xs text-[#667085]">
+            초기 제공 랜딩과 관리자 생성 랜딩을 같은 목록에서 관리합니다.
+          </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <button
@@ -119,8 +129,8 @@ export function LandingAdminList({
                 setQuery(e.target.value);
                 setVisibleCount(25);
               }}
-              placeholder="제목·키워드·URL 검색"
-              aria-label="랜딩페이지 제목·키워드·URL 검색"
+              placeholder="제목·키워드·지역·서비스·URL 검색"
+              aria-label="랜딩페이지 제목·키워드·지역·서비스·URL 검색"
               className="w-full min-w-0 rounded-xl border border-[#dce5f0] px-4 py-3 text-sm"
             />
             <select
@@ -168,6 +178,7 @@ export function LandingAdminList({
               <option>DRAFT</option>
               <option>PUBLISHED</option>
               <option>ARCHIVED</option>
+              <option value="NOINDEX">NOINDEX</option>
             </select>
             <select
               value={sort}
@@ -234,6 +245,11 @@ export function LandingAdminList({
                       >
                         {item.status}
                       </span>
+                      {item.indexPolicy === 'NOINDEX' ? (
+                        <span className="ml-1 rounded-full bg-violet-100 px-2.5 py-1 text-xs font-black text-violet-700">
+                          NOINDEX
+                        </span>
+                      ) : null}
                     </td>
                     <td className="px-3 py-4 text-xs">
                       {new Date(item.updatedAt).toLocaleDateString('ko-KR')}

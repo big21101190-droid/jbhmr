@@ -53,12 +53,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     }));
-  const routePages = services.flatMap(getServiceRoutes).map((item) => ({
-    url: `${SITE_URL}/routes/${item.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
+  const routePages = services
+    .flatMap(getServiceRoutes)
+    .filter((item) => item.indexPolicy !== 'NOINDEX')
+    .map((item) => ({
+      url: `${SITE_URL}/routes/${item.slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }));
   return [
     ...core,
     ...servicePages,

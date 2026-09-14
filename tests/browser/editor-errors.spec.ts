@@ -172,7 +172,10 @@ for (const failure of errors) {
     await upload.setInputFiles(png);
     await expect(statusMessage(page)).toContainText('이미지를 업로드했습니다.');
     await expect(
-      page.getByRole('img', { name: '대표 이미지 미리보기', exact: true }),
+      page
+        .locator('fieldset')
+        .filter({ hasText: '대표 이미지와 SEO 정보' })
+        .locator('img'),
     ).toHaveAttribute('src', '/service-ktx.png');
     await page.getByText('고급 SEO 설정', { exact: true }).click();
     await expect(page.getByLabel('OG 이미지', { exact: true })).toHaveValue(

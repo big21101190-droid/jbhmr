@@ -205,4 +205,33 @@ describe('landing create and lifecycle', () => {
     });
     expect(normalized.slug).toBe('stable-published-url');
   });
+
+  it('preserves paragraphs and separates image SEO fields', () => {
+    const base = createLandingDefaults('daegu-dong', 'quick-motorcycle');
+    const normalized = normalizeLandingInput({
+      ...base,
+      summary: '첫 문단\n\n둘째 문단',
+      sections: [{ heading: '안내', body: '첫 줄\n둘째 줄\n\n셋째 문단' }],
+      heroImageAlt: '대구 동구 퀵서비스 차량',
+      heroImageName: '대구 동구 퀵서비스',
+      heroImageCaption: '대구 동구 당일 배송 안내',
+      bodyTopImages: [
+        {
+          url: '/qa.png',
+          alt: '본문 이미지 ALT',
+          name: '본문 관리 이름',
+          caption: '본문 캡션',
+        },
+      ],
+    });
+    expect(normalized.summary).toBe('첫 문단\n\n둘째 문단');
+    expect(normalized.sections[0].body).toBe('첫 줄\n둘째 줄\n\n셋째 문단');
+    expect(normalized.heroImageAlt).toBe('대구 동구 퀵서비스 차량');
+    expect(normalized.heroImageName).toBe('대구 동구 퀵서비스');
+    expect(normalized.bodyTopImages?.[0]).toMatchObject({
+      alt: '본문 이미지 ALT',
+      name: '본문 관리 이름',
+      caption: '본문 캡션',
+    });
+  });
 });

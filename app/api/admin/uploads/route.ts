@@ -5,6 +5,7 @@ import {
   IMAGE_UPLOAD_TYPES,
   validateImageUpload,
 } from '@/lib/image-upload-policy';
+import { slugify } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,9 +33,22 @@ export async function POST(request: Request) {
         { status: invalid.status },
       );
     const extension = IMAGE_UPLOAD_TYPES.get(file.type);
-    const key = `uploads/${randomUUID()}.${extension}`;
+    const requestedName = form.get('filename');
+    const rawBaseName = (
+      typeof requestedName === 'string' && requestedName.trim()
+        ? requestedName
+        : file.name
+    ).replace(/\.[^.]+$/, '');
+    const safeBaseName = slugify(rawBaseName).slice(0, 80) || 'image';
+    const storedFilename = `${safeBaseName}-${randomUUID().slice(0, 8)}.${extension}`;
+    const key = `uploads/${storedFilename}`;
     await assetStore().set(key, await file.arrayBuffer());
-    return Response.json({ url: `/api/media/${key}`, filename: file.name });
+    return Response.json({
+      url: `/api/media/${key}`,
+      filename: storedFilename,
+      originalFilename: file.name,
+      storageKey: key,
+    });
   } catch (error) {
     if (error instanceof Response) return error;
     console.error(error);

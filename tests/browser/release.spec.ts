@@ -220,12 +220,88 @@ test('F05 list names, filters, search, collapse and more', async ({ page }) => {
   await page.getByLabel('랜딩페이지 서비스 필터').selectOption('damas');
   await page.getByLabel('랜딩페이지 상태 필터').selectOption('PUBLISHED');
   await expect(page.locator('tbody tr')).toHaveCount(1);
-  await page.getByLabel('랜딩페이지 제목·키워드·URL 검색').fill('없는 검색어');
+  await page
+    .getByLabel('랜딩페이지 제목·키워드·지역·서비스·URL 검색')
+    .fill('없는 검색어');
   await expect(
     page.getByText('조건에 맞는 랜딩페이지가 없습니다.'),
   ).toBeVisible();
   await page.getByRole('button', { name: '목록 접기' }).click();
   await expect(page.locator('#landing-management-content')).toHaveCount(0);
+});
+
+test('existing Seoul–Daejeon route is searchable and editable without changing its URL', async ({
+  page,
+}, testInfo) => {
+  await page.goto(fixture('route-list'));
+  await expect(page.locator('tbody tr')).toHaveCount(19);
+  await page
+    .getByPlaceholder('제목·출발지·도착지·서비스·URL 검색')
+    .fill('서울 대전');
+  const row = page.locator('tbody tr', {
+    hasText: '서울–대전 고속버스택배',
+  });
+  await expect(row).toHaveCount(1);
+  await expect(row.getByRole('link', { name: '수정' })).toHaveAttribute(
+    'href',
+    '/admin/routes/express-bus/seoul-daejeon-express-bus',
+  );
+  await page.screenshot({
+    path: testInfo.outputPath('route-list-seoul-daejeon.png'),
+    fullPage: true,
+  });
+
+  let payload: Record<string, unknown> | null = null;
+  await page.route(
+    '**/api/admin/routes/express-bus/seoul-daejeon-express-bus',
+    async (route) => {
+      payload = route.request().postDataJSON();
+      await route.fulfill({
+        status: 200,
+        json: { route: payload },
+      });
+    },
+  );
+  await page.goto(fixture('route-editor'));
+  await expect(
+    page.getByText('/routes/seoul-daejeon-express-bus', { exact: true }),
+  ).toBeVisible();
+  await page
+    .getByLabel('본문', { exact: true })
+    .fill('첫 문단 첫 줄\n첫 문단 둘째 줄\n\n둘째 문단');
+  await page
+    .getByLabel('ALT 텍스트', { exact: true })
+    .fill('서울 대전 고속버스택배 화물 이미지');
+  await page.getByPlaceholder('이미지 URL').fill('/service-bus.png');
+  await page
+    .getByLabel('관리용 이름 · 새 업로드 파일명')
+    .fill('서울 대전 고속버스택배');
+  await page.getByLabel('캡션 (선택)').fill('서울에서 대전까지 화물 연계');
+  await page.getByLabel('검색 색인').selectOption('NOINDEX');
+  await expect(
+    page.getByAltText('서울 대전 고속버스택배 화물 이미지'),
+  ).toBeVisible();
+  await page.screenshot({
+    path: testInfo.outputPath('route-editor-image-seo.png'),
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: '저장', exact: true }).click();
+  await expect(
+    page.getByText('저장했습니다. 기존 URL은 유지되었습니다.'),
+  ).toBeVisible();
+  expect(payload).toMatchObject({
+    body: '첫 문단 첫 줄\n첫 문단 둘째 줄\n\n둘째 문단',
+    indexPolicy: 'NOINDEX',
+    image: {
+      url: '/service-bus.png',
+      alt: '서울 대전 고속버스택배 화물 이미지',
+      name: '서울 대전 고속버스택배',
+      caption: '서울에서 대전까지 화물 연계',
+    },
+  });
+  expect((payload as Record<string, unknown> | null)?.slug).toBe(
+    'seoul-daejeon-express-bus',
+  );
 });
 
 test('F01/F07 editor save/reopen using explicitly isolated mock API', async ({

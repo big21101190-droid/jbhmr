@@ -15,12 +15,13 @@ vi.mock('@/lib/auth', () => ({
 vi.mock('@netlify/blobs', () => ({ getStore: () => ({ set: state.write }) }));
 import { POST } from '@/app/api/admin/uploads/route';
 
-function request(type = 'image/png', size = 100) {
+function request(type = 'image/png', size = 100, filename?: string) {
   const form = new FormData();
   form.append(
     'file',
     new File([new Uint8Array(size)], 'qa-local-image', { type }),
   );
+  if (filename) form.append('filename', filename);
   return new Request('http://localhost/api/admin/uploads', {
     method: 'POST',
     body: form,
@@ -44,7 +45,9 @@ describe('upload API and shared preflight (isolated Blobs)', () => {
       const response = await POST(request(type));
       expect(response.status).toBe(200);
       expect((await response.json()).url).toMatch(
-        new RegExp(`^/api/media/uploads/[a-f0-9-]+\\.${extension}$`),
+        new RegExp(
+          `^/api/media/uploads/qa-local-image-[a-f0-9]{8}\\.${extension}$`,
+        ),
       );
       expect(state.write).toHaveBeenCalledTimes(1);
       expect(state.write.mock.calls[0][1].byteLength).toBe(100);
@@ -53,6 +56,16 @@ describe('upload API and shared preflight (isolated Blobs)', () => {
       ).toBeNull();
     });
   }
+  it('uses a sanitized SEO filename for new uploads and keeps the original name separate', async () => {
+    const response = await POST(
+      request('image/png', 100, '대구 동구 퀵서비스.jpg'),
+    );
+    const data = await response.json();
+    expect(data.filename).toMatch(/^대구-동구-퀵서비스-[a-f0-9]{8}\.png$/);
+    expect(data.storageKey).toBe(`uploads/${data.filename}`);
+    expect(data.originalFilename).toBe('qa-local-image');
+    expect(state.write.mock.calls[0][0]).toBe(data.storageKey);
+  });
   it('accepts exactly 5 MiB at the API boundary', async () => {
     expect(
       (await POST(request('image/png', IMAGE_UPLOAD_MAX_BYTES))).status,

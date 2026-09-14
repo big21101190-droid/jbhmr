@@ -34,6 +34,9 @@ export function normalizeLandingInput(input: LandingInput): LandingInput {
     metaTitle: (input.metaTitle || `${input.title} | 제이복합물류`).trim(),
     metaDescription: input.metaDescription.trim(),
     summary: input.summary.trim(),
+    heroImageAlt: input.heroImageAlt?.trim() || undefined,
+    heroImageName: input.heroImageName?.trim() || undefined,
+    heroImageCaption: input.heroImageCaption?.trim() || undefined,
     secondaryKeywords: input.secondaryKeywords
       .map((item) => item.trim())
       .filter(Boolean),
@@ -56,6 +59,7 @@ export function normalizeLandingInput(input: LandingInput): LandingInput {
     bodyTopImages: (input.bodyTopImages || []).slice(0, 4).map((image) => ({
       url: image.url.trim(),
       alt: image.alt?.trim() || undefined,
+      name: image.name?.trim() || undefined,
       caption: image.caption?.trim() || undefined,
       storageKey: image.storageKey?.trim() || undefined,
     })),

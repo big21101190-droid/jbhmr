@@ -4,11 +4,14 @@ import { SiteHeader } from '@/components/site-header';
 import { LandingAdminList } from '@/components/landing-admin-list';
 import { LandingEditor } from '@/components/landing-editor';
 import { LandingGallery } from '@/components/landing-gallery';
+import { ServiceRouteAdminList } from '@/components/service-route-admin-list';
+import { ServiceRouteEditor } from '@/components/service-route-editor';
 import { regions } from '@/data/regions';
 import { services } from '@/data/services';
 import seeds from '@/data/initial-landings.json';
 import { createLandingDefaults } from '@/lib/landing-defaults';
 import type { Landing } from '@/lib/domain';
+import { getAllServiceRoutes } from '@/lib/service-routes';
 import '@/app/globals.css';
 
 const query = new URLSearchParams(location.search);
@@ -37,6 +40,10 @@ const initial = query.get('saved')
   : view === 'existing'
     ? existing
     : createLandingDefaults('seoul', 'express-bus', undefined, 'busan');
+const serviceRoutes = services.flatMap(getAllServiceRoutes);
+const routeFixture = serviceRoutes.find(
+  (route) => route.slug === 'seoul-daejeon-express-bus',
+)!;
 createRoot(document.getElementById('root')!).render(
   <>
     <p className="bg-amber-100 p-2 text-center text-sm">
@@ -61,6 +68,14 @@ createRoot(document.getElementById('root')!).render(
         regions={regions}
         services={services}
       />
+    ) : view === 'route-list' ? (
+      <div className="mx-auto max-w-[1160px] p-5">
+        <ServiceRouteAdminList initial={serviceRoutes} />
+      </div>
+    ) : view === 'route-editor' ? (
+      <div className="mx-auto max-w-[1160px] p-5">
+        <ServiceRouteEditor initial={routeFixture} />
+      </div>
     ) : view === 'editor' || view === 'existing' ? (
       <div className="mx-auto max-w-[1160px] p-5">
         <LandingEditor

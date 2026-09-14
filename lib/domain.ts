@@ -62,6 +62,12 @@ export type ServiceRouteIntent = {
   label: string;
   source: string;
   slug?: string;
+  description?: string;
+  body?: string;
+  image?: LandingImage;
+  metaTitle?: string;
+  metaDescription?: string;
+  indexPolicy?: IndexPolicy;
   active?: boolean;
   sortOrder?: number;
 };
@@ -118,6 +124,7 @@ export type Region = {
 export type LandingImage = {
   url: string;
   alt?: string;
+  name?: string;
   caption?: string;
   storageKey?: string;
 };
@@ -140,6 +147,9 @@ export type Landing = {
   metaTitle: string;
   metaDescription: string;
   heroImage: string;
+  heroImageAlt?: string;
+  heroImageName?: string;
+  heroImageCaption?: string;
   bodyTopImages?: LandingImage[];
   summary: string;
   sections: LandingSection[];

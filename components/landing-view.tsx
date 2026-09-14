@@ -1,6 +1,7 @@
 import { ArrowRight, CheckCircle2, Phone } from 'lucide-react';
 import { JsonLd } from '@/components/json-ld';
 import { LandingGallery } from '@/components/landing-gallery';
+import { PlainText } from '@/components/plain-text';
 import { PhoneFab } from '@/components/phone-fab';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
@@ -133,9 +134,10 @@ export async function LandingView({
             <h1 className="font-display mt-5 text-[clamp(2.45rem,5.8vw,5rem)] leading-[1.08]">
               {landing.h1}
             </h1>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-white/65">
-              {landing.summary}
-            </p>
+            <PlainText
+              text={landing.summary}
+              className="mt-6 max-w-2xl space-y-4 text-base leading-8 text-white/65"
+            />
             <a
               href={landing.ctaLink}
               className="mt-8 inline-flex items-center gap-3 rounded-xl bg-[#1b4dff] px-6 py-4 text-lg font-black"
@@ -144,11 +146,18 @@ export async function LandingView({
               {landing.ctaLabel}
             </a>
           </div>
-          <img
-            src={landing.heroImage}
-            alt={`${landing.title} 안내`}
-            className="aspect-[4/3] w-full rounded-[28px] object-cover shadow-2xl"
-          />
+          <figure>
+            <img
+              src={landing.heroImage}
+              alt={landing.heroImageAlt || `${landing.title} 안내`}
+              className="aspect-[4/3] w-full rounded-[28px] object-cover shadow-2xl"
+            />
+            {landing.heroImageCaption ? (
+              <figcaption className="mt-3 text-center text-sm leading-6 text-white/65">
+                {landing.heroImageCaption}
+              </figcaption>
+            ) : null}
+          </figure>
         </div>
       </section>
       <LandingGallery
@@ -170,7 +179,10 @@ export async function LandingView({
                   {section.heading}
                 </h2>
               </div>
-              <p className="leading-8 text-[#667085]">{section.body}</p>
+              <PlainText
+                text={section.body}
+                className="space-y-4 leading-8 text-[#667085]"
+              />
             </article>
           ))}
         </div>
@@ -222,9 +234,10 @@ export async function LandingView({
                   <summary className="cursor-pointer py-5 font-black">
                     {item.question}
                   </summary>
-                  <p className="pb-6 text-sm leading-7 text-[#667085]">
-                    {item.answer}
-                  </p>
+                  <PlainText
+                    text={item.answer}
+                    className="space-y-3 pb-6 text-sm leading-7 text-[#667085]"
+                  />
                 </details>
               ))}
             </div>

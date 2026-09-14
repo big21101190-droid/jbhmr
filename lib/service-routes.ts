@@ -52,9 +52,12 @@ export function getServiceRouteSlug(
   );
 }
 
-export function getServiceRoutes(service: Service): ServiceRoute[] {
+function collectServiceRoutes(
+  service: Service,
+  options: { includeInactive?: boolean } = {},
+): ServiceRoute[] {
   return (service.routeIntents || [])
-    .filter((route) => route.active !== false)
+    .filter((route) => options.includeInactive || route.active !== false)
     .map((route, index) => ({
       ...route,
       slug: getServiceRouteSlug(service, route),
@@ -69,6 +72,14 @@ export function getServiceRoutes(service: Service): ServiceRoute[] {
         (a.sortOrder ?? 0) - (b.sortOrder ?? 0) ||
         a.label.localeCompare(b.label, 'ko'),
     );
+}
+
+export function getServiceRoutes(service: Service): ServiceRoute[] {
+  return collectServiceRoutes(service);
+}
+
+export function getAllServiceRoutes(service: Service): ServiceRoute[] {
+  return collectServiceRoutes(service, { includeInactive: true });
 }
 
 export function getServiceRoute(services: Service[], slug: string) {

@@ -68,6 +68,21 @@ function normalizeRouteIntents(
         400,
         'routeIntents',
       );
+    const routeSlug = getServiceRouteSlug(
+      { slug: serviceSlug },
+      { ...route, origin, destination },
+    );
+    const prior = previous?.find(
+      (item) => getServiceRouteSlug({ slug: serviceSlug }, item) === routeSlug,
+    );
+    const imageInput = route.image === undefined ? prior?.image : route.image;
+    const imageUrl = cleanText(imageInput?.url, 500);
+    if (imageUrl && !/^(\/|https?:\/\/)/.test(imageUrl))
+      throw new CatalogValidationError(
+        '주요 노선 이미지 주소를 확인해주세요.',
+        400,
+        'routeIntents',
+      );
     const normalized: ServiceRouteIntent = {
       origin,
       destination,
@@ -76,6 +91,45 @@ function normalizeRouteIntents(
         `${origin}–${destination} ${serviceName}`,
       source: cleanText(route.source, 200) || '관리자 입력',
       slug: cleanText(route.slug, 120) || undefined,
+      description:
+        cleanText(
+          route.description === undefined
+            ? prior?.description
+            : route.description,
+          700,
+        ) || undefined,
+      body:
+        cleanText(route.body === undefined ? prior?.body : route.body, 20000) ||
+        undefined,
+      image: imageUrl
+        ? {
+            url: imageUrl,
+            alt:
+              cleanText(imageInput?.alt, 250) ||
+              `${origin} ${destination} ${serviceName} 안내`,
+            name: cleanText(imageInput?.name, 200) || undefined,
+            caption: cleanText(imageInput?.caption, 500) || undefined,
+            storageKey: cleanText(imageInput?.storageKey, 500) || undefined,
+          }
+        : undefined,
+      metaTitle:
+        cleanText(
+          route.metaTitle === undefined ? prior?.metaTitle : route.metaTitle,
+          70,
+        ) || undefined,
+      metaDescription:
+        cleanText(
+          route.metaDescription === undefined
+            ? prior?.metaDescription
+            : route.metaDescription,
+          170,
+        ) || undefined,
+      indexPolicy:
+        (route.indexPolicy === undefined
+          ? prior?.indexPolicy
+          : route.indexPolicy) === 'NOINDEX'
+          ? 'NOINDEX'
+          : 'INDEX',
       active: route.active !== false,
       sortOrder: Number.isFinite(Number(route.sortOrder))
         ? Number(route.sortOrder)

@@ -34,7 +34,12 @@ export function getLandingMetadata(
       siteName: company.name,
       title: landing.ogTitle,
       description: landing.ogDescription,
-      images: [{ url: absoluteUrl(landing.ogImage), alt: landing.h1 }],
+      images: [
+        {
+          url: absoluteUrl(landing.ogImage),
+          alt: landing.heroImageAlt || landing.h1,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',

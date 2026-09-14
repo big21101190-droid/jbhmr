@@ -60,6 +60,26 @@ describe('client revision release contract', () => {
     expect(gallery).not.toContain('md:row-span-2');
   });
 
+  it('exposes every generated route through a stable-URL admin editor', () => {
+    const adminPage = readFileSync('app/admin/(dashboard)/page.tsx', 'utf8');
+    const routeList = readFileSync(
+      'components/service-route-admin-list.tsx',
+      'utf8',
+    );
+    const routeEditor = readFileSync(
+      'components/service-route-editor.tsx',
+      'utf8',
+    );
+    const routePage = readFileSync('app/routes/[slug]/page.tsx', 'utf8');
+    expect(adminPage).toContain('getAllServiceRoutes');
+    expect(routeList).toContain('제목·출발지·도착지·서비스·URL 검색');
+    expect(routeEditor).toContain('기존 URL은 유지되었습니다');
+    expect(routeEditor).toContain('ALT 텍스트');
+    expect(routeEditor).toContain('관리용 이름');
+    expect(routePage).toContain('alt={');
+    expect(routePage).toContain('<PlainText');
+  });
+
   it('keeps the exact global reception and footer license copy', () => {
     const header = readFileSync('components/site-header.tsx', 'utf8');
     const footer = readFileSync('components/site-footer.tsx', 'utf8');

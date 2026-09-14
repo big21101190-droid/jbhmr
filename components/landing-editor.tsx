@@ -37,6 +37,9 @@ export function LandingEditor({
   const [uploading, setUploading] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
   const [record, setRecord] = useState<Landing | null>(null);
+  const [bodyUploadNames, setBodyUploadNames] = useState<string[]>(() =>
+    [0, 1, 2].map((index) => initial.bodyTopImages?.[index]?.name || ''),
+  );
   const showSessionExpired = () => {
     setSessionExpired(true);
     setMessage(
@@ -130,6 +133,11 @@ export function LandingEditor({
     try {
       const body = new FormData();
       body.append('file', file);
+      const requestedName =
+        bodyIndex === undefined
+          ? form.heroImageName
+          : bodyUploadNames[bodyIndex] || form.bodyTopImages?.[bodyIndex]?.name;
+      if (requestedName?.trim()) body.append('filename', requestedName.trim());
       const response = await fetch('/api/admin/uploads', {
         method: 'POST',
         body,
@@ -160,11 +168,33 @@ export function LandingEditor({
       }
       setForm((current) => {
         if (bodyIndex === undefined)
-          return { ...current, heroImage: data.url, ogImage: data.url };
+          return {
+            ...current,
+            heroImage: data.url,
+            heroImageName:
+              current.heroImageName ||
+              String(data.originalFilename || file.name).replace(
+                /\.[^.]+$/,
+                '',
+              ),
+            heroImageAlt:
+              current.heroImageAlt ||
+              `${current.primaryKeyword || current.title} 대표 이미지`,
+            ogImage: data.url,
+          };
         const images = [...(current.bodyTopImages || [])];
+        const previous = images[bodyIndex];
         images[bodyIndex] = {
           url: data.url,
-          alt: `${current.primaryKeyword || current.title} 이미지 ${bodyIndex + 1}`,
+          alt:
+            previous?.alt ||
+            `${current.primaryKeyword || current.title} 이미지 ${bodyIndex + 1}`,
+          name:
+            bodyUploadNames[bodyIndex] ||
+            previous?.name ||
+            String(data.originalFilename || file.name).replace(/\.[^.]+$/, ''),
+          caption: previous?.caption,
+          storageKey: data.storageKey,
         };
         return {
           ...current,
@@ -352,8 +382,8 @@ export function LandingEditor({
             />
           </label>
         </div>
-        <label className={labelClass}>
-          대표 이미지
+        <fieldset className="rounded-2xl border border-[#dce5f0] p-5">
+          <legend className="px-2 font-black">대표 이미지와 SEO 정보</legend>
           <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
             <input
               value={form.heroImage}
@@ -379,11 +409,44 @@ export function LandingEditor({
           {form.heroImage ? (
             <img
               src={form.heroImage}
-              alt="대표 이미지 미리보기"
+              alt={form.heroImageAlt || '대표 이미지 미리보기'}
               className="mt-2 aspect-[16/7] w-full rounded-xl object-cover"
             />
           ) : null}
-        </label>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <label className={labelClass}>
+              ALT 텍스트
+              <input
+                value={form.heroImageAlt || ''}
+                onChange={(event) => set('heroImageAlt', event.target.value)}
+                placeholder="이미지가 전달하는 내용을 구체적으로 입력"
+                className={fieldClass}
+              />
+            </label>
+            <label className={labelClass}>
+              관리용 이름 · 새 업로드 파일명
+              <input
+                value={form.heroImageName || ''}
+                onChange={(event) => set('heroImageName', event.target.value)}
+                placeholder="예: 대구 동구 퀵서비스"
+                className={fieldClass}
+              />
+            </label>
+          </div>
+          <label className={`${labelClass} mt-3`}>
+            캡션 (선택)
+            <textarea
+              value={form.heroImageCaption || ''}
+              onChange={(event) => set('heroImageCaption', event.target.value)}
+              rows={2}
+              className={fieldClass}
+            />
+          </label>
+          <p className="mt-3 text-xs leading-5 text-[#667085]">
+            관리용 이름은 새로 업로드할 파일의 안전한 파일명에도 사용됩니다.
+            기존 이미지 URL이나 EXIF 정보는 변경하지 않습니다.
+          </p>
+        </fieldset>
         <fieldset
           disabled={saving || uploading}
           className="rounded-2xl border border-[#dce5f0] p-5"
@@ -426,6 +489,29 @@ export function LandingEditor({
                       }}
                     />
                   </label>
+                  <input
+                    aria-label={`사진 ${index + 1} 관리용 이름 및 파일명`}
+                    value={bodyUploadNames[index] || image?.name || ''}
+                    onChange={(event) => {
+                      const value = event.target.value;
+                      setBodyUploadNames((current) =>
+                        current.map((item, itemIndex) =>
+                          itemIndex === index ? value : item,
+                        ),
+                      );
+                      if (image)
+                        set(
+                          'bodyTopImages',
+                          (form.bodyTopImages || []).map((item, itemIndex) =>
+                            itemIndex === index
+                              ? { ...item, name: value }
+                              : item,
+                          ),
+                        );
+                    }}
+                    placeholder="관리용 이름 · 새 업로드 파일명"
+                    className={`${fieldClass} mt-2 w-full`}
+                  />
                   {image ? (
                     <>
                       <input
@@ -442,6 +528,23 @@ export function LandingEditor({
                           )
                         }
                         placeholder="대체 텍스트"
+                        className={`${fieldClass} mt-2 w-full`}
+                      />
+                      <textarea
+                        aria-label={`사진 ${index + 1} 캡션`}
+                        value={image.caption || ''}
+                        onChange={(event) =>
+                          set(
+                            'bodyTopImages',
+                            (form.bodyTopImages || []).map((item, itemIndex) =>
+                              itemIndex === index
+                                ? { ...item, caption: event.target.value }
+                                : item,
+                            ),
+                          )
+                        }
+                        rows={2}
+                        placeholder="설명/캡션 (선택)"
                         className={`${fieldClass} mt-2 w-full`}
                       />
                       <button
