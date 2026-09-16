@@ -66,6 +66,21 @@ describe('upload API and shared preflight (isolated Blobs)', () => {
     expect(data.originalFilename).toBe('qa-local-image');
     expect(state.write.mock.calls[0][0]).toBe(data.storageKey);
   });
+  it('accepts mixed Korean, English, numbers, and special characters in the customer filename', async () => {
+    const response = await POST(
+      request('image/webp', 100, '서울 부산! #1 Express (99%).png'),
+    );
+
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data.filename).toMatch(
+      /^서울-부산-1-express-99-[a-f0-9]{8}\.webp$/,
+    );
+    expect(data.url).toMatch(
+      /^\/api\/media\/uploads\/서울-부산-1-express-99-[a-f0-9]{8}\.webp$/,
+    );
+    expect(state.write.mock.calls[0][0]).toBe(data.storageKey);
+  });
   it('accepts exactly 5 MiB at the API boundary', async () => {
     expect(
       (await POST(request('image/png', IMAGE_UPLOAD_MAX_BYTES))).status,

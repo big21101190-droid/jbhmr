@@ -1,4 +1,5 @@
 import { getStore } from '@netlify/blobs';
+import { decodeUrlSegment } from '@/lib/url-segment';
 
 export const dynamic = 'force-dynamic';
 
@@ -7,7 +8,10 @@ function assetStore() {
 }
 
 export async function GET(_request: Request, { params }: { params: Promise<{ key: string[] }> }) {
-  const key = (await params).key.join('/');
+  const parts = (await params).key.map(decodeUrlSegment);
+  if (parts.some((part) => part === null))
+    return new Response('Not found', { status: 404 });
+  const key = parts.join('/');
   if (
     !/^uploads\/[a-z0-9가-힣-]+-[a-f0-9]{8}\.(jpg|png|webp)$/.test(key)
   )

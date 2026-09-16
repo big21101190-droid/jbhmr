@@ -32,6 +32,24 @@ describe('uploaded media route', () => {
     );
   });
 
+  it('serves a Korean upload when the browser sends its URL-encoded path segment', async () => {
+    const filename = '서울-부산-고속버스택배-a1b2c3d4.png';
+    const key = `uploads/${filename}`;
+    storedAssets.set(key, new Uint8Array([137, 80, 78, 71]).buffer);
+
+    const response = await GET(
+      new Request(`http://localhost/api/media/${encodeURIComponent(key)}`),
+      {
+        params: Promise.resolve({
+          key: ['uploads', encodeURIComponent(filename)],
+        }),
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-type')).toBe('image/png');
+  });
+
   it('rejects a path that was not produced by the upload naming scheme', async () => {
     const response = await GET(new Request('http://localhost/api/media/uploads/other.png'), {
       params: Promise.resolve({ key: ['uploads', 'other.png'] }),
