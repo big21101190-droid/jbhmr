@@ -79,3 +79,8 @@ Netlify Identity는 현재 로컬 `netlify dev`에서 지원되지 않으므로 
 - Naver Search Advisor 소유권
 
 비밀번호, 토큰, API 키를 문서나 저장소에 평문으로 남기지 않습니다.
+
+
+## 고객 GitHub 배포 이력
+
+- 2026-09-16: 고객 GitHub 계정에서 Netlify production 배포를 요청했습니다.
