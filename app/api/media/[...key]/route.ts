@@ -8,7 +8,10 @@ function assetStore() {
 
 export async function GET(_request: Request, { params }: { params: Promise<{ key: string[] }> }) {
   const key = (await params).key.join('/');
-  if (!/^uploads\/[a-f0-9-]+\.(jpg|png|webp)$/.test(key)) return new Response('Not found', { status: 404 });
+  if (
+    !/^uploads\/[a-z0-9가-힣-]+-[a-f0-9]{8}\.(jpg|png|webp)$/.test(key)
+  )
+    return new Response('Not found', { status: 404 });
   try {
     const data = await assetStore().get(key, { type: 'arrayBuffer' }) as ArrayBuffer | null;
     if (!data) return new Response('Not found', { status: 404 });
