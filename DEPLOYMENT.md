@@ -84,3 +84,6 @@ Netlify Identity는 현재 로컬 `netlify dev`에서 지원되지 않으므로 
 ## 고객 GitHub 배포 이력
 
 - 2026-09-16: 고객 GitHub 계정에서 Netlify production 배포를 요청했습니다.
+
+
+2026-09-16 고객 운영 배포 트리거: 한글·특수문자 CMS 이미지 경로 처리 수정(a0f01c8).
