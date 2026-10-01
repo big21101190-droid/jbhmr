@@ -2,7 +2,11 @@ import { revalidatePath } from 'next/cache';
 import { requireAdminApi } from '@/lib/auth';
 import type { LandingInput } from '@/lib/domain';
 import { LandingValidationError } from '@/lib/landing-validation';
-import { getLandingById, saveLanding } from '@/lib/landing-store';
+import {
+  deleteCustomerLanding,
+  getLandingById,
+  saveLanding,
+} from '@/lib/landing-store';
 
 export const dynamic = 'force-dynamic';
 
@@ -68,6 +72,26 @@ export async function PATCH(
     revalidatePath(`/delivery/${previous.slug}`);
     revalidatePath(`/delivery/${landing.slug}`);
     return Response.json({ landing });
+  } catch (error) {
+    return errorResponse(error);
+  }
+}
+
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    await requireAdminApi();
+    const deleted = await deleteCustomerLanding((await params).id);
+    if (!deleted)
+      return Response.json(
+        { error: '랜딩페이지를 찾을 수 없습니다.' },
+        { status: 404 },
+      );
+    revalidatePath('/sitemap.xml');
+    revalidatePath(`/delivery/${deleted.slug}`);
+    return new Response(null, { status: 204 });
   } catch (error) {
     return errorResponse(error);
   }

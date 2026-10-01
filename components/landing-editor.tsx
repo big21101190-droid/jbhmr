@@ -845,9 +845,12 @@ export function LandingEditor({
                 }
                 className={fieldClass}
               >
-                <option value="INDEX">INDEX</option>
-                <option value="NOINDEX">NOINDEX</option>
+                <option value="INDEX">검색 허용 (INDEX)</option>
+                <option value="NOINDEX">검색 제외 (NOINDEX)</option>
               </select>
+              <span className="text-xs font-medium text-[#667085]">
+                검색 제외여도 공개 상태라면 웹사이트에서는 접속할 수 있습니다.
+              </span>
             </label>
             <label className={labelClass}>
               OG 제목

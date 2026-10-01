@@ -179,4 +179,15 @@ describe('Blobs landing storage (isolated adapter)', () => {
       (await listLandings()).filter((x) => x.id.startsWith('initial-')),
     ).toHaveLength(50);
   });
+  it('rejects an update while another mutation owns the landing lock', async () => {
+    const record = await saveLanding(draft('qa-mutation-lock'));
+    state.entries.set(`landing-mutations/${record.id}.json`, {
+      operation: 'delete',
+    });
+
+    await expect(
+      saveLanding({ ...record, title: '동시 수정 시도' }),
+    ).rejects.toMatchObject({ status: 409, field: 'id' });
+    expect((await getLandingById(record.id))?.title).toBe(record.title);
+  });
 });

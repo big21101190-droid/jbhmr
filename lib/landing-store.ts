@@ -39,6 +39,29 @@ function slugIndexKey(slug: string) {
   return `landing-slugs/${encodeURIComponent(slug)}.json`;
 }
 
+function mutationKey(id: string) {
+  return `landing-mutations/${id}.json`;
+}
+
+async function acquireLandingMutation(
+  store: ReturnType<typeof contentStore>,
+  id: string,
+) {
+  const claim = await store.setJSON(
+    mutationKey(id),
+    { startedAt: new Date().toISOString() },
+    { onlyIfNew: true },
+  );
+  if (!claim.modified)
+    throw new LandingValidationError(
+      '이 랜딩페이지는 다른 관리자 작업이 진행 중입니다. 잠시 후 다시 시도해주세요.',
+      'id',
+      undefined,
+      409,
+    );
+  return async () => store.delete(mutationKey(id));
+}
+
 async function getOverrides(failOnStorageError = false): Promise<Landing[]> {
   try {
     const store = contentStore();
@@ -194,32 +217,88 @@ export async function saveLanding(rawInput: LandingInput): Promise<Landing> {
       input.status === 'PUBLISHED' ? previous?.publishedAt || now : null,
   };
   const store = contentStore();
-  // Claim the normalized URL before writing the record. A preflight list alone
-  // cannot prevent two simultaneous creates from overwriting the slug index.
-  const claim = await store.setJSON(
-    slugIndexKey(record.slug),
-    { id: record.id },
-    { onlyIfNew: true },
-  );
-  if (!claim.modified) {
-    const owner = (await store.get(slugIndexKey(record.slug), {
-      type: 'json',
-    })) as { id?: string } | null;
-    if (owner?.id !== record.id)
+  const releaseMutation = previous
+    ? await acquireLandingMutation(store, previous.id)
+    : null;
+  try {
+    // A concurrent DELETE may have completed after the initial list read. Do
+    // not let this stale edit recreate a customer-created record.
+    if (
+      previous &&
+      !initialLandings.some((landing) => landing.id === previous.id) &&
+      !(await store.get(`landings/${previous.id}.json`, { type: 'json' }))
+    )
       throw new LandingValidationError(
-        '동일한 URL이 이미 존재하거나 저장 중입니다. 다른 URL을 입력해주세요.',
-        'slug',
-        existing.find((item) => item.id === owner?.id),
+        '삭제된 랜딩페이지는 저장할 수 없습니다. 목록을 새로고침해주세요.',
+        'id',
+        undefined,
         409,
       );
+    // Claim the normalized URL before writing the record. A preflight list alone
+    // cannot prevent two simultaneous creates from overwriting the slug index.
+    const claim = await store.setJSON(
+      slugIndexKey(record.slug),
+      { id: record.id },
+      { onlyIfNew: true },
+    );
+    if (!claim.modified) {
+      const owner = (await store.get(slugIndexKey(record.slug), {
+        type: 'json',
+      })) as { id?: string } | null;
+      if (owner?.id !== record.id)
+        throw new LandingValidationError(
+          '동일한 URL이 이미 존재하거나 저장 중입니다. 다른 URL을 입력해주세요.',
+          'slug',
+          existing.find((item) => item.id === owner?.id),
+          409,
+        );
+    }
+    // Blobs has no multi-key transaction. If the following write fails, retain
+    // the reservation rather than risk deleting a successfully committed claim
+    // after an ambiguous network failure. Recovery needs an explicit inspection.
+    await store.setJSON(`landings/${record.id}.json`, record);
+    if (previous?.slug && previous.slug !== record.slug)
+      await store.delete(slugIndexKey(previous.slug));
+    return record;
+  } finally {
+    if (releaseMutation) await releaseMutation();
   }
-  // Blobs has no multi-key transaction. If the following write fails, retain
-  // the reservation rather than risk deleting a successfully committed claim
-  // after an ambiguous network failure. Recovery needs an explicit inspection.
-  await store.setJSON(`landings/${record.id}.json`, record);
-  if (previous?.slug && previous.slug !== record.slug)
-    await store.delete(slugIndexKey(previous.slug));
-  return record;
+}
+
+/**
+ * Permanently removes only a landing created in the operational store.
+ * Bundled initial pages remain source-controlled fallback content, so those
+ * must use the reversible ARCHIVED status instead of a destructive delete.
+ */
+export async function deleteCustomerLanding(id: string): Promise<Landing | null> {
+  if (initialLandings.some((landing) => landing.id === id))
+    throw new LandingValidationError(
+      '초기 랜딩페이지는 영구 삭제할 수 없습니다. 보관을 사용해주세요.',
+      'id',
+      undefined,
+      409,
+    );
+
+  const store = contentStore();
+  const releaseMutation = await acquireLandingMutation(store, id);
+  try {
+    const key = `landings/${id}.json`;
+    const landing = (await store.get(key, { type: 'json' })) as Landing | null;
+    if (!landing) return null;
+
+    // Remove the record first. If index cleanup has an ambiguous failure, keep
+    // the stale URL reservation rather than risking a later create overwriting
+    // data that might still exist in storage.
+    await store.delete(key);
+    const indexKey = slugIndexKey(landing.slug);
+    const owner = (await store.get(indexKey, {
+      type: 'json',
+    })) as { id?: string } | null;
+    if (owner?.id === id) await store.delete(indexKey);
+    return hydrateLanding(landing);
+  } finally {
+    await releaseMutation();
+  }
 }
 
 export function getInitialLandings() {

@@ -2,7 +2,7 @@ import { RegionManager, ServiceManager } from '@/components/catalog-managers';
 import { LandingAdminList } from '@/components/landing-admin-list';
 import { ServiceRouteAdminList } from '@/components/service-route-admin-list';
 import { listRegions, listServices } from '@/lib/catalog-store';
-import { listLandings } from '@/lib/landing-store';
+import { getInitialLandings, listLandings } from '@/lib/landing-store';
 import { getAllServiceRoutes } from '@/lib/service-routes';
 
 export default async function AdminPage() {
@@ -15,6 +15,7 @@ export default async function AdminPage() {
     <div className="space-y-6">
       <LandingAdminList
         initial={landings}
+        bundledLandingIds={getInitialLandings().map((landing) => landing.id)}
         regions={regions}
         services={services}
       />

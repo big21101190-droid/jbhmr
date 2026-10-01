@@ -2,13 +2,16 @@
 
 import { useMemo, useState } from 'react';
 import type { Landing, Region, Service } from '@/lib/domain';
+import { indexPolicyLabel, publicationStatusLabel } from '@/lib/landing-status';
 
 export function LandingAdminList({
   initial,
+  bundledLandingIds,
   regions,
   services,
 }: {
   initial: Landing[];
+  bundledLandingIds: string[];
   regions: Region[];
   services: Service[];
 }) {
@@ -87,6 +90,27 @@ export function LandingAdminList({
       ),
     );
     setMessage('변경했습니다.');
+  };
+  const remove = async (item: Landing) => {
+    if (
+      !window.confirm(
+        '이 관리자 생성 랜딩페이지를 영구 삭제할까요? 공개 URL과 sitemap에서 즉시 제거되며 복원할 수 없습니다.',
+      )
+    )
+      return;
+    setMessage('삭제 중…');
+    const response = await fetch(`/api/admin/landings/${item.id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      const data = (await response.json().catch(() => null)) as {
+        error?: string;
+      } | null;
+      setMessage(data?.error || '삭제하지 못했습니다.');
+      return;
+    }
+    setItems((current) => current.filter((record) => record.id !== item.id));
+    setMessage('영구 삭제했습니다.');
   };
   return (
     <section className="min-w-0 rounded-2xl bg-white p-5 shadow-sm sm:p-7">
@@ -175,10 +199,10 @@ export function LandingAdminList({
               className="w-full min-w-0 rounded-xl border border-[#dce5f0] bg-white px-3 py-3 text-sm"
             >
               <option value="ALL">전체 상태</option>
-              <option>DRAFT</option>
-              <option>PUBLISHED</option>
-              <option>ARCHIVED</option>
-              <option value="NOINDEX">NOINDEX</option>
+              <option value="DRAFT">비공개(초안)</option>
+              <option value="PUBLISHED">공개</option>
+              <option value="ARCHIVED">보관</option>
+              <option value="NOINDEX">검색 제외</option>
             </select>
             <select
               value={sort}
@@ -201,6 +225,11 @@ export function LandingAdminList({
             aria-live="polite"
           >
             {message}
+          </p>
+          <p className="mt-1 text-xs text-[#667085]">
+            공개는 웹사이트 접속 상태이고, 검색 허용은 검색엔진 수집 상태입니다.
+            보관하면 공개 URL과 sitemap에서 제외되며, 초기 제공 랜딩은 보관으로만
+            관리합니다.
           </p>
           <div className="mt-2 min-w-0 max-w-full overflow-x-auto">
             <table className="w-full min-w-[900px] text-left text-sm">
@@ -241,13 +270,21 @@ export function LandingAdminList({
                     </td>
                     <td className="px-3 py-4">
                       <span
+                        title={publicationStatusLabel(item.status)}
                         className={`rounded-full px-2.5 py-1 text-xs font-black ${item.status === 'PUBLISHED' ? 'bg-green-100 text-green-700' : item.status === 'ARCHIVED' ? 'bg-gray-200 text-gray-600' : 'bg-amber-100 text-amber-700'}`}
                       >
-                        {item.status}
+                        {item.status === 'PUBLISHED'
+                          ? '공개'
+                          : item.status === 'ARCHIVED'
+                            ? '보관'
+                            : '비공개'}
                       </span>
                       {item.indexPolicy === 'NOINDEX' ? (
-                        <span className="ml-1 rounded-full bg-violet-100 px-2.5 py-1 text-xs font-black text-violet-700">
-                          NOINDEX
+                        <span
+                          title={indexPolicyLabel(item.indexPolicy)}
+                          className="ml-1 rounded-full bg-violet-100 px-2.5 py-1 text-xs font-black text-violet-700"
+                        >
+                          검색 제외
                         </span>
                       ) : null}
                     </td>
@@ -292,6 +329,15 @@ export function LandingAdminList({
                             className="font-bold text-red-600"
                           >
                             보관
+                          </button>
+                        ) : null}
+                        {!bundledLandingIds.includes(item.id) ? (
+                          <button
+                            type="button"
+                            onClick={() => remove(item)}
+                            className="font-bold text-red-700"
+                          >
+                            영구 삭제
                           </button>
                         ) : null}
                       </div>

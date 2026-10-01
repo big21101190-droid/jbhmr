@@ -80,6 +80,7 @@ createRoot(document.getElementById('root')!).render(
     ) : view === 'list' ? (
       <LandingAdminList
         initial={seeds as Landing[]}
+        bundledLandingIds={(seeds as Landing[]).map((landing) => landing.id)}
         regions={regions}
         services={services}
       />
