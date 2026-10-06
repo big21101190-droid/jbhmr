@@ -45,6 +45,32 @@ describe('QA indexing policy', () => {
     ).toEqual([]);
   });
 
+  it('requires at least 50 indexable sitemap URLs in production', () => {
+    const fortyNineUrls = Array.from(
+      { length: 49 },
+      (_, index) => `/delivery/indexable-${index}`,
+    );
+    const fiftyUrls = Array.from(
+      { length: 50 },
+      (_, index) => `/delivery/indexable-${index}`,
+    );
+
+    expect(
+      sitemapPolicyFailures({
+        indexingEnabled: true,
+        responseStatus: 200,
+        paths: fortyNineUrls,
+      }),
+    ).toContain('indexing=true인데 sitemap URL이 50개 미만입니다.');
+    expect(
+      sitemapPolicyFailures({
+        indexingEnabled: true,
+        responseStatus: 200,
+        paths: fiftyUrls,
+      }),
+    ).toEqual([]);
+  });
+
   it('parses sitemap URLs and environment-specific robots metadata', () => {
     const xml =
       '<urlset><url><loc>https://example.com/</loc></url><url><loc>https://example.com/about</loc></url></urlset>';

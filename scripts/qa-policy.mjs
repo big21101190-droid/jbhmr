@@ -41,6 +41,8 @@ export function sitemapPolicyFailures({
     failures.push(`sitemap HTTP ${responseStatus} (expected 200)`);
   if (indexingEnabled && paths.length === 0)
     failures.push('indexing=true인데 sitemap URL이 0개입니다.');
+  if (indexingEnabled && paths.length > 0 && paths.length < 50)
+    failures.push('indexing=true인데 sitemap URL이 50개 미만입니다.');
   if (!indexingEnabled && paths.length !== 0)
     failures.push(
       `indexing=false인데 sitemap에 ${paths.length}개 URL이 노출됩니다.`,
