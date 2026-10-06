@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import nextConfig from '../next.config';
 
@@ -13,5 +15,13 @@ describe('favicon delivery policy', () => {
         },
       ]),
     );
+  });
+
+  it('handles the crawler default favicon URL at the Netlify edge', () => {
+    const config = readFileSync(resolve(process.cwd(), 'netlify.toml'), 'utf8');
+
+    expect(config).toContain('from = "/favicon.ico"');
+    expect(config).toContain('to = "/favicon.svg"');
+    expect(config).toContain('status = 200');
   });
 });
