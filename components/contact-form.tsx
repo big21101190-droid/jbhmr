@@ -55,7 +55,7 @@ export function ContactForm() {
       form.reset();
       setPhoneError(false);
       setState('success');
-      window.gtag?.('event', 'inquiry_submit');
+      window.gtag?.('event', 'generate_lead');
     } catch {
       setState('error');
     }
@@ -132,6 +132,16 @@ export function ContactForm() {
           ) : null}
         </div>
         <label className="grid gap-2 text-sm font-bold">
+          이메일
+          <input
+            required
+            name="email"
+            type="email"
+            autoComplete="email"
+            maxLength={254}
+            className="rounded-xl border border-[#cfd9e6] px-4 py-3 outline-none focus:border-[#1b4dff] focus:ring-2 focus:ring-[#1b4dff]/15"
+          />
+        </label>        <label className="grid gap-2 text-sm font-bold">
           출발지
           <input
             required

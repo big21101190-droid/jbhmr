@@ -115,6 +115,7 @@ test('F04 invalid and corrected callback numbers without submission', async ({
   }
   for (const [name, value] of [
     ['name', '미전송 QA'],
+    ['email', 'qa@example.com'],
     ['origin', '서울'],
     ['destination', '부산'],
     ['message', '화면 검사만 수행'],
@@ -450,4 +451,88 @@ test('F01 keyword-based URLs preserve semantic variants and flag whitespace-only
     primaryKeyword: '대구 동구 긴급 오토바이 퀵서비스',
     slug: '',
   });
+});
+
+
+test('inquiry requires an email address before it can submit', async ({ page }) => {
+  let submissions = 0;
+  await page.route('**/__forms.html', async (route) => {
+    submissions += 1;
+    await route.fulfill({ status: 200, body: '' });
+  });
+  await page.goto(fixture('contact'));
+  await page.getByLabel('이름 또는 회사명').fill('로컬 QA');
+  await page.getByLabel('연락처', { exact: true }).fill('010-1234-5678');
+  await page.locator('[name=origin]').fill('서울');
+  await page.locator('[name=destination]').fill('부산');
+  await page.locator('[name=service]').selectOption({ index: 1 });
+  await page.locator('[name=message]').fill('로컬 폼 검사');
+  await page.locator('[name=privacy-consent]').check();
+  await page.getByRole('button', { name: '견적 문의 보내기' }).click();
+
+  await expect(page.getByLabel('이메일', { exact: true })).toBeFocused();
+  expect(submissions).toBe(0);
+});
+
+test('inquiry sends one encoded lead with email and emits one PII-free generate_lead event', async ({ page }) => {
+  const posts: string[] = [];
+  await page.addInitScript(() => {
+    (window as typeof window & { __qaEvents: unknown[][] }).__qaEvents = [];
+    window.gtag = ((...args: unknown[]) => {
+      (window as typeof window & { __qaEvents: unknown[][] }).__qaEvents.push(args);
+    }) as typeof window.gtag;
+  });
+  await page.route('**/__forms.html', async (route) => {
+    posts.push(route.request().postData() || '');
+    await route.fulfill({ status: 200, body: '' });
+  });
+  await page.goto(fixture('contact'));
+  await page.getByLabel('이름 또는 회사명').fill('로컬 QA');
+  await page.getByLabel('연락처', { exact: true }).fill('010-1234-5678');
+  await page.getByLabel('이메일', { exact: true }).fill('qa@example.com');
+  await page.locator('[name=origin]').fill('서울');
+  await page.locator('[name=destination]').fill('부산');
+  await page.locator('[name=service]').selectOption({ index: 1 });
+  await page.locator('[name=message]').fill('로컬 폼 검사');
+  await page.locator('[name=privacy-consent]').check();
+  await page.getByRole('button', { name: '견적 문의 보내기' }).click();
+
+  await expect(page.getByText('문의가 접수되었습니다. 확인 후 연락드리겠습니다.')).toBeVisible();
+  expect(posts).toHaveLength(1);
+  const submitted = new URLSearchParams(posts[0]);
+  expect(submitted.get('form-name')).toBe('inquiry');
+  expect(submitted.get('email')).toBe('qa@example.com');
+  const events = await page.evaluate(
+    () => (window as typeof window & { __qaEvents: unknown[][] }).__qaEvents,
+  );
+  expect(events).toEqual([['event', 'generate_lead']]);
+});
+
+test('inquiry shows a failure without emitting a lead event when Netlify rejects it', async ({ page }) => {
+  await page.addInitScript(() => {
+    (window as typeof window & { __qaEvents: unknown[][] }).__qaEvents = [];
+    window.gtag = ((...args: unknown[]) => {
+      (window as typeof window & { __qaEvents: unknown[][] }).__qaEvents.push(args);
+    }) as typeof window.gtag;
+  });
+  await page.route('**/__forms.html', async (route) => {
+    await route.fulfill({ status: 500, body: '' });
+  });
+  await page.goto(fixture('contact'));
+  await page.getByLabel('이름 또는 회사명').fill('로컬 QA');
+  await page.getByLabel('연락처', { exact: true }).fill('010-1234-5678');
+  await page.getByLabel('이메일', { exact: true }).fill('qa@example.com');
+  await page.locator('[name=origin]').fill('서울');
+  await page.locator('[name=destination]').fill('부산');
+  await page.locator('[name=service]').selectOption({ index: 1 });
+  await page.locator('[name=message]').fill('로컬 폼 검사');
+  await page.locator('[name=privacy-consent]').check();
+  await page.getByRole('button', { name: '견적 문의 보내기' }).click();
+
+  await expect(page.getByText('전송에 실패했습니다. 전화로 문의해 주세요.')).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => (window as typeof window & { __qaEvents: unknown[][] }).__qaEvents,
+    ),
+  ).toEqual([]);
 });
