@@ -62,3 +62,7 @@ Google Search Console data is required to attribute ranking decline. Without it,
 ## Non-goals
 
 No bulk noindex, deletion, canonical rewrite, redirect migration, sitemap resubmission, or ranking-recovery promise. No collection of PII in analytics. No production deployment before preview and the listed checks pass.
+
+## Confirmed indexing-count constraint
+
+Do not reduce the count of indexable or sitemap URLs. Static sitemap entries retain the same URLs and eligibility; only their synthetic runtime `lastModified` value is removed. Existing published CMS landing, service, region, and route entries remain included under their current eligibility rules.
