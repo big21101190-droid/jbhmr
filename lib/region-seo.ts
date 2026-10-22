@@ -179,6 +179,76 @@ const overrides: Record<string, RegionOverride> = {
   },
 };
 
+type FocusProfile = {
+  seoFocus: string;
+  heading: string;
+  localContext: string;
+  localNote: string;
+};
+
+const focusProfiles: Record<string, FocusProfile> = {
+  seoul: { seoFocus: '서울 퀵서비스·용달화물·도시 간 운송', heading: '퀵서비스와 도시 간 화물 운송 상담', localContext: '서울 전역의 출발·도착 조건과 전국 주요 도시 연계를 함께 확인해', localNote: '서울 안팎 이동은 출발지·도착지의 정확한 주소와 희망 시간을 기준으로 운송 방식을 검토합니다.' },
+  'seoul-gangnam': { seoFocus: '강남구 퀵서비스·다마스·1톤 용달', heading: '강남구 소형 긴급 물품·차량 화물 상담', localContext: '강남구에서 출발하거나 도착하는 소형 물품과 차량 화물의', localNote: '강남구의 상하차 환경, 주차 가능 여부와 물품 적재 크기를 함께 확인합니다.' },
+  'seoul-seocho': { seoFocus: '서초구 퀵서비스·용달화물·도시 간 운송', heading: '서초구 퀵서비스와 차량 화물 상담', localContext: '서초구의 긴급 소형 물품과 부피 화물의', localNote: '서초구 안팎 이동은 건물 출입·주차 조건과 희망 상차 시간을 기준으로 상담합니다.' },
+  'seoul-songpa': { seoFocus: '송파구 퀵서비스·다마스·1톤 화물', heading: '송파구 소형 물품·용달화물 운송 상담', localContext: '송파구 출발·도착 물품의 적재 조건과 일정에 맞는', localNote: '송파구에서 차량이 필요한 화물은 수량, 크기·무게와 상하차 위치를 확인합니다.' },
+  'seoul-yeongdeungpo': { seoFocus: '영등포구 퀵서비스·용달화물 운송', heading: '영등포구 긴급 물품·차량 화물 상담', localContext: '영등포구의 소형 긴급 물품과 박스 화물에 필요한', localNote: '영등포구 출발·도착 화물은 물품 종류와 희망 시간에 따라 퀵 또는 차량 운송을 검토합니다.' },
+  'seoul-mapo': { seoFocus: '마포구 퀵서비스·다마스·1톤 용달', heading: '마포구 퀵서비스·차량 화물 운송 상담', localContext: '마포구에서 빠르게 옮겨야 하는 물품과 차량 적재 화물의', localNote: '마포구의 출발·도착 주소와 엘리베이터·계단 여부를 알려주시면 차량 조건을 확인합니다.' },
+  'seoul-jongno': { seoFocus: '종로구 퀵서비스·용달화물·도시 간 운송', heading: '종로구 소형 긴급 물품·화물 운송 상담', localContext: '종로구 안팎의 소형 물품과 부피 화물 운송에 필요한', localNote: '종로구 이동은 정확한 건물명·출입 위치와 상하차 조건을 함께 확인합니다.' },
+  'seoul-yongsan': { seoFocus: '용산구 퀵서비스·다마스·1톤 화물', heading: '용산구 퀵서비스와 차량 화물 상담', localContext: '용산구 출발·도착 화물의 크기와 이동 일정에 맞는', localNote: '용산구에서 다른 지역으로 연결하는 화물은 도착지와 희망 시간을 먼저 확인합니다.' },
+  'seoul-seongdong': { seoFocus: '성동구 퀵서비스·용달화물 운송', heading: '성동구 소형 물품·차량 화물 상담', localContext: '성동구의 긴급 소형 물품과 차량 적재 화물에 적합한', localNote: '성동구의 물품 수량과 적재 크기, 상하차 환경을 기준으로 운송 방식을 안내합니다.' },
+  'gyeonggi-gapyeong': { seoFocus: '가평 퀵서비스·용달화물 운송', heading: '가평 소형 물품·차량 화물 상담', localContext: '가평 출발·도착 화물의 일정과 적재 조건에 맞는', localNote: '가평과 다른 지역 사이 운송은 출발·도착 주소와 희망 시간을 확인한 뒤 안내합니다.' },
+  'gyeonggi-goyang': { seoFocus: '고양 퀵서비스·다마스·1톤 용달', heading: '고양 퀵서비스와 차량 화물 상담', localContext: '고양시의 소형 긴급 물품과 부피 화물에 필요한', localNote: '고양시 안팎 이동은 물품 크기·무게와 건물 상하차 조건을 기준으로 검토합니다.' },
+  'gyeonggi-hanam': { seoFocus: '하남 퀵서비스·용달화물 운송', heading: '하남 소형 물품·차량 화물 상담', localContext: '하남 출발·도착 물품의 크기와 희망 시간에 맞는', localNote: '하남의 차량 화물은 주차·엘리베이터·계단 여부와 적재 조건을 확인합니다.' },
+  'gyeonggi-hwaseong': { seoFocus: '화성 퀵서비스·다마스·1톤 화물', heading: '화성 퀵서비스·용달화물 상담', localContext: '화성 지역의 긴급 소형 물품과 차량 화물에 적합한', localNote: '화성 출발·도착 운송은 정확한 주소, 물품 수량과 상하차 환경 확인이 필요합니다.' },
+  'gyeonggi-icheon': { seoFocus: '이천 퀵서비스·용달화물 운송', heading: '이천 소형 물품·차량 화물 상담', localContext: '이천 출발·도착 화물의 물품 조건과 일정에 따른', localNote: '이천에서 다른 도시로 보내는 화물은 품목과 희망 시간에 따라 가능한 연계를 확인합니다.' },
+  'gyeonggi-namyangju': { seoFocus: '남양주 퀵서비스·다마스·1톤 용달', heading: '남양주 퀵서비스·차량 화물 상담', localContext: '남양주 안팎의 소형 물품과 부피 화물 운송에 필요한', localNote: '남양주 운송은 출발·도착 주소와 물품 적재 크기를 기준으로 상담합니다.' },
+  'gyeonggi-osan': { seoFocus: '오산 퀵서비스·용달화물 운송', heading: '오산 긴급 물품·차량 화물 상담', localContext: '오산 출발·도착 물품의 긴급도와 적재 조건에 맞는', localNote: '오산의 소형 물품은 퀵서비스 적합 여부를, 부피 화물은 차량 조건을 확인합니다.' },
+  'gyeonggi-paju': { seoFocus: '파주 퀵서비스·다마스·1톤 화물', heading: '파주 퀵서비스와 차량 화물 상담', localContext: '파주에서 출발하거나 도착하는 물품의 조건을 확인해', localNote: '파주와 수도권·다른 도시 간 이동은 도착지와 희망 시간을 기준으로 안내합니다.' },
+  'gyeonggi-pocheon': { seoFocus: '포천 퀵서비스·용달화물 운송', heading: '포천 소형 물품·차량 화물 상담', localContext: '포천 출발·도착 화물의 물품 종류와 상하차 환경에 맞는', localNote: '포천 화물은 수량, 크기·무게, 차량 진입 조건을 함께 알려주세요.' },
+  'gyeonggi-pyeongtaek': { seoFocus: '평택 퀵서비스·다마스·1톤 용달', heading: '평택 퀵서비스·차량 화물 상담', localContext: '평택의 소형 긴급 물품과 차량 적재 화물에 필요한', localNote: '평택 출발·도착 운송은 화물 크기와 희망 상차·도착 시간을 기준으로 검토합니다.' },
+  'gyeonggi-seongnam': { seoFocus: '성남 퀵서비스·용달화물·도시 간 운송', heading: '성남 소형 물품·차량 화물 상담', localContext: '성남 지역의 빠른 소형 물품 이동과 차량 화물에 맞는', localNote: '성남의 건물 상하차 환경과 물품 적재 조건을 확인하면 운송 방식을 안내할 수 있습니다.' },
+  'gyeonggi-suwon': { seoFocus: '수원 퀵서비스·다마스·1톤 화물', heading: '수원 퀵서비스와 차량 화물 상담', localContext: '수원 출발·도착 물품의 크기와 이동 일정에 따른', localNote: '수원 안팎 운송은 정확한 출발·도착 주소와 물품 수량을 먼저 확인합니다.' },
+  'gyeonggi-uijeongbu': { seoFocus: '의정부 퀵서비스·용달화물 운송', heading: '의정부 소형 물품·차량 화물 상담', localContext: '의정부의 소형 긴급 물품과 부피 화물에 필요한', localNote: '의정부에서 다른 지역으로 보내는 화물은 도착지와 희망 시간을 확인해 상담합니다.' },
+  'gyeonggi-uiwang': { seoFocus: '의왕 퀵서비스·다마스·1톤 용달', heading: '의왕 퀵서비스·차량 화물 상담', localContext: '의왕 출발·도착 화물의 수량과 적재 조건에 맞는', localNote: '의왕 차량 화물은 주차·엘리베이터·계단 등 상하차 환경을 함께 확인합니다.' },
+  'gyeonggi-yeoju': { seoFocus: '여주 퀵서비스·용달화물 운송', heading: '여주 소형 물품·차량 화물 상담', localContext: '여주에서 출발하거나 도착하는 소형 물품과 차량 화물의', localNote: '여주와 다른 도시 간 이동은 품목, 정확한 주소와 희망 시간을 기준으로 안내합니다.' },
+  'gyeonggi-yeoncheon': { seoFocus: '연천 퀵서비스·용달화물 운송', heading: '연천 소형 물품·차량 화물 상담', localContext: '연천 출발·도착 화물의 이동 일정과 적재 조건에 맞는', localNote: '연천 화물은 출발·도착 주소, 물품 크기와 상하차 환경을 먼저 확인합니다.' },
+  'gyeonggi-yongin': { seoFocus: '용인 퀵서비스·다마스·1톤 용달', heading: '용인 퀵서비스·차량 화물 상담', localContext: '용인 지역의 긴급 소형 물품과 차량 적재 화물에 적합한', localNote: '용인 안팎 운송은 물품 수량·크기·무게와 희망 시간을 함께 알려주세요.' },
+  'gyeonggi-dongtan': { seoFocus: '동탄 퀵서비스·용달화물 운송', heading: '동탄 소형 물품·차량 화물 상담', localContext: '동탄 출발·도착 물품의 크기와 상하차 조건에 따른', localNote: '동탄 지역 이동은 정확한 주소와 차량 진입·주차 가능 여부를 기준으로 검토합니다.' },
+  'daegu-buk': { seoFocus: '대구 북구 퀵서비스·용달화물 운송', heading: '대구 북구 소형 물품·차량 화물 상담', localContext: '대구 북구의 긴급 소형 물품과 차량 화물에 필요한', localNote: '대구 북구 안팎 이동은 물품 크기와 희망 시간을 기준으로 퀵 또는 차량 운송을 상담합니다.' },
+  'daegu-dalseo': { seoFocus: '대구 달서구 퀵서비스·다마스·1톤 화물', heading: '대구 달서구 퀵서비스·차량 화물 상담', localContext: '대구 달서구 출발·도착 물품의 적재 조건에 맞는', localNote: '대구 달서구 차량 화물은 수량, 크기·무게와 상하차 환경을 확인합니다.' },
+  'daegu-dasa': { seoFocus: '대구 다사 퀵서비스·용달화물 운송', heading: '대구 다사 소형 물품·차량 화물 상담', localContext: '대구 다사와 인접 권역의 소형 물품·차량 화물에 적합한', localNote: '대구 다사 이동은 출발·도착 주소와 희망 시간에 따라 운송 방식을 안내합니다.' },
+  'daegu-jung': { seoFocus: '대구 중구 퀵서비스·용달화물 운송', heading: '대구 중구 긴급 물품·차량 화물 상담', localContext: '대구 중구의 소형 긴급 물품과 부피 화물에 필요한', localNote: '대구 중구 운송은 건물 출입 위치, 주차와 상하차 조건을 함께 확인합니다.' },
+  'daegu-nam': { seoFocus: '대구 남구 퀵서비스·다마스·1톤 화물', heading: '대구 남구 퀵서비스·차량 화물 상담', localContext: '대구 남구 출발·도착 화물의 크기와 일정에 맞는', localNote: '대구 남구의 소형 물품과 차량 화물은 적재 조건을 구분해 상담합니다.' },
+  'daegu-seo': { seoFocus: '대구 서구 퀵서비스·용달화물 운송', heading: '대구 서구 소형 물품·차량 화물 상담', localContext: '대구 서구의 빠른 소형 물품 이동과 차량 화물에 맞는', localNote: '대구 서구 출발·도착 운송은 물품 수량과 상하차 환경을 기준으로 검토합니다.' },
+  'daegu-seongseo': { seoFocus: '대구 성서 퀵서비스·다마스·1톤 용달', heading: '대구 성서 퀵서비스·차량 화물 상담', localContext: '대구 성서와 인접 권역의 소형 물품·부피 화물에 적합한', localNote: '대구 성서 이동은 정확한 주소와 화물 적재 크기를 확인해 안내합니다.' },
+  'daegu-suseong': { seoFocus: '대구 수성구 퀵서비스·용달화물 운송', heading: '대구 수성구 소형 물품·차량 화물 상담', localContext: '대구 수성구 출발·도착 물품의 긴급도와 적재 조건에 따른', localNote: '대구 수성구에서 다른 도시로 보내는 화물은 품목과 희망 시간을 확인합니다.' },
+  'busan-busanjin': { seoFocus: '부산진구 퀵서비스·용달화물 운송', heading: '부산진구 소형 물품·차량 화물 상담', localContext: '부산진구의 긴급 소형 물품과 차량 화물에 필요한', localNote: '부산진구 이동은 출발·도착 주소, 물품 크기와 상하차 조건을 기준으로 상담합니다.' },
+  'busan-dong': { seoFocus: '부산 동구 퀵서비스·다마스·1톤 화물', heading: '부산 동구 퀵서비스·차량 화물 상담', localContext: '부산 동구 출발·도착 물품의 수량과 적재 조건에 맞는', localNote: '부산 동구에서 다른 지역으로 보내는 화물은 도착지와 희망 시간을 확인합니다.' },
+  'busan-dongnae': { seoFocus: '부산 동래구 퀵서비스·용달화물 운송', heading: '부산 동래구 소형 물품·차량 화물 상담', localContext: '부산 동래구의 소형 긴급 물품과 부피 화물에 적합한', localNote: '부산 동래구 운송은 물품 크기·무게와 상하차 환경을 함께 확인합니다.' },
+  'busan-geumjeong': { seoFocus: '부산 금정구 퀵서비스·다마스·1톤 용달', heading: '부산 금정구 퀵서비스·차량 화물 상담', localContext: '부산 금정구 출발·도착 화물의 일정과 적재 조건에 따른', localNote: '부산 금정구의 차량 화물은 주차·엘리베이터·계단 여부를 확인합니다.' },
+  'busan-haeundae': { seoFocus: '부산 해운대구 퀵서비스·용달화물 운송', heading: '부산 해운대구 소형 물품·차량 화물 상담', localContext: '부산 해운대구의 긴급 소형 물품과 차량 화물에 필요한', localNote: '부산 해운대구 이동은 정확한 출발·도착 주소와 희망 시간을 기준으로 안내합니다.' },
+  'busan-jung': { seoFocus: '부산 중구 퀵서비스·다마스·1톤 화물', heading: '부산 중구 퀵서비스·차량 화물 상담', localContext: '부산 중구 출발·도착 물품의 크기와 상하차 조건에 맞는', localNote: '부산 중구의 소형 물품은 퀵서비스 적합 여부를 먼저 확인합니다.' },
+  'busan-saha': { seoFocus: '부산 사하구 퀵서비스·용달화물 운송', heading: '부산 사하구 소형 물품·차량 화물 상담', localContext: '부산 사하구의 소형 긴급 물품과 부피 화물에 적합한', localNote: '부산 사하구 화물은 수량, 크기·무게와 차량 진입 조건을 확인합니다.' },
+  'busan-seo': { seoFocus: '부산 서구 퀵서비스·다마스·1톤 용달', heading: '부산 서구 퀵서비스·차량 화물 상담', localContext: '부산 서구 출발·도착 물품의 긴급도와 적재 조건에 따른', localNote: '부산 서구에서 도시 간 연계가 필요한 화물은 품목과 희망 일정을 확인합니다.' },
+};
+
+export const priorityRegionSeoIds = new Set([
+  ...Object.keys(overrides),
+  ...Object.keys(focusProfiles),
+]);
+
+function focusedContent(region: Region, profile: FocusProfile): RegionOverride {
+  return {
+    seoTitle: profile.seoFocus,
+    h1: profile.heading,
+    metaDescription: `${region.name} 출발·도착 퀵서비스, 다마스, 1톤 용달화물을 상담합니다. 일반 택배 접수처가 아닌 긴급·차량·도시 간 운송 안내 서비스이며, 물품과 일정 확인 후 상담 전화로 안내합니다.`,
+    localSummary: `${profile.localContext} 퀵서비스, 다마스 또는 1톤 차량 중 적합한 방식을 상담합니다.`,
+    localNotes: [
+      profile.localNote,
+      '도시 간 연계는 출발·도착 주소, 품목, 희망 시간과 이용 가능한 노선을 확인한 뒤 안내합니다.',
+    ],
+  };
+}
 function defaultContent(region: Region): RegionOverride {
   const localName = region.name;
   return {
@@ -212,7 +282,11 @@ function faqFor(region: Region): FaqItem[] {
 }
 
 export function getRegionSeoContent(region: Region): RegionSeoContent {
-  const content = overrides[region.id] || defaultContent(region);
+  const content =
+    overrides[region.id] ||
+    (focusProfiles[region.id]
+      ? focusedContent(region, focusProfiles[region.id])
+      : defaultContent(region));
   return {
     ...content,
     directLinks: [...serviceLinks, ...(content.routeLinks || [])],

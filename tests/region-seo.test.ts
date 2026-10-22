@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { getRegion } from '@/data/regions';
-import { getRegionSeoContent, regionFaqSchema } from '@/lib/region-seo';
+import {
+  getRegionSeoContent,
+  priorityRegionSeoIds,
+  regionFaqSchema,
+} from '@/lib/region-seo';
 
 const contentFor = (id: string) => {
   const region = getRegion(id);
@@ -57,5 +61,38 @@ describe('region SEO content', () => {
         acceptedAnswer: { '@type': 'Answer', text: item.answer },
       })),
     );
+  });
+  it('has substantial localized content for more than fifty pages, including every Seoul district', () => {
+    expect(priorityRegionSeoIds.size).toBeGreaterThanOrEqual(50);
+    for (const id of [
+      'seoul',
+      'seoul-gangnam',
+      'seoul-seocho',
+      'seoul-songpa',
+      'seoul-yeongdeungpo',
+      'seoul-mapo',
+      'seoul-jongno',
+      'seoul-yongsan',
+      'seoul-seongdong',
+    ]) {
+      expect(priorityRegionSeoIds.has(id), id).toBe(true);
+      const content = contentFor(id);
+      expect(content.localNotes).toHaveLength(2);
+      expect(content.faq).toHaveLength(3);
+      expect(content.directLinks.length).toBeGreaterThanOrEqual(4);
+      if (id === 'seoul') expect(content.seoTitle).toContain('서울');
+    }
+  });
+  it('maps every prioritized profile to an active region with distinct page metadata', () => {
+    const titles = new Set<string>();
+    for (const id of priorityRegionSeoIds) {
+      const region = getRegion(id);
+      expect(region, id).toBeTruthy();
+      const content = getRegionSeoContent(region!);
+      expect(content.seoTitle, id).toMatch(/퀵서비스|용달화물/);
+      expect(content.metaDescription, id).toContain('일반 택배 접수처');
+      expect(titles.has(content.seoTitle), content.seoTitle).toBe(false);
+      titles.add(content.seoTitle);
+    }
   });
 });
