@@ -14,7 +14,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     listServices(),
     listRegions(),
   ]);
-  const now = new Date();
   const core = [
     '',
     '/about',
@@ -25,7 +24,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/privacy',
   ].map((path, index) => ({
     url: `${SITE_URL}${path || '/'}`,
-    lastModified: now,
     changeFrequency: index === 0 ? ('weekly' as const) : ('monthly' as const),
     priority: index === 0 ? 1 : 0.7,
   }));
@@ -33,7 +31,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((item) => item.active)
     .map((item) => ({
       url: `${SITE_URL}/services/${item.slug}`,
-      lastModified: now,
       changeFrequency: 'monthly' as const,
       priority: 0.75,
     }));
@@ -41,7 +38,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((item) => item.active)
     .map((item) => ({
       url: `${SITE_URL}/regions/${item.slug}`,
-      lastModified: now,
       changeFrequency: 'monthly' as const,
       priority: item.parentId ? 0.65 : 0.7,
     }));
@@ -58,7 +54,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((item) => item.indexPolicy !== 'NOINDEX')
     .map((item) => ({
       url: `${SITE_URL}/routes/${item.slug}`,
-      lastModified: now,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     }));

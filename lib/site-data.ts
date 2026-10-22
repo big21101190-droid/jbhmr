@@ -1,5 +1,6 @@
 import { company, telHref } from '@/lib/company';
 import { busRoutes } from '@/data/bus-routes';
+import { regions } from '@/data/regions';
 
 export const NATIONAL_PHONE = company.nationalPhone;
 export const DAEGU_PHONE = company.daeguPhone;
@@ -197,7 +198,12 @@ export const serviceCards = [
 export const intercityRoutes = busRoutes;
 
 export function areaHref(region: RegionGroup, place: string) {
-  return `/area/${region.slug}-${place}`;
+  const target = regions.find(
+    (item) => item.parentId === region.slug && item.name.endsWith(place),
+  );
+  if (!target)
+    throw new Error(`지원하지 않는 지역 링크입니다: ${region.slug}/${place}`);
+  return `/regions/${target.slug}`;
 }
 
 export function findArea(slug: string) {
