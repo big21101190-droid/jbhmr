@@ -26,6 +26,10 @@
   [headers.values]
     Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
 
+[context.production.environment]
+  NEXT_PUBLIC_SITE_URL = "https://1661-0122.com"
+  NEXT_PUBLIC_ROBOTS_INDEX = "true"
+
 [context.deploy-preview.environment]
   NEXT_PUBLIC_ROBOTS_INDEX = "false"
 

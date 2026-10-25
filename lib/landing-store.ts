@@ -7,6 +7,7 @@ import { getService } from '@/data/services';
 import type { Landing, LandingInput } from '@/lib/domain';
 import { repairGeneratedObjectParticle } from '@/lib/korean-particles';
 import { decodeUrlSegment } from '@/lib/url-segment';
+import { isPublicLanding } from '@/lib/landing-policy';
 import { getRegionRecord, getServiceRecord } from '@/lib/catalog-store';
 import {
   assertNoAutomaticSemanticDuplicate,
@@ -101,8 +102,7 @@ export async function listLandings(
   let records = [...byId.values()];
   if (!options.includeArchived)
     records = records.filter((item) => item.status !== 'ARCHIVED');
-  if (options.publishedOnly)
-    records = records.filter((item) => item.status === 'PUBLISHED');
+  if (options.publishedOnly) records = records.filter(isPublicLanding);
   return records.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
@@ -140,7 +140,7 @@ export async function getLandingBySlug(
       if (
         landing &&
         landing.slug === normalizedSlug &&
-        (includeUnpublished || landing.status === 'PUBLISHED')
+        (includeUnpublished || isPublicLanding(landing))
       )
         return landing;
     }
@@ -270,7 +270,9 @@ export async function saveLanding(rawInput: LandingInput): Promise<Landing> {
  * Bundled initial pages remain source-controlled fallback content, so those
  * must use the reversible ARCHIVED status instead of a destructive delete.
  */
-export async function deleteCustomerLanding(id: string): Promise<Landing | null> {
+export async function deleteCustomerLanding(
+  id: string,
+): Promise<Landing | null> {
   if (initialLandings.some((landing) => landing.id === id))
     throw new LandingValidationError(
       '초기 랜딩페이지는 영구 삭제할 수 없습니다. 보관을 사용해주세요.',

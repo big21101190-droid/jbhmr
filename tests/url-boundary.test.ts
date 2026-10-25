@@ -4,6 +4,28 @@ import { proxy } from '../proxy';
 import { decodeUrlSegment } from '@/lib/url-segment';
 
 describe('public route URL boundary', () => {
+  it.each([
+    'qa-삭제-e2e-검증-랜딩',
+    encodeURIComponent('qa-삭제-e2e-검증-랜딩'),
+  ])('returns a real 404 for the retired QA landing %s', (slug) => {
+    const response = proxy(
+      new NextRequest(`https://1661-0122.com/delivery/${slug}`),
+    );
+    expect(response.status).toBe(404);
+    expect(response.headers.get('x-robots-tag')).toBe('noindex, follow');
+  });
+  it('does not retire other pages with a QA prefix or the same slug in another collection', () => {
+    for (const path of [
+      '/delivery/qa-customer-page',
+      '/regions/qa-삭제-e2e-검증-랜딩',
+    ]) {
+      expect(
+        proxy(new NextRequest(`https://1661-0122.com${path}`)).headers.get(
+          'x-middleware-next',
+        ),
+      ).toBe('1');
+    }
+  });
   it.each(['서울-관악구', 'seoul', '서울-관악구'.normalize('NFD')])(
     'decodes a single safe segment %s',
     (value) => {

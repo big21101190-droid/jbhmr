@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE_URL, company } from '@/lib/company';
 import type { Landing } from '@/lib/domain';
 import { isIndexingEnabled } from '@/lib/indexing';
+import { isPublicLanding } from '@/lib/landing-policy';
 
 export function absoluteUrl(path: string) {
   if (/^https?:\/\//.test(path)) return path;
@@ -19,7 +20,7 @@ export function getLandingMetadata(
   const canonical = landing.canonical || absoluteUrl(getLandingPath(landing));
   const robots =
     siteIndexingEnabled &&
-    landing.status === 'PUBLISHED' &&
+    isPublicLanding(landing) &&
     landing.indexPolicy === 'INDEX'
       ? { index: true, follow: true }
       : { index: false, follow: false };

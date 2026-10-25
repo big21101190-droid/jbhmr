@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import initialData from '@/data/initial-landings.json';
 import type { Landing } from '@/lib/domain';
 import { isIndexingEnabled } from '@/lib/indexing';
-import { isSitemapEligible } from '@/lib/landing-policy';
+import { isPublicLanding, isSitemapEligible } from '@/lib/landing-policy';
 import { getLandingMetadata } from '@/lib/seo';
 
 const landing = (initialData as Landing[])[0];
@@ -41,6 +41,18 @@ describe('landing metadata and sitemap policy', () => {
     expect(isSitemapEligible({ ...landing, status: 'ARCHIVED' })).toBe(false);
     expect(isSitemapEligible({ ...landing, indexPolicy: 'NOINDEX' })).toBe(
       false,
+    );
+  });
+
+  it('retires only the explicitly requested QA landing, preserving customer pages', () => {
+    const retired = { ...landing, slug: 'qa-삭제-e2e-검증-랜딩' };
+    expect(isPublicLanding(retired)).toBe(false);
+    expect(isSitemapEligible(retired)).toBe(false);
+    expect(getLandingMetadata(retired, true).robots).toMatchObject({
+      index: false,
+    });
+    expect(isPublicLanding({ ...landing, slug: 'qa-customer-page' })).toBe(
+      true,
     );
   });
 });

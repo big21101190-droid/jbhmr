@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ArrowRight, CheckCircle2, Phone, Route } from 'lucide-react';
 import { ContactCta } from '@/components/contact-cta';
+import { JsonLd } from '@/components/json-ld';
 import { PageHero } from '@/components/page-hero';
 import { PhoneFab } from '@/components/phone-fab';
 import { PlainText } from '@/components/plain-text';
@@ -12,6 +13,7 @@ import { services as seedServices } from '@/data/services';
 import { listServices } from '@/lib/catalog-store';
 import { company, telHref } from '@/lib/company';
 import { isIndexingEnabled } from '@/lib/indexing';
+import { absoluteUrl } from '@/lib/seo';
 import { withTopicParticle } from '@/lib/korean-particles';
 import {
   getServiceRoute,
@@ -100,6 +102,46 @@ export default async function ServiceRoutePage({
 
   return (
     <main className="bg-[#f4f7fb]">
+      <JsonLd
+        data={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: route.label,
+            serviceType: route.serviceName,
+            url: absoluteUrl(`/routes/${route.slug}`),
+            description:
+              route.description ||
+              `${route.origin}에서 ${route.destination}까지 ${route.serviceName} 연계 가능 여부와 접수 절차를 안내합니다.`,
+            provider: {
+              '@type': 'Organization',
+              name: company.name,
+              url: absoluteUrl('/'),
+              telephone: company.nationalPhone,
+            },
+            areaServed: [route.origin, route.destination].map((name) => ({
+              '@type': 'Place',
+              name,
+            })),
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { name: '홈', item: absoluteUrl('/') },
+              {
+                name: route.serviceName,
+                item: absoluteUrl(`/services/${route.serviceSlug}`),
+              },
+              { name: route.label, item: absoluteUrl(`/routes/${route.slug}`) },
+            ].map((item, index) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              ...item,
+            })),
+          },
+        ]}
+      />
       <SiteHeader />
       <PageHero
         eyebrow={notes.eyebrow}
@@ -124,6 +166,20 @@ export default async function ServiceRoutePage({
           </a>
         }
       />
+      <nav
+        aria-label="현재 위치"
+        className="mx-auto flex max-w-[1090px] flex-wrap gap-2 px-5 py-5 text-sm text-[#475467]"
+      >
+        <a href="/" className="underline">
+          홈
+        </a>
+        <span aria-hidden="true">/</span>
+        <a href={`/services/${route.serviceSlug}`} className="underline">
+          {route.serviceName}
+        </a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{route.label}</span>
+      </nav>
       {route.image?.url || route.body ? (
         <section className="bg-[#f4f7fb] px-5 py-14 sm:py-20">
           <div

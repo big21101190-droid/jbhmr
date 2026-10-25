@@ -58,6 +58,21 @@ describe('Blobs landing storage (isolated adapter)', () => {
     slug,
   });
 
+  it('hides the retired QA record publicly while leaving it available for authenticated admin deletion', async () => {
+    const record = await saveLanding({
+      ...draft('qa-삭제-e2e-검증-랜딩'),
+      status: 'PUBLISHED',
+    });
+    expect(await getLandingBySlug(record.slug)).toBeNull();
+    expect(
+      (await listLandings({ publishedOnly: true })).some(
+        (item) => item.id === record.id,
+      ),
+    ).toBe(false);
+    expect(await getLandingBySlug(record.slug, true)).toEqual(record);
+    expect(await getLandingById(record.id)).toEqual(record);
+  });
+
   it.each(['INDEX', 'NOINDEX'] as const)(
     'preserves existing %s operational settings through autofill/save/reopen',
     async (indexPolicy) => {
