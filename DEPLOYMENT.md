@@ -2,15 +2,25 @@
 
 ## 환경
 
-- Source: GitHub `samduck150906-lgtm/j`
+- Source: GitHub `big21101190-droid/jbhmr`
 - Production branch: `main`
-- Hosting: Netlify `lovely-tarsier-c21dea`
+- Hosting: Netlify `heroic-crostata-7d3427`（사용자 지정 대상, 관리자 배포 연결은 별도 확인）
 - Build: `npm run build`
 - Publish directory: `.next`
 - Node: 22.13 이상
 - Next.js runtime: `@netlify/plugin-nextjs` 5.15.13
 
-현재 production URL은 `https://lovely-tarsier-c21dea.netlify.app`입니다. 이 사이트는 제작자 계정에서 검수 중인 임시 운영 프로젝트이며, 완성 후 고객 Netlify로 인계합니다. 정확한 production deploy ID와 commit SHA는 인계 직전에 Netlify와 GitHub `main`에서 다시 대조합니다.
+현재 production URL은 `https://1661-0122.com`입니다. 2026-10-25 공개 HTTP 점검에서 사이트맵 198개와 정규 도메인, 공개 페이지의 index/follow를 확인했습니다. 이전 제작 계정의 프로젝트는 이번 작업 대상이 아닙니다. 정확한 production deploy ID와 commit SHA는 배포 관리자에서 별도로 대조하며, Git 푸시 성공만으로 배포 성공을 확정하지 않습니다.
+
+운영 빌드에는 `NEXT_PUBLIC_SITE_URL=https://1661-0122.com`, `NEXT_PUBLIC_ROBOTS_INDEX=true`가 필요합니다. `NEXT_PUBLIC_*` 값은 빌드 시점부터 적용해야 합니다. Preview/branch의 `false`는 유지합니다. 아래 과거 인계 절차를 현재 운영 도메인을 변경하거나 운영 색인을 다시 끄라는 지시로 사용하지 않습니다.
+
+이번 SEO 작업은 기존 주소만 보강합니다. 사이트맵 250개 상한은 아래 읽기 전용 검사로 확인하며 URL을 임의로 잘라내지 않습니다.
+
+```bash
+npm run qa:search -- https://1661-0122.com work/search-live.json
+```
+
+이 검사는 사이트맵 전체의 HTTP·canonical·robots·메타·H1과 내부 연결을 기록합니다. 색인 현황과 검색순위는 인증된 Search Console/서치어드바이저 자료가 필요합니다. 공개 검사 결과로 이를 대신하지 않습니다.
 
 ## 로컬 확인
 

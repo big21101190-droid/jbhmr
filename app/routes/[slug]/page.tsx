@@ -7,6 +7,7 @@ import { PhoneFab } from '@/components/phone-fab';
 import { PlainText } from '@/components/plain-text';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
+import { ShippingDecisionGuide } from '@/components/shipping-decision-guide';
 import { services as seedServices } from '@/data/services';
 import { listServices } from '@/lib/catalog-store';
 import { company, telHref } from '@/lib/company';
@@ -223,6 +224,12 @@ export default async function ServiceRoutePage({
             </div>
           </div>
         </section>
+      ) : null}
+      {service ? (
+        <ShippingDecisionGuide
+          name={`${route.origin}–${route.destination} ${route.serviceName}`}
+          services={[service]}
+        />
       ) : null}
       <ContactCta label={`${route.label} 출발지와 도착지를 알려주세요`} />
       <SiteFooter />

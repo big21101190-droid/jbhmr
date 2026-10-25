@@ -1,14 +1,25 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { ArrowRight, CheckCircle2, Phone, Route, ShieldCheck } from 'lucide-react';
+import {
+  ArrowRight,
+  CheckCircle2,
+  Phone,
+  Route,
+  ShieldCheck,
+} from 'lucide-react';
 import { ContactCta } from '@/components/contact-cta';
 import { JsonLd } from '@/components/json-ld';
 import { PageHero } from '@/components/page-hero';
 import { PhoneFab } from '@/components/phone-fab';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
+import { ShippingDecisionGuide } from '@/components/shipping-decision-guide';
 import { regions as seedRegions } from '@/data/regions';
-import { getRegionRecord, listRegions } from '@/lib/catalog-store';
+import {
+  getRegionRecord,
+  listRegions,
+  listServices,
+} from '@/lib/catalog-store';
 import { phoneForRegion, telHref } from '@/lib/company';
 import { listLandings } from '@/lib/landing-store';
 import { getRegionSeoContent, regionFaqSchema } from '@/lib/region-seo';
@@ -46,21 +57,59 @@ export default async function RegionPage({
 }) {
   const region = await getRegionRecord((await params).slug);
   if (!region || region.archived || !region.active) notFound();
-  const content = getRegionSeoContent(region);
-  const regions = await listRegions();
+  const [regions, services, published] = await Promise.all([
+    listRegions(),
+    listServices(),
+    listLandings({ publishedOnly: true }),
+  ]);
+  const content = getRegionSeoContent(region, services);
   const children = regions.filter(
     (item) => item.parentId === region.id && item.active && !item.archived,
   );
   const ids = new Set([region.id, ...children.map((item) => item.id)]);
-  const landings = (await listLandings({ publishedOnly: true }))
-    .filter((item) => ids.has(item.regionId))
-    .slice(0, 12);
+  const landings = published.filter(
+    (item) =>
+      ids.has(item.regionId) ||
+      Boolean(item.destinationRegionId && ids.has(item.destinationRegionId)),
+  );
+  const parent = regions.find(
+    (item) =>
+      item.id === (region.administrativeParentId || region.parentId) &&
+      item.active &&
+      !item.archived,
+  );
+  const nearby = regions.filter(
+    (item) =>
+      region.nearbyRegions.includes(item.id) && item.active && !item.archived,
+  );
+  const serviceLinks = content.directLinks.filter((link) =>
+    link.href.startsWith('/services/'),
+  );
+  const routes = content.directLinks.filter((link) =>
+    link.href.startsWith('/routes/'),
+  );
   const phone = phoneForRegion(region.usesDaeguPhone);
 
   return (
     <main className="bg-[#f4f7fb]">
       <SiteHeader currentPhone={phone} />
       <JsonLd data={regionFaqSchema(content)} />
+      <nav
+        aria-label="현재 위치"
+        className="mx-auto flex max-w-[1240px] flex-wrap gap-3 px-5 py-4 text-sm text-[#475467]"
+      >
+        <a href="/">홈</a>
+        <span aria-hidden="true">/</span>
+        <a href="/regions">지역별 운송</a>
+        {parent ? (
+          <>
+            <span aria-hidden="true">/</span>
+            <a href={`/regions/${parent.slug}`}>{parent.name}</a>
+          </>
+        ) : null}
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{region.name}</span>
+      </nav>
       <PageHero
         eyebrow="REGION SERVICE"
         title={content.h1}
@@ -112,7 +161,7 @@ export default async function RegionPage({
             다릅니다. 아래 서비스에서 조건을 확인한 뒤 상담해 주세요.
           </p>
           <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {content.directLinks.map((link) => (
+            {serviceLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -135,6 +184,38 @@ export default async function RegionPage({
         </div>
       </section>
 
+      {routes.length ? (
+        <section className="bg-white px-5 py-14">
+          <div className="mx-auto max-w-[1100px]">
+            <h2 className="text-3xl font-black">
+              {region.name}과 연결된 운송 노선
+            </h2>
+            <p className="mt-4 leading-7 text-[#475467]">
+              현재 등록된 출발·도착 구간입니다. 지역 내 픽업·최종 배송과 운송편
+              접수 조건을 함께 확인하세요. 반대 방향 접수와 당일 운송 가능
+              여부는 별도 상담이 필요합니다.
+            </p>
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              {routes.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-2xl border border-[#dce5f0] p-6 hover:border-[#1b4dff]"
+                >
+                  <h3 className="font-black text-[#1b4dff]">{link.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-[#475467]">
+                    {link.description}
+                  </p>
+                  <p className="mt-2 text-sm leading-7 text-[#667085]">
+                    {link.suitableFor}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+      <ShippingDecisionGuide name={region.name} services={services} />
       <section className="bg-[#10243e] px-5 py-14 text-white sm:py-20">
         <div className="mx-auto max-w-[1000px]">
           <ShieldCheck className="text-[#78a0ff]" size={32} />
@@ -156,16 +237,20 @@ export default async function RegionPage({
             ))}
           </div>
           <p className="mt-7 max-w-3xl text-sm leading-7 text-white/70">
-            제이복합물류는 편의점 택배나 일반 택배 계약 접수처가 아닙니다.
-            긴급 퀵서비스, 차량 화물, 도시 간 연계 운송처럼 물품과 일정 조건
-            확인이 필요한 상황을 상담합니다.
+            제이복합물류는 편의점 택배나 일반 택배 계약 접수처가 아닙니다. 긴급
+            퀵서비스, 차량 화물, 도시 간 연계 운송처럼 물품과 일정 조건 확인이
+            필요한 상황을 상담합니다.
           </p>
         </div>
       </section>
 
       <section className="bg-white px-5 py-14 sm:py-20">
         <div className="mx-auto max-w-[1240px]">
-          <h2 className="text-3xl font-black">하위 지역</h2>
+          <h2 className="text-3xl font-black">
+            {children.length
+              ? '세부 지역별 운송 안내'
+              : '인접 지역과 접수 범위'}
+          </h2>
           {children.length ? (
             <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
               {children.map((item) => (
@@ -185,6 +270,19 @@ export default async function RegionPage({
               있습니다.
             </p>
           )}
+          {nearby.length ? (
+            <div className="mt-5 flex flex-wrap gap-3">
+              {nearby.map((item) => (
+                <a
+                  key={item.id}
+                  href={`/regions/${item.slug}`}
+                  className="rounded-xl border border-[#dce5f0] px-4 py-3 text-sm font-bold text-[#1b4dff]"
+                >
+                  {item.name} 운송 안내
+                </a>
+              ))}
+            </div>
+          ) : null}
         </div>
       </section>
 
@@ -192,7 +290,9 @@ export default async function RegionPage({
         <section className="px-5 py-14 sm:py-20">
           <div className="mx-auto max-w-[1240px]">
             <div className="flex items-end justify-between">
-              <h2 className="text-3xl font-black">이 지역의 서비스 랜딩</h2>
+              <h2 className="text-3xl font-black">
+                지역·품목별 상세 운송 안내
+              </h2>
               <a href="/services" className="text-sm font-black text-[#1b4dff]">
                 전체 서비스
               </a>

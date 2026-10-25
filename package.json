@@ -16,7 +16,8 @@
     "test:browser": "playwright test",
     "validate:landings": "node scripts/validate-landings.mjs",
     "qa:urls": "node scripts/qa-landings.mjs",
-    "qa:links": "node scripts/qa-links.mjs"
+    "qa:links": "node scripts/qa-links.mjs",
+    "qa:search": "node scripts/audit-search.mjs"
   },
   "dependencies": {
     "@netlify/blobs": "^11.0.2",

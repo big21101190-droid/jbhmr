@@ -9,7 +9,15 @@ import { areaHref, regionGroups } from '@/lib/site-data';
 import { getServiceRoutes } from '@/lib/service-routes';
 import sitemap from '@/app/sitemap';
 
-const corePaths = ['', '/about', '/services', '/regions', '/faq', '/contact', '/privacy'];
+const corePaths = [
+  '',
+  '/about',
+  '/services',
+  '/regions',
+  '/faq',
+  '/contact',
+  '/privacy',
+];
 const siteUrl = SITE_URL;
 
 function expectedStaticUrls() {
@@ -34,13 +42,32 @@ describe('sitemap inventory integrity', () => {
     process.env.NEXT_PUBLIC_ROBOTS_INDEX = 'true';
     try {
       const entries = await sitemap();
-      const staticEntries = entries.filter((entry) => !entry.url.includes('/delivery/'));
+      expect(entries.length).toBeGreaterThan(0);
+      expect(entries.length).toBeLessThanOrEqual(250);
+      expect(new Set(entries.map((entry) => entry.url)).size).toBe(
+        entries.length,
+      );
+      expect(entries.map((entry) => entry.url).sort()).toEqual([
+        ...expectedStaticUrls(),
+        ...(initialLandings as Landing[]).filter(isSitemapEligible).map((landing) =>
+          landing.canonical || `${SITE_URL}/delivery/${landing.slug}`,
+        ),
+      ].sort());
+      const staticEntries = entries.filter(
+        (entry) => !entry.url.includes('/delivery/'),
+      );
 
-      expect(staticEntries.map((entry) => entry.url).sort()).toEqual(expectedStaticUrls());
+      expect(staticEntries.map((entry) => entry.url).sort()).toEqual(
+        expectedStaticUrls(),
+      );
       expect(staticEntries).toHaveLength(expectedStaticUrls().length);
-      expect(staticEntries.every((entry) => entry.lastModified === undefined)).toBe(true);
+      expect(
+        staticEntries.every((entry) => entry.lastModified === undefined),
+      ).toBe(true);
 
-      const seededLanding = (initialLandings as Landing[]).find(isSitemapEligible)!;
+      const seededLanding = (initialLandings as Landing[]).find(
+        isSitemapEligible,
+      )!;
       const landing = entries.find((entry) =>
         entry.url.endsWith(`/delivery/${seededLanding.slug}`),
       );
@@ -57,7 +84,8 @@ describe('direct region links', () => {
     for (const group of regionGroups) {
       for (const place of group.places) {
         const target = regions.find(
-          (region) => region.parentId === group.slug && region.name.endsWith(place),
+          (region) =>
+            region.parentId === group.slug && region.name.endsWith(place),
         );
         expect(target, `${group.slug}/${place}`).toBeDefined();
         expect(areaHref(group, place)).toBe(`/regions/${target!.slug}`);

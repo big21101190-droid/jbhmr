@@ -29,7 +29,7 @@ const placeSlugs: Record<string, string> = {
   서귀포시: 'seogwipo',
 };
 
-function placeSlug(place: string) {
+export function serviceRoutePlaceKey(place: string) {
   const normalized = place.trim();
   return placeSlugs[normalized] || slugify(normalized);
 }
@@ -48,7 +48,7 @@ export function getServiceRouteSlug(
 ) {
   return (
     slugify(route.slug || '') ||
-    `${placeSlug(route.origin)}-${placeSlug(route.destination)}-${service.slug}`
+    `${serviceRoutePlaceKey(route.origin)}-${serviceRoutePlaceKey(route.destination)}-${service.slug}`
   );
 }
 
