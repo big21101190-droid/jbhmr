@@ -23,6 +23,7 @@ import {
 import { phoneForRegion, telHref } from '@/lib/company';
 import { listLandings } from '@/lib/landing-store';
 import { getRegionSeoContent, regionFaqSchema } from '@/lib/region-seo';
+import { regionalShippingNotes } from '@/lib/regional-shipping-notes';
 
 export const dynamic = 'force-dynamic';
 
@@ -89,6 +90,14 @@ export default async function RegionPage({
     link.href.startsWith('/routes/'),
   );
   const phone = phoneForRegion(region.usesDaeguPhone);
+  const localAdvice = regionalShippingNotes[region.id] || [];
+  const seedDescription = seedRegions.find(
+    (item) => item.id === region.id,
+  )?.description;
+  const operatorDescription =
+    region.description.trim() && region.description !== seedDescription
+      ? region.description
+      : null;
 
   return (
     <main className="bg-[#f4f7fb]">
@@ -124,6 +133,34 @@ export default async function RegionPage({
           </a>
         }
       />
+
+      {operatorDescription || localAdvice.length ? (
+        <section className="bg-white px-5 py-14 sm:py-20">
+          <div className="mx-auto max-w-[1100px]">
+            <h2 className="text-3xl font-black">
+              {region.name} 픽업·납품 준비 안내
+            </h2>
+            {operatorDescription ? (
+              <p className="mt-5 whitespace-pre-line leading-8 text-[#475467]">
+                {operatorDescription}
+              </p>
+            ) : null}
+            <div className="mt-7 grid gap-6 lg:grid-cols-3">
+              {localAdvice.map((item) => (
+                <article
+                  key={item.heading}
+                  className="rounded-2xl border border-[#dce5f0] p-6"
+                >
+                  <h3 className="text-lg font-black">{item.heading}</h3>
+                  <p className="mt-4 text-sm leading-7 text-[#475467]">
+                    {item.body}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="bg-white px-5 py-14 sm:py-20">
         <div className="mx-auto grid max-w-[1100px] gap-8 lg:grid-cols-[.7fr_1.3fr]">

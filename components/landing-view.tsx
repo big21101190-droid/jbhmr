@@ -8,6 +8,7 @@ import { SiteHeader } from '@/components/site-header';
 import { getRegionRecord, getServiceRecord } from '@/lib/catalog-store';
 import { SITE_URL, company, phoneForRegion } from '@/lib/company';
 import type { Landing } from '@/lib/domain';
+import { absoluteUrl } from '@/lib/seo';
 
 export async function LandingView({
   landing,
@@ -43,7 +44,7 @@ export async function LandingView({
       name: landing.title,
       description: landing.metaDescription,
       url: canonical,
-      image: `${SITE_URL}${landing.heroImage}`,
+      image: absoluteUrl(landing.heroImage),
       provider: {
         '@type': 'Organization',
         name: company.name,

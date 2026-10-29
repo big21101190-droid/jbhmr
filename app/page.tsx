@@ -54,11 +54,21 @@ const faqs = [
 ];
 
 export default function Home() {
+  const seoul = regionGroups.find((item) => item.slug === 'seoul')!;
   const daegu = regionGroups.find((item) => item.slug === 'daegu')!;
   const gyeongbuk = regionGroups.find((item) => item.slug === 'gyeongbuk')!;
 
   return (
     <main className="overflow-hidden bg-[#f4f7fb] text-[#101828]">
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: company.name,
+          alternateName: company.EnglishName,
+          url: SITE_URL,
+        }}
+      />
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -95,9 +105,9 @@ export default function Home() {
               <Clock3 size={14} /> 전화 한 통으로 간편 접수
             </p>
             <h1 className="font-display max-w-[680px] text-[clamp(2.7rem,6vw,5.35rem)] leading-[1.06]">
-              가까운 퀵부터
+              전국 퀵서비스
               <br />
-              <span className="text-[#1b4dff]">전국 화물</span>까지
+              <span className="text-[#1b4dff]">용달·도시 간 화물</span>
             </h1>
             <p className="mt-6 max-w-[600px] text-base leading-7 text-[#475467] sm:text-lg">
               오토바이·다마스·1톤 용달, 고속버스·KTX택배, 제주 항공·선박 운송을
@@ -454,6 +464,31 @@ export default function Home() {
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl border border-[#c9d8ff] bg-[#edf3fb] p-6 sm:col-span-2">
+              <h3 className="text-2xl font-black">
+                <a
+                  href="/regions/seoul"
+                  className="text-[#1b4dff] underline underline-offset-4"
+                >
+                  서울 퀵서비스·용달화물 안내
+                </a>
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-[#475467]">
+                서울 내 소형 물품·차량 배송과 지방행 운송을 구분해 상담합니다.
+                출발·도착 주소와 포장한 크기·무게, 희망 시각을 준비해 주세요.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {seoul.places.map((place) => (
+                  <a
+                    key={place}
+                    href={areaHref(seoul, place)}
+                    className="rounded-lg border border-[#c9d8ff] bg-white px-3 py-2 text-sm font-bold text-[#1b4dff]"
+                  >
+                    서울 {place}
+                  </a>
+                ))}
+              </div>
+            </div>
             <div className="rounded-2xl bg-[#1b4dff] p-6 text-white">
               <p className="text-xs font-black text-white/60">
                 대구 전 지역 · 053 전용

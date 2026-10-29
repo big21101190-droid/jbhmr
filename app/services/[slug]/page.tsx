@@ -14,10 +14,13 @@ import { PageHero } from '@/components/page-hero';
 import { PhoneFab } from '@/components/phone-fab';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
+import { ServiceAreaGuides } from '@/components/service-area-guides';
 import { services as seedServices } from '@/data/services';
 import { getServiceRecord } from '@/lib/catalog-store';
 import { SITE_URL, company, telHref } from '@/lib/company';
 import { getServiceRoutes } from '@/lib/service-routes';
+import { listLandings } from '@/lib/landing-store';
+import { absoluteUrl } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
 
@@ -54,6 +57,7 @@ export default async function ServicePage({
   if (!service || service.archived || !service.active) notFound();
 
   const serviceUrl = `${SITE_URL}/services/${service.slug}`;
+  const landings = await listLandings({ publishedOnly: true });
   const schemas = [
     {
       '@context': 'https://schema.org',
@@ -61,7 +65,7 @@ export default async function ServicePage({
       name: service.name,
       description: service.description,
       url: serviceUrl,
-      image: `${SITE_URL}${service.image}`,
+      image: absoluteUrl(service.image),
       provider: {
         '@type': 'Organization',
         name: company.name,
@@ -334,6 +338,11 @@ export default async function ServicePage({
         </div>
       </section>
 
+      <ServiceAreaGuides
+        serviceId={service.id}
+        serviceName={service.name}
+        landings={landings}
+      />
       <ContactCta label={`${service.name} 출발지와 도착지를 알려주세요`} />
       <SiteFooter />
       <PhoneFab phone={company.nationalPhone} />

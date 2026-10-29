@@ -9,8 +9,9 @@ import { PlainText } from '@/components/plain-text';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { ShippingDecisionGuide } from '@/components/shipping-decision-guide';
+import { RouteOptions } from '@/components/route-options';
 import { services as seedServices } from '@/data/services';
-import { listServices } from '@/lib/catalog-store';
+import { listServices, listRegions } from '@/lib/catalog-store';
 import { company, telHref } from '@/lib/company';
 import { isIndexingEnabled } from '@/lib/indexing';
 import { absoluteUrl } from '@/lib/seo';
@@ -92,6 +93,7 @@ export default async function ServiceRoutePage({
 }) {
   const { route, services } = await findRoute((await params).slug);
   if (!route) notFound();
+  const regions = await listRegions();
   const notes = routeNotes(route);
   const service = services.find((item) => item.id === route.serviceId);
   const related = service
@@ -262,6 +264,7 @@ export default async function ServiceRoutePage({
           </div>
         </div>
       </section>
+      <RouteOptions route={route} services={services} regions={regions} />
       {related.length ? (
         <section className="px-5 py-14">
           <div className="mx-auto max-w-[1050px]">

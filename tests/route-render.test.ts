@@ -3,7 +3,11 @@ import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/lib/catalog-store', async () => {
   const { services } = await import('@/data/services');
-  return { listServices: async () => services };
+  const { regions } = await import('@/data/regions');
+  return {
+    listServices: async () => services,
+    listRegions: async () => regions,
+  };
 });
 import RoutePage, { generateMetadata } from '@/app/routes/[slug]/page';
 
@@ -32,5 +36,7 @@ describe('existing route search presentation', () => {
     );
     expect(html).toContain('aria-label="현재 위치"');
     expect(html).toContain('href="/services/express-bus"');
+    expect(html).toContain('href="/regions/seoul"');
+    expect(html).toContain('href="/regions/gyeongbuk-pohang"');
   });
 });
