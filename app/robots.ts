@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
   const productionIndex = isIndexingEnabled();
   if (!productionIndex) return { rules: [{ userAgent: '*', disallow: '/' }] };
   return {
-    rules: [{ userAgent: '*', allow: '/', disallow: ['/admin', '/api'] }],
+    rules: [{ userAgent: '*', allow: '/', disallow: ['/admin', '/api/admin'] }],
     sitemap: `${SITE_URL}/sitemap.xml`,
     host: SITE_URL,
   };
