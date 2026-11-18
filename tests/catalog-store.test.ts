@@ -223,4 +223,27 @@ describe('dynamic catalog persistence', () => {
     expect(after?.image?.name).toBe('서울 대전 고속버스');
     expect(after?.indexPolicy).toBe('NOINDEX');
   });
+
+  it('never shows the Daegu phone outside Daegu, even if a region record is mistoggled', async () => {
+    const created = await saveRegion({
+      name: 'QA-대구외지역',
+      slug: 'qa-non-daegu-region',
+      active: true,
+      usesDaeguPhone: true,
+    });
+    expect(
+      (await getRegionRecord(created.id))?.usesDaeguPhone,
+    ).toBe(false);
+    expect(
+      (await listRegions()).find((region) => region.id === created.id)
+        ?.usesDaeguPhone,
+    ).toBe(false);
+
+    const daegu = await getRegionRecord('daegu');
+    expect(daegu?.usesDaeguPhone).toBe(true);
+    const daeguChild = (await listRegions()).find(
+      (region) => region.parentId === 'daegu',
+    );
+    expect(daeguChild?.usesDaeguPhone).toBe(true);
+  });
 });
