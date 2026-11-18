@@ -297,11 +297,17 @@ export async function listRegions(options: { includeArchived?: boolean } = {}) {
     seedRegions.map((item) => [item.id, { ...item, archived: false }]),
   );
   for (const item of overrides) byId.set(item.id, item);
+  // The Daegu local number is only real for Daegu itself. Clamp this here
+  // (rather than trust a possibly-mistoggled admin flag) so no other
+  // region's page can ever display it, however the record was set.
+  const isDaegu = (item: Region) =>
+    item.id === 'daegu' || item.parentId === 'daegu';
   const records = [...byId.values()].map((item) => ({
     ...item,
     parentName: item.parentId
       ? byId.get(item.parentId)?.name || item.parentName
       : null,
+    usesDaeguPhone: isDaegu(item) && item.usesDaeguPhone,
   }));
   return records
     .filter((item) => options.includeArchived || !item.archived)
