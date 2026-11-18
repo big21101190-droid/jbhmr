@@ -95,14 +95,14 @@ const overrides: Record<string, RegionOverride> = {
     ],
   },
   'gyeongbuk-gyeongsan': {
-    seoTitle: '경산 1톤 용달화물과 대구·전국 연계 화물 운송 안내',
-    h1: '경산 1톤 용달화물 운송 상담',
+    seoTitle: '경산 퀵서비스와 대구·전국 연계 화물 운송 안내',
+    h1: '경산 퀵서비스·용달화물 운송 상담',
     metaDescription:
-      '경산과 대구 인접 권역의 1톤 용달화물, 도시 간 연계 운송을 상담합니다. 일반 택배 접수처가 아닌 차량 운송 상담 서비스이며 접수 조건을 확인해 1661-0122로 안내합니다.',
+      '경산과 대구 인접 권역의 소형 긴급 물품, 다마스·1톤 화물, 도시 간 연계 운송을 상담합니다. 일반 택배 접수처가 아닌 운송 상담 서비스이며 접수 조건을 확인해 1661-0122로 안내합니다.',
     localSummary:
-      '경산은 대구 인접 권역의 출발·도착 조건을 함께 살펴, 부피 있는 화물은 1톤 용달화물로 상담합니다.',
+      '경산은 대구 인접 권역의 출발·도착 조건을 함께 살펴, 소형 물품은 퀵서비스로, 부피 있는 화물은 다마스 또는 1톤 차량으로 상담합니다.',
     localNotes: [
-      '경산과 대구 사이 화물 이동은 정확한 주소와 화물 크기를 기준으로 운송 방식을 검토합니다.',
+      '경산과 대구 사이 이동은 정확한 주소와 물품 크기를 기준으로 운송 방식을 검토합니다.',
       '전국 연계가 필요한 경우에는 품목, 희망 시간과 이용 가능한 노선을 확인한 뒤 안내합니다.',
     ],
   },
@@ -132,26 +132,26 @@ const overrides: Record<string, RegionOverride> = {
     ],
   },
   'gyeongbuk-hayang': {
-    seoTitle: '하양 1톤 용달화물과 경산·대구 연계 운송 안내',
-    h1: '하양 1톤 용달화물 운송 상담',
+    seoTitle: '하양 퀵서비스·용달화물과 경산·대구 연계 운송 안내',
+    h1: '하양 퀵서비스·차량 화물 운송 상담',
     metaDescription:
-      '하양과 경산·대구 인접 권역의 1톤 용달화물 운송을 상담합니다. 일반 택배 접수처가 아닌 차량 운송 안내 서비스이며 1661-0122에서 접수 조건을 확인합니다.',
+      '하양과 경산·대구 인접 권역의 소형 긴급 물품, 다마스·1톤 화물 운송을 상담합니다. 일반 택배 접수처가 아닌 퀵·차량 운송 안내 서비스이며 1661-0122에서 접수 조건을 확인합니다.',
     localSummary:
-      '하양에서 경산·대구 인접 권역으로 이동하는 화물은 주소와 화물 크기, 희망 시간을 바탕으로 1톤 용달화물로 상담합니다.',
+      '하양에서 경산·대구 인접 권역으로 이동하는 물품은 주소와 물품 크기, 희망 시간을 바탕으로 퀵서비스 또는 차량 운송을 상담합니다.',
     localNotes: [
       '인접 지역 이동도 출발·도착 주소와 상하차 환경에 따라 필요한 차량이 달라질 수 있습니다.',
       '도시 간 연계가 필요한 경우에는 품목과 희망 일정을 먼저 확인해 가능한 방식을 안내합니다.',
     ],
   },
   'gyeongbuk-jillyang': {
-    seoTitle: '진량 1톤 용달화물 운송 상담 안내',
-    h1: '진량 1톤 용달화물 운송 상담',
+    seoTitle: '진량 퀵서비스·다마스·1톤 화물 운송 상담 안내',
+    h1: '진량 소형 물품·용달화물 운송 상담',
     metaDescription:
-      '진량과 경산·대구 인접 권역의 1톤 용달화물을 상담합니다. 일반 택배 접수처가 아닌 차량 운송 안내 서비스이며, 화물과 일정 확인 후 1661-0122로 안내합니다.',
+      '진량과 경산·대구 인접 권역의 퀵서비스, 다마스, 1톤 용달화물을 상담합니다. 일반 택배 접수처가 아닌 긴급·차량 운송 안내 서비스이며, 물품과 일정 확인 후 1661-0122로 안내합니다.',
     localSummary:
-      '진량에서 출발하거나 도착하는 화물은 크기·수량·상하차 조건에 맞춰 1톤 용달화물로 상담합니다.',
+      '진량에서 출발하거나 도착하는 물품은 소형 긴급 이동과 차량 화물을 구분해, 물품 크기·수량·상하차 조건에 맞춰 운송 방식을 상담합니다.',
     localNotes: [
-      '박스나 부피 화물은 1톤 차량 적재 조건을 확인합니다.',
+      '소형 물품은 퀵서비스 적합 여부를, 박스나 부피 화물은 다마스·1톤 차량 적재 조건을 확인합니다.',
       '경산·대구 인접 권역 연계는 출발·도착 주소와 희망 시간을 기준으로 안내합니다.',
     ],
   },
@@ -501,10 +501,20 @@ export const priorityRegionSeoIds = new Set([
 // nationwide by design) is real — don't claim local pickup we don't run.
 const CORE_SERVICE_TOP_LEVEL_IDS = new Set(['seoul', 'gyeonggi', 'daegu']);
 
+// Gyeongsan/Hayang/Jillyang sit directly against the Daegu metro border and
+// are actually covered by the Daegu riders, even though they're
+// administratively Gyeongbuk — treat them as core too.
+const CORE_SERVICE_EXTRA_REGION_IDS = new Set([
+  'gyeongbuk-gyeongsan',
+  'gyeongbuk-hayang',
+  'gyeongbuk-jillyang',
+]);
+
 export function isCoreServiceRegion(region: Region): boolean {
   return (
     CORE_SERVICE_TOP_LEVEL_IDS.has(region.id) ||
-    (region.parentId !== null && CORE_SERVICE_TOP_LEVEL_IDS.has(region.parentId))
+    (region.parentId !== null && CORE_SERVICE_TOP_LEVEL_IDS.has(region.parentId)) ||
+    CORE_SERVICE_EXTRA_REGION_IDS.has(region.id)
   );
 }
 
