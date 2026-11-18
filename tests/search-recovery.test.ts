@@ -50,8 +50,10 @@ describe('real regional catalog links', () => {
         active: false,
       })),
     }));
+    // Use a core-service region (Daegu): Gyeongbuk only ever offers
+    // one-ton, so it can't exercise "inactive service" filtering for damas.
     const links = getRegionSeoContent(
-      getRegion('gyeongbuk-pohang')!,
+      getRegion('daegu-jung')!,
       catalog,
     ).directLinks;
     expect(links.some((link) => link.href === '/services/edited-damas')).toBe(

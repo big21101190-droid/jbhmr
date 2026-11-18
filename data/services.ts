@@ -29,7 +29,7 @@ export const services: Service[] = [
     ],
     items: ['서류', '샘플', '작은 부품', '소형 박스'],
     transport: ['오토바이'],
-    areas: ['대구 전 지역', '그 외 지역은 가능 여부 확인'],
+    areas: ['서울·경기·대구 전 지역', '그 외 지역은 1톤 용달화물로 안내'],
     process: [
       {
         title: '출발·도착지 접수',
@@ -89,7 +89,7 @@ export const services: Service[] = [
     ],
     items: ['박스 화물', '소형 집기', '여러 개의 소화물'],
     transport: ['다마스', '화물 조건에 따라 라보 상담'],
-    areas: ['대구 전 지역', '그 외 지역은 가능 여부 확인'],
+    areas: ['서울·경기·대구 전 지역', '그 외 지역은 1톤 용달화물로 안내'],
     process: [
       {
         title: '주소와 일정 접수',

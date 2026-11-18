@@ -192,7 +192,7 @@ describe('Blobs landing storage (isolated adapter)', () => {
     expect((await getLandingById(seed.id))?.title).toBe('수정 검증');
     expect(
       (await listLandings()).filter((x) => x.id.startsWith('initial-')),
-    ).toHaveLength(50);
+    ).toHaveLength(getInitialLandings().length);
   });
   it('rejects an update while another mutation owns the landing lock', async () => {
     const record = await saveLanding(draft('qa-mutation-lock'));
