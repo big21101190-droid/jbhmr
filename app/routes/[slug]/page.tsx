@@ -11,6 +11,8 @@ import { SiteHeader } from '@/components/site-header';
 import { ShippingDecisionGuide } from '@/components/shipping-decision-guide';
 import { RouteOptions } from '@/components/route-options';
 import { BusRouteGuide } from '@/components/bus-route-guide';
+import { KtxRouteGuide } from '@/components/ktx-route-guide';
+import { JejuRouteGuide } from '@/components/jeju-route-guide';
 import { services as seedServices } from '@/data/services';
 import { listServices, listRegions } from '@/lib/catalog-store';
 import { company, telHref } from '@/lib/company';
@@ -184,6 +186,8 @@ export default async function ServiceRoutePage({
         <span aria-current="page">{route.label}</span>
       </nav>
       <BusRouteGuide route={route} />
+      <KtxRouteGuide route={route} />
+      <JejuRouteGuide route={route} />
       {route.image?.url || route.body ? (
         <section className="bg-[#f4f7fb] px-5 py-14 sm:py-20">
           <div
