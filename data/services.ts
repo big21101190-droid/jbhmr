@@ -253,6 +253,10 @@ export const services: Service[] = [
       destination,
       label: `서울–${destination} 고속버스택배`,
       source: '메뉴구성및 키워드 (1).txt',
+      image: {
+        url: '/service-bus.png',
+        alt: `서울에서 ${destination}까지 연계하는 고속버스택배 차량`,
+      },
     })),
     provenance: [
       {
@@ -336,6 +340,10 @@ export const services: Service[] = [
       destination,
       label: `서울–${destination} KTX택배`,
       source: '메뉴구성및 키워드 (1).txt 메뉴 예시',
+      image: {
+        url: '/service-ktx.jpg',
+        alt: `서울에서 ${destination}까지 연계하는 KTX 특송 열차`,
+      },
     })),
     provenance: [
       {
@@ -422,6 +430,10 @@ export const services: Service[] = [
       destination,
       label: `서울–${destination} 항공화물`,
       source: '메뉴구성및 키워드 (1).txt',
+      image: {
+        url: '/service-jeju.png',
+        alt: `서울에서 ${destination}까지 연계하는 제주 항공화물`,
+      },
     })),
     provenance: [
       {
@@ -512,6 +524,10 @@ export const services: Service[] = [
       destination,
       label: `서울–${destination} 선박화물`,
       source: '의뢰인 운영 요청',
+      image: {
+        url: '/service-jeju-sea.svg',
+        alt: `서울에서 ${destination}까지 연계하는 제주 선박화물`,
+      },
     })),
     provenance: [
       {
