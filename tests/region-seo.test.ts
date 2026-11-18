@@ -18,7 +18,7 @@ describe('region SEO content', () => {
     const gumi = contentFor('gyeongbuk-gumi');
 
     expect(pohang.seoTitle).toContain('포항');
-    expect(pohang.seoTitle).toContain('퀵서비스');
+    expect(pohang.seoTitle).toContain('고속버스택배');
     expect(gumi.seoTitle).toContain('구미');
     expect(gumi.seoTitle).toContain('용달');
     expect(pohang.seoTitle).not.toBe(gumi.seoTitle);
